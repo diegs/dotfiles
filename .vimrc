@@ -88,8 +88,14 @@ let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
 if has('gui_running')
   set guiheadroom=0
   set guioptions=aceit
-  set guifont=Inconsolata:h15
+  let s:uname = system("uname -s")
+  if s:uname == "Darwin"
+    set guifont=Inconsolata:h15
+  else
+    set guifont=Anonymous\ Pro\ 10
+  endif
   set vb
+  set clipboard=unnamedplus
 endif
 
 if exists(":Tabularize")
