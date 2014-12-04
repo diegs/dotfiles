@@ -19,6 +19,7 @@ NeoBundle 'aaronbieber/vim-quicktask'
 NeoBundle 'vim-scripts/bufkill.vim'
 NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'kien/ctrlp.vim'
+NeoBundle 'FelikZ/ctrlp-py-matcher'
 NeoBundle 'scrooloose/nerdcommenter'
 
 " Haskell plugins.
@@ -61,6 +62,21 @@ set hidden
 set t_Co=256
 set background=dark
 colorscheme solarized
+
+" ctrlp
+" nunmap <C-b>
+nnoremap <silent> <C-b> :CtrlPBuffer<CR>
+let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
+      \ --ignore .git
+      \ --ignore .svn
+      \ --ignore .hg
+      \ --ignore .DS_Store
+      \ --ignore "**/*.pyc"
+      \ --ignore .git5_specs
+      \ --ignore review
+      \ -g ""'
+let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
 
 " GUI-only
 if has('gui_running')
