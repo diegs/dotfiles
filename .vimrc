@@ -4,6 +4,12 @@ if has('vim_starting')
   set runtimepath+=~/.vim/bundle/neobundle.vim/
 endif
 
+" google
+if filereadable("~/.vim/google.vim")
+  source ~/.vim/google.vim
+endif
+
+" neobundle
 set rtp+=~/.vim/bundle/neobundle.vim
 call neobundle#begin(expand('~/.vim/bundle/'))
 NeoBundleFetch 'Shuogo/neobundle.vim'
