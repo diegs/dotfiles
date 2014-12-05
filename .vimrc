@@ -96,13 +96,14 @@ if has('gui_running')
   set guiheadroom=0
   set guioptions=aceit
   let s:uname = system("uname -s")
-  if s:uname == "Darwin"
+  if s:uname == "Darwin\n"
     set guifont=Inconsolata:h15
+    set clipboard=unnamed
   else
     set guifont=Anonymous\ Pro\ 10
+    set clipboard=unnamedplus
   endif
   set vb
-  set clipboard=unnamedplus
 endif
 
 if exists(":Tabularize")
