@@ -5,7 +5,7 @@ if has('vim_starting')
 endif
 
 " google
-if filereadable("~/.vim/google.vim")
+if filereadable(glob("~/.vim/google.vim"))
   source ~/.vim/google.vim
 endif
 
@@ -23,10 +23,12 @@ NeoBundle 'Shougo/unite.vim'
 NeoBundle 'godlygeek/tabular'
 NeoBundle 'aaronbieber/vim-quicktask'
 NeoBundle 'vim-scripts/bufkill.vim'
-NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'kien/ctrlp.vim'
 NeoBundle 'FelikZ/ctrlp-py-matcher'
 NeoBundle 'scrooloose/nerdcommenter'
+
+NeoBundle 'altercation/vim-colors-solarized'
+NeoBundle 'w0ng/vim-hybrid'
 
 " Haskell plugins.
 "NeoBundle "Twinside/vim-hoogle"
@@ -51,14 +53,17 @@ set nobackup
 set nowb
 set noswapfile
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+set cmdheight=2
+set shortmess=a
+set novisualbell
 
 " Tab settings.
-set tabstop=2                   "A tab is 8 spaces
-set expandtab                   "Always uses spaces instead of tabs
-set softtabstop=2               "Insert 2 spaces when tab is pressed
-set shiftwidth=2                "An indent is 2 spaces
-set shiftround                  "Round spaces to nearest shiftwidth multiple
-set nojoinspaces                "Don't convert spaces to tabs
+" set tabstop=2                   "A tab is 8 spaces
+" set expandtab                   "Always uses spaces instead of tabs
+" set softtabstop=2               "Insert 2 spaces when tab is pressed
+" set shiftwidth=2                "An indent is 2 spaces
+" set shiftround                  "Round spaces to nearest shiftwidth multiple
+" set nojoinspaces                "Don't convert spaces to tabs
 
 " Appearance.
 set number
@@ -67,7 +72,9 @@ set hlsearch
 set hidden
 set t_Co=256
 set background=dark
-colorscheme solarized
+let g:hybrid_use_Xresources = 1
+colorscheme hybrid
+" colorscheme solarized
 
 " ctrlp
 " nunmap <C-b>
