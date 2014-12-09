@@ -28,9 +28,9 @@ myBorderWidth = 2
 
 myModMask = mod4Mask
 
-myNormalBorderColor = "#6c71c4"
+myNormalBorderColor = "#81a2be"
 
-myFocusedBorderColor = "#d33682"
+myFocusedBorderColor = "#cc6666"
 
 --myWorkspaces = map show [1..9]
 
@@ -51,7 +51,7 @@ myKeys =
   , ((mod4Mask .|. shiftMask, xK_q), io (exitWith ExitSuccess))
   , ((mod4Mask, xK_x), spawn "gnome-screensaver-command -a")
   , ((mod4Mask, xK_o), spawn "gnome-terminal")
-  , ((mod4Mask, xK_p), spawn "dmenu_run -nf '#657b83' -nb '#002b36' -fn 'anonymous pro:pixelsize=12'")
+  , ((mod4Mask, xK_p), spawn "dmenu_run -nf '#c5c8c6' -nb '#1d1f21' -fn 'anonymous pro:pixelsize=12'")
   , ((mod4Mask, xK_n), spawn "touch ~/.pomodoro_session")
   , ((mod4Mask, xK_m), spawn "rm ~/.pomodoro_session")
 --  , ((mod4Mask, xK_F8), spawn "xdotool key --clearmodifiers XF86AudioPrev")
@@ -76,10 +76,10 @@ myKeys =
 
 myLogHook xmproc = dynamicLogWithPP xmobarPP
   { ppOutput = hPutStrLn xmproc
-  , ppTitle = xmobarColor "#657b83" "" . shorten 100
-  , ppCurrent = xmobarColor "#c0c0c0" "" . wrap "" ""
-  , ppSep     = xmobarColor "#c0c0c0" "" " | "
-  , ppUrgent  = xmobarColor "#ff69b4" ""
+  , ppTitle = xmobarColor "#c5c8c6" "" . shorten 100
+  , ppCurrent = xmobarColor "#969896" "" . wrap "" ""
+  , ppSep     = xmobarColor "#969896" "" " | "
+  , ppUrgent  = xmobarColor "#cc6666" ""
                 --  , ppLayout = const "" -- to disable the layout info on xmobar
   }
 
@@ -88,9 +88,10 @@ myStartupHook = do
   setWMName "LG3D"
   -- spawn "unclutter -grab"
   spawn "gnome-settings-daemon"
+  spawn "drive-sync"
   spawn "/usr/bin/xcompmgr -a"
   spawn "xset r rate 250 50"
-  spawn "xsetroot -solid '#002b36'"
+  spawn "xsetroot -solid '#1d1f21'"
 
 myConfig = gnomeConfig
   { terminal           = myTerminal

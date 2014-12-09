@@ -1,17 +1,17 @@
 Config { font = "xft:anonymous pro:pixelsize=12"
-  , bgColor = "#002b36"
-  , fgColor = "#657b83"
+  , bgColor = "#1d1f21"
+  , fgColor = "#c5c8c6"
   , border = NoBorder
   , borderColor = "black"
   , hideOnStart = False
   , persistent = True
   , position = Bottom
   , lowerOnStart = False
-  , commands = [ Run Weather "KNUQ" ["-t"," <tempC>C","-L","64","-H","77","--normal","#657b83","--high","#93a1a1","--low","#657b83"] 36000
-               , Run DynNetwork ["-t","Net: <txbar>","-L","0","-H","1024","--normal","#657b83","--high","#93a1a1"] 10
-               , Run Cpu ["-L","3","-H","50","--normal","#657b83","--high","#93a1a1","--template","Cpu: <bar>"] 10
+  , commands = [ Run Weather "KNUQ" ["-t"," <tempC>C <skyCondition>","-L","64","-H","77","--normal","#c5c8c6","--high","#c5c8c6","--low","#c5c8c6"] 36000
+               , Run DynNetwork ["-t","Net: <txbar>","-L","0","-H","1024","--normal","#c5c8c6","--high","#c5c8c6"] 10
+               , Run Cpu ["-L","3","-H","50","--normal","#657b83","--high","#c5c8c6","--template","Cpu: <bar>"] 10
                , Run Memory ["-t","Mem: <usedbar>"] 10
-               , Run Date "<fc=#93a1a1>%a %b %_d %Y %H:%M</fc>" "date" 10
+               , Run Date "<fc=#c5c8c6>%a %b %_d %Y %H:%M</fc>" "date" 10
                , Run CommandReader "pymodoro" "pomodoro"
                , Run Com "hostname" [] "" 36000
                , Run StdinReader
