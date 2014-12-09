@@ -27,12 +27,12 @@ NeoBundle 'kien/ctrlp.vim'
 NeoBundle 'FelikZ/ctrlp-py-matcher'
 NeoBundle 'scrooloose/nerdcommenter'
 
-NeoBundle 'altercation/vim-colors-solarized'
+" NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'w0ng/vim-hybrid'
 
 " Haskell plugins.
 "NeoBundle "Twinside/vim-hoogle"
-NeoBundle 'dag/vim2hs'
+" NeoBundle 'dag/vim2hs'
 "NeoBundle 'eagletmt/ghcmod-vim'
 "NeoBundle 'bitc/vim-hdevtools'
 "NeoBundle 'jpalardy/vim-slime'
@@ -53,8 +53,8 @@ set nobackup
 set nowb
 set noswapfile
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif
-set cmdheight=2
-set shortmess=a
+"set cmdheight=2
+set shortmess=at
 set novisualbell
 
 " Tab settings.
