@@ -19,7 +19,6 @@ NeoBundle 'tpope/vim-sensible'
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'bling/vim-airline'
-"NeoBundle 'scrooloose/syntastic'
 NeoBundle 'Shougo/vimproc.vim'
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'godlygeek/tabular'
@@ -28,6 +27,8 @@ NeoBundle 'vim-scripts/bufkill.vim'
 NeoBundle 'kien/ctrlp.vim'
 NeoBundle 'FelikZ/ctrlp-py-matcher'
 NeoBundle 'scrooloose/nerdcommenter'
+NeoBundle('pydave/AsyncCommand')
+NeoBundle('stgpetrovic/syntastic-async')
 
 " NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'w0ng/vim-hybrid'
