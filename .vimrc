@@ -4,6 +4,8 @@ if has('vim_starting')
   set runtimepath+=~/.vim/bundle/neobundle.vim/
 endif
 
+let mapleader=','
+
 " google
 if filereadable(glob("~/.vim/google.vim"))
   source ~/.vim/google.vim
@@ -43,7 +45,6 @@ NeoBundleCheck
 
 " Standard customizations.
 " filetype plugin indent on
-let mapleader=','
 " set wildmode=list:longest
 set wildmenu
 set wildmode=longest:full,full
@@ -56,6 +57,7 @@ autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 "set cmdheight=2
 set shortmess=at
 set novisualbell
+set formatoptions+=j
 
 " Tab settings.
 " set tabstop=2                   "A tab is 8 spaces
