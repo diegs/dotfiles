@@ -188,4 +188,3 @@ let g:signify_disable_by_default = 1
 let g:signify_vcs_list = ['git5', 'git']
 let g:signify_diffoptions = {'git5': '--uncommitted'}
 nnoremap <Leader>vt :SignifyToggle<CR>
-
