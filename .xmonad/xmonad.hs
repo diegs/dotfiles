@@ -90,7 +90,7 @@ myStartupHook = do
   spawn "gnome-settings-daemon"
   spawn "drive-sync"
   spawn "/usr/bin/xcompmgr -a"
-  spawn "xset r rate 200 60"
+  spawn "xset r rate 250 60"
   spawn "xsetroot -solid '#1d1f21'"
 
 myConfig = gnomeConfig
