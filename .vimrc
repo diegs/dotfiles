@@ -108,7 +108,7 @@ if has('gui_running')
   set guioptions=aceit
   let s:uname = system("uname -s")
   if s:uname == "Darwin\n"
-    set guifont=Inconsolata:h15
+    set guifont=Inconsolata:h15,Menlo:h14
     set clipboard=unnamed
   else
     set guifont=Anonymous\ Pro\ 10
