@@ -21,6 +21,7 @@ Plugin 'tpope/vim-unimpaired'
 Plugin 'kien/ctrlp.vim'
 Plugin 'FelikZ/ctrlp-py-matcher'
 Plugin 'vim-scripts/bufkill.vim'
+Plugin 'schickling/vim-bufonly'
 
 " Coding.
 " Plugin 'scrooloose/nerdcommenter'
@@ -37,11 +38,14 @@ Plugin 'tpope/vim-surround'
 
 " Plugins.
 Plugin 'aaronbieber/vim-quicktask'
+Plugin 'scrooloose/nerdtree'
 Plugin 'sjl/gundo.vim'
+Plugin 'vim-scripts/YankRing.vim'
 
 " Misc.
-Plugin 'tpope/vim-sensible'
+" Plugin 'tpope/vim-dispatch'
 Plugin 'tpope/vim-repeat'
+Plugin 'tpope/vim-sensible'
 
 " Disabled.
 " Plugin 'Shougo/vimproc.vim'
@@ -50,11 +54,11 @@ Plugin 'tpope/vim-repeat'
 " Plugin 'stgpetrovic/syntastic-async'
 
 " Haskell.
-"Plugin "Twinside/vim-hoogle"
-"Plugin 'dag/vim2hs'
-"Plugin 'eagletmt/ghcmod-vim'
-"Plugin 'bitc/vim-hdevtools'
-"Plugin 'jpalardy/vim-slime'
+" Plugin 'Twinside/vim-hoogle'
+" Plugin 'dag/vim2hs'
+" Plugin 'eagletmt/ghcmod-vim'
+" Plugin 'bitc/vim-hdevtools'
+" Plugin 'jpalardy/vim-slime'
 call vundle#end()
 
 " Google.
@@ -73,7 +77,8 @@ set wildmode=longest,list:longest,full
 set nobackup
 set nowb
 set noswapfile
-set shortmess=at
+" set shortmess=at
+inoremap jk <esc>
 
 " Indentation.
 set expandtab
@@ -114,7 +119,6 @@ if has('gui_running')
     set guifont=Anonymous\ Pro\ 10
     set clipboard=unnamedplus
   endif
-  set vb
 endif
 
 " Splits.
@@ -129,6 +133,7 @@ set splitright
 " nunmap <C-b>
 nnoremap <silent> <C-b> :CtrlPBuffer<CR>
 let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_switch_buffer = 'VH'
 let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
       \ --ignore .git
       \ --ignore .svn
@@ -169,7 +174,7 @@ endif
 "au FileType haskell nnoremap <buffer> <silent> <Leader>hc :HdevtoolsClear<CR>
 "au FileType haskell nnoremap <buffer> <silent> <Leader>hi :HdevtoolsInfo<CR>
 
-" airline
+" Airline.
 let g:airline_left_sep=''
 let g:airline_right_sep=''
 
@@ -178,13 +183,48 @@ let g:airline_right_sep=''
 " autocmd FileType c,cpp,cs   setlocal commentstring=//\ %s
 " autocmd FileType java       setlocal commentstring=/*%s*/
 
+" Nerdtree.
+map <C-n> :NERDTreeToggle<CR>
+
 " Gundo.
 nnoremap <silent> <leader>g :GundoToggle<CR>
 nnoremap <F5> :GundoToggle<CR>
 let g:gundo_right = 1
+
+" Yankring.
+if has('gui_running')
+  let g:yankring_replace_n_pkey = '<m-p>'
+  let g:yankring_replace_n_nkey = '<m-n>'
+else
+  let g:yankring_replace_n_pkey = '<esc>p'
+  let g:yankring_replace_n_nkey = '<esc>n'
+endif
 
 " Signify.
 let g:signify_disable_by_default = 1
 let g:signify_vcs_list = ['git5', 'git']
 let g:signify_diffoptions = {'git5': '--uncommitted'}
 nnoremap <Leader>vt :SignifyToggle<CR>
+
+" Highlight all instances of word under cursor, when idle.
+" Useful when studying strange source code.
+" Type z/ to toggle highlighting on/off.
+nnoremap z/ :if AutoHighlightToggle()<Bar>set hls<Bar>endif<CR>
+function! AutoHighlightToggle()
+  let @/ = ''
+  if exists('#auto_highlight')
+    au! auto_highlight
+    augroup! auto_highlight
+    setl updatetime=4000
+    echo 'Highlight current word: off'
+    return 0
+  else
+    augroup auto_highlight
+      au!
+      au CursorHold * let @/ = '\V\<'.escape(expand('<cword>'), '\').'\>'
+    augroup end
+    setl updatetime=500
+    echo 'Highlight current word: ON'
+    return 1
+  endif
+endfunction
