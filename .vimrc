@@ -34,7 +34,7 @@ Plugin 'tpope/vim-fugitive'
 
 " Text.
 Plugin 'tpope/vim-surround'
-" Plugin 'godlygeek/tabular'
+Plugin 'godlygeek/tabular'
 
 " Plugins.
 Plugin 'aaronbieber/vim-quicktask'
@@ -57,10 +57,11 @@ Plugin 'tpope/vim-sensible'
 " Plugin 'stgpetrovic/syntastic-async'
 
 " Haskell.
+" Plugin 'lukerandall/haskellmode-vim'
 " Plugin 'Twinside/vim-hoogle'
 " Plugin 'dag/vim2hs'
 " Plugin 'eagletmt/ghcmod-vim'
-" Plugin 'bitc/vim-hdevtools'
+Plugin 'bitc/vim-hdevtools'
 " Plugin 'jpalardy/vim-slime'
 call vundle#end()
 
@@ -132,7 +133,7 @@ nnoremap <C-H> <C-W><C-H>
 set splitbelow
 set splitright
 
-" ctrlp
+" CtrlP.
 " nunmap <C-b>
 nnoremap <silent> <C-b> :CtrlPBuffer<CR>
 let g:ctrlp_working_path_mode = 'ra'
@@ -172,10 +173,11 @@ endif
 " vim2hs
 " let g:hpaste_author = 'step_function'
 
-" hdevtools
-"au FileType haskell nnoremap <buffer> <Leader>ht :HdevtoolsType<CR>
-"au FileType haskell nnoremap <buffer> <silent> <Leader>hc :HdevtoolsClear<CR>
-"au FileType haskell nnoremap <buffer> <silent> <Leader>hi :HdevtoolsInfo<CR>
+" Haskell.
+" let g:haddock_browser="open"
+au FileType haskell nnoremap <buffer> <Leader>ht :HdevtoolsType<CR>
+au FileType haskell nnoremap <buffer> <silent> <Leader>hc :HdevtoolsClear<CR>
+au FileType haskell nnoremap <buffer> <silent> <Leader>hi :HdevtoolsInfo<CR>
 
 " Airline.
 let g:airline_left_sep=''
