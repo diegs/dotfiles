@@ -54,9 +54,11 @@ myKeys =
   , ((mod4Mask, xK_p), spawn "dmenu_run -nf '#c5c8c6' -nb '#1d1f21' -fn 'anonymous pro:pixelsize=12'")
   , ((mod4Mask, xK_n), spawn "touch ~/.pomodoro_session")
   , ((mod4Mask, xK_m), spawn "rm ~/.pomodoro_session")
---  , ((mod4Mask, xK_F8), spawn "xdotool key --clearmodifiers XF86AudioPrev")
---  , ((mod4Mask, xK_F9), spawn "xdotool key --clearmodifiers XF86AudioPlay")
---  , ((mod4Mask, xK_F10), spawn "xdotool key --clearmodifiers XF86AudioNext")
+  , ((mod4Mask, xK_Left), spawn "ncmpcpp prev")
+  , ((mod4Mask, xK_Right), spawn "ncmpcpp next")
+  , ((mod4Mask, xK_F8), spawn "ncmpcpp toggle")
+  , ((mod4Mask, xK_F9), spawn "ncmpcpp volume -5")
+  , ((mod4Mask, xK_F10), spawn "ncmpcpp volume +5")
   ] ++ [
     -- workspaces are distinct by screen
     ((m .|. mod4Mask, k), windows $ onCurrentScreen f i) | (i, k) <- zip (workspaces' myConfig) [xK_1 .. xK_9] , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]
@@ -77,7 +79,7 @@ myKeys =
 myLogHook xmproc = dynamicLogWithPP xmobarPP
   { ppOutput = hPutStrLn xmproc
   , ppTitle = xmobarColor "#c5c8c6" "" . shorten 100
-  , ppCurrent = xmobarColor "#969896" "" . wrap "" ""
+  , ppCurrent = xmobarColor "#c5c8c6" "" . wrap "" ""
   , ppSep     = xmobarColor "#969896" "" " | "
   , ppUrgent  = xmobarColor "#cc6666" ""
                 --  , ppLayout = const "" -- to disable the layout info on xmobar
@@ -109,5 +111,5 @@ myConfig = gnomeConfig
   } `additionalKeys` myKeys
 
 main = do
-  xmproc <- spawnPipe "/usr/bin/xmobar ~/.xmobarrc"
+  xmproc <- spawnPipe "MPD_PORT=6666 ~/.cabal/bin/xmobar ~/.xmobarrc"
   xmonad $ myConfig { logHook = myLogHook xmproc }

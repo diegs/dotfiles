@@ -16,8 +16,9 @@ Config { font = "xft:anonymous pro:pixelsize=12"
                , Run Com "hostname" [] "" 36000
                , Run StdinReader
                , Run Locks
+               , Run MPD ["-t", "<state>: <artist> - <title>"] 10
                ]
   , sepChar = "%"
   , alignSep = "}{"
-  , template = " %StdinReader% | %locks% }{ %hostname% | %pomodoro% | %cpu% | %memory% | %dynnetwork% | MTV:%KNUQ% | %date%"
+  , template = " %mpd% | %StdinReader% | %locks% }{ %hostname% | %pomodoro% | %cpu% | %memory% | %dynnetwork% | MTV:%KNUQ% | %date%"
   }

@@ -30,7 +30,7 @@ Plugin 'scrooloose/syntastic'
 
 " VCS.
 Plugin 'tpope/vim-fugitive'
-Plugin 'mhinz/vim-signify'
+" Plugin 'mhinz/vim-signify'
 
 " Text.
 Plugin 'tpope/vim-surround'
@@ -39,7 +39,10 @@ Plugin 'tpope/vim-surround'
 " Plugins.
 Plugin 'aaronbieber/vim-quicktask'
 Plugin 'scrooloose/nerdtree'
-Plugin 'sjl/gundo.vim'
+" Plugin 'xolox/vim-misc'
+" Plugin 'xolox/vim-easytags'
+" Plugin 'majutsushi/tagbar'
+" Plugin 'sjl/gundo.vim'
 Plugin 'vim-scripts/YankRing.vim'
 
 " Misc.
@@ -184,12 +187,15 @@ let g:airline_right_sep=''
 " autocmd FileType java       setlocal commentstring=/*%s*/
 
 " Nerdtree.
-map <C-n> :NERDTreeToggle<CR>
+map <leader>n :NERDTreeToggle<CR>
+
+" Tagbar.
+" map <leader>t :TagbarToggle<CR>
 
 " Gundo.
-nnoremap <silent> <leader>g :GundoToggle<CR>
-nnoremap <F5> :GundoToggle<CR>
-let g:gundo_right = 1
+" nnoremap <silent> <leader>g :GundoToggle<CR>
+" nnoremap <F5> :GundoToggle<CR>
+" let g:gundo_right = 1
 
 " Yankring.
 if has('gui_running')
@@ -199,17 +205,18 @@ else
   let g:yankring_replace_n_pkey = '<esc>p'
   let g:yankring_replace_n_nkey = '<esc>n'
 endif
+let g:yankring_history_dir = '~/.vim'
 
 " Signify.
-let g:signify_disable_by_default = 1
-let g:signify_vcs_list = ['git5', 'git']
-let g:signify_diffoptions = {'git5': '--uncommitted'}
-nnoremap <Leader>vt :SignifyToggle<CR>
+" let g:signify_disable_by_default = 1
+" let g:signify_vcs_list = ['git5', 'git']
+" let g:signify_diffoptions = {'git5': '--uncommitted'}
+" nnoremap <Leader>vt :SignifyToggle<CR>
 
 " Highlight all instances of word under cursor, when idle.
 " Useful when studying strange source code.
 " Type z/ to toggle highlighting on/off.
-nnoremap z/ :if AutoHighlightToggle()<Bar>set hls<Bar>endif<CR>
+nnoremap <leader>h :if AutoHighlightToggle()<Bar>set hls<Bar>endif<CR>
 function! AutoHighlightToggle()
   let @/ = ''
   if exists('#auto_highlight')
@@ -224,7 +231,7 @@ function! AutoHighlightToggle()
       au CursorHold * let @/ = '\V\<'.escape(expand('<cword>'), '\').'\>'
     augroup end
     setl updatetime=500
-    echo 'Highlight current word: ON'
+    echo 'Highlight current word: on'
     return 1
   endif
 endfunction
