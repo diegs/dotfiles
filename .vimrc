@@ -3,67 +3,66 @@ set nocompatible
 filetype off
 syntax off
 
-" Set leader before loading plugins.
+" First things first I'm the lead-est.
 let mapleader=','
 
-" Vundle.
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-Plugin 'gmarik/Vundle.vim'
+" vim-plug.
+call plug#begin('~/.vim/plugged')
 
 " Visual.
-Plugin 'w0ng/vim-hybrid'
-Plugin 'bling/vim-airline'
+Plug 'w0ng/vim-hybrid'
+Plug 'bling/vim-airline'
 
 " Movement.
-Plugin 'Lokaltog/vim-easymotion'
-Plugin 'tpope/vim-unimpaired'
-Plugin 'kien/ctrlp.vim'
-Plugin 'FelikZ/ctrlp-py-matcher'
-Plugin 'vim-scripts/bufkill.vim'
-Plugin 'schickling/vim-bufonly'
+Plug 'Lokaltog/vim-easymotion'
+Plug 'tpope/vim-unimpaired'
+Plug 'kien/ctrlp.vim'
+Plug 'FelikZ/ctrlp-py-matcher'
+Plug 'vim-scripts/bufkill.vim'
+Plug 'schickling/vim-bufonly'
 
 " Coding.
-" Plugin 'scrooloose/nerdcommenter'
-Plugin 'tpope/vim-commentary'
-Plugin 'scrooloose/syntastic'
+" Plug 'scrooloose/nerdcommenter'
+Plug 'tpope/vim-commentary'
+Plug 'scrooloose/syntastic'
 
 " VCS.
-Plugin 'tpope/vim-fugitive'
-" Plugin 'mhinz/vim-signify'
+Plug 'tpope/vim-fugitive'
+" Plug 'mhinz/vim-signify'
 
 " Text.
-Plugin 'tpope/vim-surround'
-Plugin 'godlygeek/tabular'
+Plug 'tpope/vim-surround'
+Plug 'godlygeek/tabular'
 
-" Plugins.
-Plugin 'aaronbieber/vim-quicktask'
-Plugin 'scrooloose/nerdtree'
-" Plugin 'xolox/vim-misc'
-" Plugin 'xolox/vim-easytags'
-" Plugin 'majutsushi/tagbar'
-" Plugin 'sjl/gundo.vim'
-Plugin 'vim-scripts/YankRing.vim'
+" Plugs.
+Plug 'aaronbieber/vim-quicktask'
+Plug 'tpope/vim-vinegar'
+" Plug 'scrooloose/nerdtree'
+" Plug 'xolox/vim-misc'
+" Plug 'xolox/vim-easytags'
+" Plug 'majutsushi/tagbar'
+" Plug 'sjl/gundo.vim'
+Plug 'vim-scripts/YankRing.vim'
 
 " Misc.
-" Plugin 'tpope/vim-dispatch'
-Plugin 'tpope/vim-repeat'
-Plugin 'tpope/vim-sensible'
+" Plug 'tpope/vim-dispatch'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-sensible'
 
 " Disabled.
-" Plugin 'Shougo/vimproc.vim'
-" Plugin 'Shougo/unite.vim'
-" Plugin 'pydave/AsyncCommand'
-" Plugin 'stgpetrovic/syntastic-async'
+" Plug 'Shougo/vimproc.vim'
+" Plug 'Shougo/unite.vim'
+" Plug 'pydave/AsyncCommand'
+" Plug 'stgpetrovic/syntastic-async'
 
 " Haskell.
-" Plugin 'lukerandall/haskellmode-vim'
-" Plugin 'Twinside/vim-hoogle'
-" Plugin 'dag/vim2hs'
-" Plugin 'eagletmt/ghcmod-vim'
-Plugin 'bitc/vim-hdevtools'
-" Plugin 'jpalardy/vim-slime'
-call vundle#end()
+" Plug 'lukerandall/haskellmode-vim'
+" Plug 'Twinside/vim-hoogle'
+" Plug 'dag/vim2hs'
+" Plug 'eagletmt/ghcmod-vim'
+" Plug 'bitc/vim-hdevtools'
+" Plug 'jpalardy/vim-slime'
+call plug#end()
 
 " Google.
 if filereadable(glob('~/.vim/google.vim'))
@@ -189,7 +188,10 @@ let g:airline_right_sep=''
 " autocmd FileType java       setlocal commentstring=/*%s*/
 
 " Nerdtree.
-map <leader>n :NERDTreeToggle<CR>
+" map <leader>n :NERDTreeToggle<CR>
+
+" Netrw
+let g:netrw_altfile = 1
 
 " Tagbar.
 " map <leader>t :TagbarToggle<CR>
