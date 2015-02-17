@@ -27,7 +27,7 @@ Plug 'tpope/vim-commentary'
 Plug 'scrooloose/syntastic'
 
 " VCS.
-Plug 'tpope/vim-fugitive'
+" Plug 'tpope/vim-fugitive'
 " Plug 'mhinz/vim-signify'
 
 " Text.
@@ -56,6 +56,7 @@ Plug 'tpope/vim-sensible'
 " Plug 'stgpetrovic/syntastic-async'
 
 " Haskell.
+Plug 'raichoo/haskell-vim'
 " Plug 'lukerandall/haskellmode-vim'
 " Plug 'Twinside/vim-hoogle'
 " Plug 'dag/vim2hs'
@@ -174,9 +175,9 @@ endif
 
 " Haskell.
 " let g:haddock_browser="open"
-au FileType haskell nnoremap <buffer> <Leader>ht :HdevtoolsType<CR>
-au FileType haskell nnoremap <buffer> <silent> <Leader>hc :HdevtoolsClear<CR>
-au FileType haskell nnoremap <buffer> <silent> <Leader>hi :HdevtoolsInfo<CR>
+" au FileType haskell nnoremap <buffer> <Leader>ht :HdevtoolsType<CR>
+" au FileType haskell nnoremap <buffer> <silent> <Leader>hc :HdevtoolsClear<CR>
+" au FileType haskell nnoremap <buffer> <silent> <Leader>hi :HdevtoolsInfo<CR>
 
 " Airline.
 let g:airline_left_sep=''
