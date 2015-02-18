@@ -143,7 +143,11 @@ let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
       \ --ignore .svn
       \ --ignore .hg
       \ --ignore .DS_Store
+      \ --ignore .cache
+      \ --ignore .config
       \ --ignore "**/*.pyc"
+      \ --ignore dist
+      \ --ignore out
       \ --ignore .git5_specs
       \ --ignore review
       \ -g ""'
