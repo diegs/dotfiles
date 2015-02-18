@@ -33,6 +33,7 @@ Plug 'scrooloose/syntastic'
 " Text.
 Plug 'tpope/vim-surround'
 Plug 'godlygeek/tabular'
+Plug 'rking/ag.vim'
 
 " Plugs.
 Plug 'aaronbieber/vim-quicktask'
@@ -91,7 +92,7 @@ set softtabstop=2 " Deletion at an initial tab will remove 2 spaces
 set shiftwidth=2  " Number of spaces to use for autoindenting
 set shiftround    " Use multiple of shiftwidth when indenting with '<' and '>'
 set autoindent    " Always set autoindenting on
-"set copyindent    " copy the previous indentation on autoindenting
+set copyindent    " copy the previous indentation on autoindenting
 set smartindent
 
 " autocmd InsertLeave * if pumvisible() == 0|pclose|endif
