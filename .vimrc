@@ -11,6 +11,9 @@ call plug#begin('~/.vim/plugged')
 
 " Visual.
 Plug 'w0ng/vim-hybrid'
+Plug 'chriskempson/base16-vim'
+Plug 'noahfrederick/vim-hemisu'
+Plug 'morhetz/gruvbox'
 Plug 'bling/vim-airline'
 
 " Movement.
@@ -109,8 +112,10 @@ set hlsearch
 set hidden
 set t_Co=256
 set background=dark
-let g:hybrid_use_Xresources = 1
-colorscheme hybrid
+" let g:hybrid_use_Xresources = 1
+colorscheme base16-ocean
+
+let base16colorspace=256
 
 " GUI-only
 if has('gui_running')
@@ -166,8 +171,9 @@ endif
 "let g:syntastic_enable_signs=1
 "map <silent> <Leader>e :Errors<CR>
 "map <Leader>s :SyntasticToggleMode<CR>
-"let g:syntastic_auto_loc_list=1
+let g:syntastic_auto_loc_list=1
 "let g:syntastic_cpp_compiler_options = ' -std=c++11'
+let g:syntastic_always_populate_loc_list = 1
 
 " Haskell stuff.
 " map <silent> tu :call GHC_BrowseAll()<CR>
