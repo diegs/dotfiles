@@ -10,8 +10,9 @@ let mapleader=','
 call plug#begin('~/.vim/plugged')
 
 " Visual.
-Plug 'w0ng/vim-hybrid'
+" Plug 'w0ng/vim-hybrid'
 Plug 'bling/vim-airline'
+Plug 'chriskempson/base16-vim'
 
 " Movement.
 Plug 'Lokaltog/vim-easymotion'
@@ -49,6 +50,7 @@ Plug 'vim-scripts/YankRing.vim'
 " Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sensible'
+Plug 'tmux-plugins/vim-tmux-focus-events'
 
 " Disabled.
 " Plug 'Shougo/vimproc.vim'
@@ -84,6 +86,10 @@ set nowb
 set noswapfile
 " set shortmess=at
 inoremap jk <esc>
+set relativenumber
+command! W w
+command! WA wa
+nnoremap Y y$
 
 " Indentation.
 set expandtab
@@ -109,8 +115,10 @@ set hlsearch
 set hidden
 set t_Co=256
 set background=dark
-let g:hybrid_use_Xresources = 1
-colorscheme hybrid
+" let g:hybrid_use_Xresources = 1
+let g:base16_shell_path='~/src/github/base16-builder/output/shell'
+let base16colorspace='256'
+colorscheme base16-ocean
 
 " GUI-only
 if has('gui_running')
