@@ -11,8 +11,10 @@ call plug#begin('~/.vim/plugged')
 
 " Visual.
 " Plug 'w0ng/vim-hybrid'
-Plug 'bling/vim-airline'
 Plug 'chriskempson/base16-vim'
+" Plug 'noahfrederick/vim-hemisu'
+" Plug 'morhetz/gruvbox'
+Plug 'bling/vim-airline'
 
 " Movement.
 Plug 'Lokaltog/vim-easymotion'
@@ -118,7 +120,7 @@ set hidden
 set t_Co=256
 set background=dark
 " let g:hybrid_use_Xresources = 1
-let g:base16_shell_path='/usr/local/google/home/diegs/src/github/base16-builder/output/shell'
+" let g:base16_shell_path='/usr/local/google/home/diegs/src/github/base16-builder/output/shell'
 let base16colorspace='256'
 colorscheme base16-ocean
 
@@ -176,8 +178,9 @@ endif
 "let g:syntastic_enable_signs=1
 "map <silent> <Leader>e :Errors<CR>
 "map <Leader>s :SyntasticToggleMode<CR>
-"let g:syntastic_auto_loc_list=1
+let g:syntastic_auto_loc_list=1
 "let g:syntastic_cpp_compiler_options = ' -std=c++11'
+let g:syntastic_always_populate_loc_list = 1
 
 " Haskell stuff.
 " map <silent> tu :call GHC_BrowseAll()<CR>
