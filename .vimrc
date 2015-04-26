@@ -26,6 +26,7 @@ Plug 'schickling/vim-bufonly'
 " Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-commentary'
 Plug 'scrooloose/syntastic'
+Plug  'b4winckler/vim-angry'
 
 " VCS.
 " Plug 'tpope/vim-fugitive'
@@ -85,7 +86,8 @@ set nobackup
 set nowb
 set noswapfile
 " set shortmess=at
-inoremap jk <esc>
+" inoremap jk <esc>
+" nnoremap ho :noh<CR>
 set relativenumber
 command! W w
 command! WA wa
@@ -116,7 +118,7 @@ set hidden
 set t_Co=256
 set background=dark
 " let g:hybrid_use_Xresources = 1
-let g:base16_shell_path='~/src/github/base16-builder/output/shell'
+let g:base16_shell_path='/usr/local/google/home/diegs/src/github/base16-builder/output/shell'
 let base16colorspace='256'
 colorscheme base16-ocean
 
