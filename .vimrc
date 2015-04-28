@@ -120,23 +120,28 @@ set hidden
 set t_Co=256
 set background=dark
 " let g:hybrid_use_Xresources = 1
-" let g:base16_shell_path='/usr/local/google/home/diegs/src/github/base16-builder/output/shell'
+let g:base16_shell_path='/usr/local/google/home/diegs/src/github/base16-builder/output/shell'
 let base16colorspace='256'
 colorscheme base16-ocean
 
 " GUI-only
+let s:uname = system("uname -s")
+if s:uname == "Darwin\n"
+  set clipboard=unnamed
+else
+  set clipboard=unnamedplus
+endif
+
 if has('gui_running')
   set guiheadroom=0
   set guioptions=aceit
-  let s:uname = system("uname -s")
   if s:uname == "Darwin\n"
     set guifont=Inconsolata:h15,Menlo:h14
-    set clipboard=unnamed
   else
     set guifont=Anonymous\ Pro\ 10
-    set clipboard=unnamedplus
   endif
 endif
+
 
 " Splits.
 nnoremap <C-J> <C-W><C-J>
