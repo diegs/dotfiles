@@ -40,6 +40,7 @@ Plug 'godlygeek/tabular'
 Plug 'rking/ag.vim'
 
 " Plugs.
+Plug 'fmoralesc/vim-pad'
 Plug 'aaronbieber/vim-quicktask'
 Plug 'tpope/vim-vinegar'
 " Plug 'scrooloose/nerdtree'
@@ -121,7 +122,7 @@ set t_Co=256
 set background=dark
 " let g:hybrid_use_Xresources = 1
 " let g:base16_shell_path='/usr/local/google/home/diegs/src/github/base16-builder/output/shell'
-let base16colorspace='256'
+" let base16colorspace='16'
 colorscheme base16-ocean
 
 " GUI-only
@@ -200,6 +201,7 @@ let g:syntastic_always_populate_loc_list = 1
 " Airline.
 let g:airline_left_sep=''
 let g:airline_right_sep=''
+let g:airline_section_z=''
 
 " Commentary.
 " setglobal commentstring=#\ %s
@@ -211,6 +213,9 @@ let g:airline_right_sep=''
 
 " Netrw
 let g:netrw_altfile = 1
+
+" vim-pad.
+let g:pad#dir = '~/txt'
 
 " Tagbar.
 " map <leader>t :TagbarToggle<CR>
