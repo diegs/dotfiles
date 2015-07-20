@@ -128,7 +128,7 @@ set t_Co=256
 set background=dark
 " let g:hybrid_use_Xresources = 1
 " let g:base16_shell_path='/usr/local/google/home/diegs/src/github/base16-builder/output/shell'
-" let base16colorspace='16'
+let base16colorspace='256'
 colorscheme base16-ocean
 
 " GUI-only
