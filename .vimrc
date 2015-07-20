@@ -1,6 +1,7 @@
 " For plugin loading.
 set nocompatible
 filetype off
+
 syntax off
 
 " First things first I'm the lead-est.
@@ -27,7 +28,7 @@ Plug 'schickling/vim-bufonly'
 " Coding.
 " Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-commentary'
-Plug 'scrooloose/syntastic'
+" Plug 'scrooloose/syntastic'
 Plug  'b4winckler/vim-angry'
 
 " VCS.
@@ -53,7 +54,11 @@ Plug 'vim-scripts/YankRing.vim'
 " Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sensible'
+
+" Tmux.
 Plug 'tmux-plugins/vim-tmux-focus-events'
+Plug 'jpalardy/vim-slime'
+Plug 'christoomey/vim-tmux-navigator'
 
 " Disabled.
 " Plug 'Shougo/vimproc.vim'
@@ -68,7 +73,6 @@ Plug 'raichoo/haskell-vim'
 " Plug 'dag/vim2hs'
 " Plug 'eagletmt/ghcmod-vim'
 " Plug 'bitc/vim-hdevtools'
-" Plug 'jpalardy/vim-slime'
 call plug#end()
 
 " Google.
@@ -91,9 +95,11 @@ set noswapfile
 " inoremap jk <esc>
 " nnoremap ho :noh<CR>
 set relativenumber
+command! Q q
 command! W w
 command! WA wa
 nnoremap Y y$
+nnoremap <Leader>w :w<CR>
 
 " Indentation.
 set expandtab
@@ -119,19 +125,18 @@ set hlsearch
 set hidden
 set t_Co=256
 set background=dark
-" let g:hybrid_use_Xresources = 1
-let g:base16_shell_path='/usr/local/google/home/diegs/src/github/base16-builder/output/shell'
+" let g:base16_shell_path='/usr/local/google/home/diegs/.config/base16-shell'
 let base16colorspace='256'
 colorscheme base16-ocean
 
 " GUI-only
-let s:uname = system("uname -s")
-if s:uname == "Darwin\n"
-  set clipboard=unnamed
+if has('unnamedplus')
+  set clipboard=unnamed,unnamedplus
 else
-  set clipboard=unnamedplus
+  set clipboard=unnamed
 endif
 
+let s:uname = system("uname -s")
 if has('gui_running')
   set guiheadroom=0
   set guioptions=aceit
@@ -144,10 +149,10 @@ endif
 
 
 " Splits.
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
+" nnoremap <C-J> <C-W><C-J>
+" nnoremap <C-K> <C-W><C-K>
+" nnoremap <C-L> <C-W><C-L>
+" nnoremap <C-H> <C-W><C-H>
 set splitbelow
 set splitright
 
@@ -190,8 +195,8 @@ let g:syntastic_always_populate_loc_list = 1
 " Haskell stuff.
 " map <silent> tu :call GHC_BrowseAll()<CR>
 " map <silent> tw :call GHC_ShowType(1)<CR>
-" let g:slime_target = "tmux"
-" let g:slime_paste_file = tempname()
+let g:slime_target = "tmux"
+let g:slime_paste_file = tempname()
 
 " vim2hs
 " let g:hpaste_author = 'step_function'
@@ -215,7 +220,7 @@ let g:airline_right_sep=''
 " map <leader>n :NERDTreeToggle<CR>
 
 " Netrw
-let g:netrw_altfile = 1
+" let g:netrw_altfile = 1
 
 " Tagbar.
 " map <leader>t :TagbarToggle<CR>
