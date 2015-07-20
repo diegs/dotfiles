@@ -41,6 +41,7 @@ Plug 'godlygeek/tabular'
 Plug 'rking/ag.vim'
 
 " Plugs.
+Plug 'fmoralesc/vim-pad'
 Plug 'aaronbieber/vim-quicktask'
 Plug 'tpope/vim-vinegar'
 " Plug 'scrooloose/nerdtree'
@@ -125,8 +126,9 @@ set hlsearch
 set hidden
 set t_Co=256
 set background=dark
-" let g:base16_shell_path='/usr/local/google/home/diegs/.config/base16-shell'
-let base16colorspace='256'
+" let g:hybrid_use_Xresources = 1
+" let g:base16_shell_path='/usr/local/google/home/diegs/src/github/base16-builder/output/shell'
+" let base16colorspace='16'
 colorscheme base16-ocean
 
 " GUI-only
@@ -210,6 +212,7 @@ let g:slime_paste_file = tempname()
 " Airline.
 let g:airline_left_sep=''
 let g:airline_right_sep=''
+let g:airline_section_z=''
 
 " Commentary.
 " setglobal commentstring=#\ %s
@@ -221,6 +224,9 @@ let g:airline_right_sep=''
 
 " Netrw
 " let g:netrw_altfile = 1
+
+" vim-pad.
+let g:pad#dir = '~/txt'
 
 " Tagbar.
 " map <leader>t :TagbarToggle<CR>
