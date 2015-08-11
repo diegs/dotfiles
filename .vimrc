@@ -13,9 +13,11 @@ call plug#begin('~/.vim/plugged')
 " Visual.
 " Plug 'w0ng/vim-hybrid'
 Plug 'chriskempson/base16-vim'
+" Plug 'ajh17/Spacegray.vim'
 " Plug 'noahfrederick/vim-hemisu'
+" Plug 'noahfrederick/vim-noctu'
 " Plug 'morhetz/gruvbox'
-Plug 'bling/vim-airline'
+" Plug 'bling/vim-airline'
 
 " Movement.
 Plug 'Lokaltog/vim-easymotion'
@@ -43,7 +45,7 @@ Plug 'rking/ag.vim'
 " Plugs.
 Plug 'fmoralesc/vim-pad'
 Plug 'aaronbieber/vim-quicktask'
-Plug 'tpope/vim-vinegar'
+Plug 'jeetsukumaran/vim-filebeagle'
 " Plug 'scrooloose/nerdtree'
 " Plug 'xolox/vim-misc'
 " Plug 'xolox/vim-easytags'
@@ -67,8 +69,10 @@ Plug 'christoomey/vim-tmux-navigator'
 " Plug 'pydave/AsyncCommand'
 " Plug 'stgpetrovic/syntastic-async'
 
-" Haskell.
+" Languages.
 Plug 'raichoo/haskell-vim'
+Plug 'rust-lang/rust.vim'
+Plug 'cespare/vim-toml'
 " Plug 'lukerandall/haskellmode-vim'
 " Plug 'Twinside/vim-hoogle'
 " Plug 'dag/vim2hs'
@@ -124,11 +128,7 @@ set cursorline
 set colorcolumn=+1
 set hlsearch
 set hidden
-set t_Co=256
 set background=dark
-" let g:hybrid_use_Xresources = 1
-" let g:base16_shell_path='/usr/local/google/home/diegs/src/github/base16-builder/output/shell'
-let base16colorspace='256'
 colorscheme base16-ocean
 
 " GUI-only
@@ -173,6 +173,7 @@ let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
       \ --ignore "**/*.pyc"
       \ --ignore dist
       \ --ignore out
+      \ --ignore .stack_work
       \ --ignore .git5_specs
       \ --ignore review
       \ -g ""'
