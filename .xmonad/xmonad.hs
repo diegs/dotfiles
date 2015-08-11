@@ -28,7 +28,7 @@ import XMonad.Util.EZConfig
 import XMonad.Util.Run(spawnPipe)
 import qualified XMonad.StackSet as W
 
-myTerminal = "urxvt"
+myTerminal = "gnome-terminal"
 
 myFocusFollowsMouse = False
 
@@ -66,11 +66,16 @@ myKeys =
   , ((mod4Mask, xK_p), spawn "dmenu_run -nf '#c0c5ce' -nb '#2b303b' -fn 'anonymous pro:pixelsize=12'")
   , ((mod4Mask, xK_n), spawn "touch ~/.pomodoro_session")
   , ((mod4Mask, xK_m), spawn "rm ~/.pomodoro_session")
-  , ((mod4Mask, xK_Left), spawn "ncmpcpp prev")
-  , ((mod4Mask, xK_Right), spawn "ncmpcpp next")
-  , ((mod4Mask, xK_F8), spawn "ncmpcpp toggle")
-  , ((mod4Mask, xK_F9), spawn "ncmpcpp volume -5")
-  , ((mod4Mask, xK_F10), spawn "ncmpcpp volume +5")
+  -- , ((mod4Mask, xK_Left), spawn "ncmpcpp prev")
+  -- , ((mod4Mask, xK_Right), spawn "ncmpcpp next")
+  -- , ((mod4Mask, xK_F8), spawn "ncmpcpp toggle")
+  -- , ((mod4Mask, xK_F9), spawn "ncmpcpp volume -5")
+  -- , ((mod4Mask, xK_F10), spawn "ncmpcpp volume +5")
+  , ((mod4Mask, xK_Left), spawn "xdotool key XF86AudioPrev")
+  , ((mod4Mask, xK_Right), spawn "xdotool key XF86AudioNext")
+  , ((mod4Mask, xK_F8), spawn "xdotool key XF86AudioPlay")
+  , ((mod4Mask, xK_F9), spawn "xdotool key XF86AudioLowerVolume")
+  , ((mod4Mask, xK_F10), spawn "xdotool key XF86AudioRaiseVolume")
   ] ++ [
     -- swap screen order
     ((m .|. mod4Mask, key), screenWorkspace sc >>= flip whenJust (windows . f)) | (key, sc) <- zip [xK_w, xK_e, xK_r] [1,0,2] , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]

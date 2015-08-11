@@ -15,21 +15,22 @@ call plug#begin('~/.vim/plugged')
 Plug 'chriskempson/base16-vim'
 " Plug 'noahfrederick/vim-hemisu'
 " Plug 'morhetz/gruvbox'
-Plug 'bling/vim-airline'
+" Plug 'bling/vim-airline'
 
 " Movement.
-Plug 'Lokaltog/vim-easymotion'
+" Plug 'Lokaltog/vim-easymotion'
 Plug 'tpope/vim-unimpaired'
 Plug 'kien/ctrlp.vim'
 Plug 'FelikZ/ctrlp-py-matcher'
 Plug 'vim-scripts/bufkill.vim'
 Plug 'schickling/vim-bufonly'
+" Plug 'unblevable/quick-scope'
 
 " Coding.
 " Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-commentary'
 " Plug 'scrooloose/syntastic'
-Plug  'b4winckler/vim-angry'
+Plug 'b4winckler/vim-angry'
 
 " VCS.
 " Plug 'tpope/vim-fugitive'
@@ -41,9 +42,10 @@ Plug 'godlygeek/tabular'
 Plug 'rking/ag.vim'
 
 " Plugs.
-Plug 'fmoralesc/vim-pad'
-Plug 'aaronbieber/vim-quicktask'
-Plug 'tpope/vim-vinegar'
+" Plug 'fmoralesc/vim-pad'
+" Plug 'aaronbieber/vim-quicktask'
+" Plug 'tpope/vim-vinegar'
+" Plug 'jeetsukumaran/vim-filebeagle'
 " Plug 'scrooloose/nerdtree'
 " Plug 'xolox/vim-misc'
 " Plug 'xolox/vim-easytags'
@@ -57,7 +59,7 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sensible'
 
 " Tmux.
-Plug 'tmux-plugins/vim-tmux-focus-events'
+" Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'jpalardy/vim-slime'
 Plug 'christoomey/vim-tmux-navigator'
 
@@ -128,15 +130,15 @@ set t_Co=256
 set background=dark
 " let g:hybrid_use_Xresources = 1
 " let g:base16_shell_path='/usr/local/google/home/diegs/src/github/base16-builder/output/shell'
-let base16colorspace='256'
+let base16colorspace=256
 colorscheme base16-ocean
 
 " GUI-only
-if has('unnamedplus')
-  set clipboard=unnamed,unnamedplus
-else
+" if has('unnamedplus')
+"   set clipboard=unnamed,unnamedplus
+" else
   set clipboard=unnamed
-endif
+" endif
 
 let s:uname = system("uname -s")
 if has('gui_running')
@@ -213,6 +215,9 @@ let g:slime_paste_file = tempname()
 let g:airline_left_sep=''
 let g:airline_right_sep=''
 let g:airline_section_z=''
+
+" Buffer selector.
+nmap <leader>b :ls<CR>:b<space>
 
 " Commentary.
 " setglobal commentstring=#\ %s
