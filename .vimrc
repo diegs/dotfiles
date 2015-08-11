@@ -20,18 +20,19 @@ Plug 'chriskempson/base16-vim'
 " Plug 'bling/vim-airline'
 
 " Movement.
-Plug 'Lokaltog/vim-easymotion'
+" Plug 'Lokaltog/vim-easymotion'
 Plug 'tpope/vim-unimpaired'
 Plug 'kien/ctrlp.vim'
 Plug 'FelikZ/ctrlp-py-matcher'
 Plug 'vim-scripts/bufkill.vim'
 Plug 'schickling/vim-bufonly'
+" Plug 'unblevable/quick-scope'
 
 " Coding.
 " Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-commentary'
 " Plug 'scrooloose/syntastic'
-Plug  'b4winckler/vim-angry'
+Plug 'b4winckler/vim-angry'
 
 " VCS.
 " Plug 'tpope/vim-fugitive'
@@ -46,7 +47,6 @@ Plug 'rking/ag.vim'
 Plug 'fmoralesc/vim-pad'
 Plug 'aaronbieber/vim-quicktask'
 Plug 'jeetsukumaran/vim-filebeagle'
-" Plug 'scrooloose/nerdtree'
 " Plug 'xolox/vim-misc'
 " Plug 'xolox/vim-easytags'
 " Plug 'majutsushi/tagbar'
@@ -59,7 +59,7 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sensible'
 
 " Tmux.
-Plug 'tmux-plugins/vim-tmux-focus-events'
+" Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'jpalardy/vim-slime'
 Plug 'christoomey/vim-tmux-navigator'
 
@@ -132,11 +132,11 @@ set background=dark
 colorscheme base16-ocean
 
 " GUI-only
-if has('unnamedplus')
-  set clipboard=unnamed,unnamedplus
-else
+" if has('unnamedplus')
+"   set clipboard=unnamed,unnamedplus
+" else
   set clipboard=unnamed
-endif
+" endif
 
 let s:uname = system("uname -s")
 if has('gui_running')
@@ -214,6 +214,9 @@ let g:slime_paste_file = tempname()
 let g:airline_left_sep=''
 let g:airline_right_sep=''
 let g:airline_section_z=''
+
+" Buffer selector.
+nmap <leader>b :ls<CR>:b<space>
 
 " Commentary.
 " setglobal commentstring=#\ %s
