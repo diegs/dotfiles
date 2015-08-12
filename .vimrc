@@ -33,6 +33,7 @@ Plug 'schickling/vim-bufonly'
 Plug 'tpope/vim-commentary'
 " Plug 'scrooloose/syntastic'
 Plug 'b4winckler/vim-angry'
+Plug 'vasconcelloslf/vim-interestingwords'
 
 " VCS.
 " Plug 'tpope/vim-fugitive'
