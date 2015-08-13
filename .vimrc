@@ -129,7 +129,12 @@ set cursorline
 set colorcolumn=+1
 set hlsearch
 set hidden
-set background=dark
+
+if strftime("%H") > 18
+  set background=dark
+else
+  set background=light
+endif
 colorscheme base16-ocean
 
 " GUI-only
