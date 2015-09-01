@@ -60,7 +60,13 @@ export ADB_VENDOR_KEYS="$HOME/etc/adb_key:"
 # remove google3 JDK /usr/local/buildtools/java/jdk/bin from PATH on Goobuntu
 export PATH=${PATH/\/usr\/local\/buildtools\/java\/jdk\/bin:/}
 
+export BROWSER="google-chrome"
 export EDITOR="vim"
+export VISUAL="vim"
+alias less="less -R"
+alias du="du -sch .[!.]* * | sort -h"
+alias ls="ls --color=auto"
+alias l="ls"
 
 # Repo.
 alias rs="repo sync -j100 -c -q"

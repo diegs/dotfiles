@@ -129,19 +129,18 @@ set colorcolumn=+1
 set hlsearch
 set hidden
 
-if strftime("%H") > 18
+if strftime("%H") > 17
   set background=dark
 else
   set background=light
 endif
 colorscheme base16-ocean
 
-" GUI-only
-" if has('unnamedplus')
-"   set clipboard=unnamed,unnamedplus
-" else
+if has('unnamedplus')
+  set clipboard=unnamed,unnamedplus
+else
   set clipboard=unnamed
-" endif
+endif
 
 let s:uname = system("uname -s")
 if has('gui_running')
@@ -153,7 +152,6 @@ if has('gui_running')
     set guifont=Anonymous\ Pro\ 10
   endif
 endif
-
 
 " Splits.
 " nnoremap <C-J> <C-W><C-J>
