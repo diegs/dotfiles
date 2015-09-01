@@ -6,6 +6,7 @@ Config { font = "xft:anonymous pro:pixelsize=12"
   , hideOnStart = False
   , persistent = True
   , position = Bottom
+  , pickBroadest = True
   , lowerOnStart = False
   , commands = [ Run Weather "KNUQ" ["-t"," <tempC>C <skyCondition>","-L","64","-H","77","--normal","#c0c5ce","--high","#c0c5ce","--low","#c0c5ce"] 36000
                , Run DynNetwork ["-t","Net: <txbar>","-L","0","-H","1024","--normal","#c0c5ce","--high","#c0c5ce"] 10

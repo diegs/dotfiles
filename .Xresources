@@ -27,52 +27,44 @@
 *.color7: #c0c5ce
 
 *.color8: #65737e
-*.color9: #bf616a
-*.color10: #a3be8c
-*.color11: #ebcb8b
-*.color12: #8fa1b3
-*.color13: #b48ead
-*.color14: #96b5b4
+*.color9: #d08770
+*.color10: #343d46
+*.color11: #4f5b66
+*.color12: #a7adba
+*.color13: #dfe1e8
+*.color14: #ab7967
 *.color15: #eff1f5
 
-! Note: colors beyond 15 might not be loaded (e.g., xterm, urxvt),
-! use 'shell' template to set these if necessary
-*.color16: #d08770
-*.color17: #ab7967
-*.color18: #343d46
-*.color19: #4f5b66
-*.color20: #a7adba
-*.color21: #dfe1e8
-
-Xcursor.theme: DMZ-White
-Xcursor.size: 16 ! 32, 48 or 64 may also be good values
+! Xcursor.theme: DMZ-White
+! Xcursor.size: 16 ! 32, 48 or 64 may also be good values
 
 URxvt*.scrollBar: false
 URxvt*.externalBorder: false
 URxvt*.internalBorder: false
 URxvt*.font: xft:Anonymous Pro:size=10
+URxvt*intensityStyles: false
 
 URxvt*.iso14755: false
 URxvt*.iso14755_52: false
 
-! URxvt*.perl-lib: ~/.urxvt/ext/
-URxvt*.perl-ext-common: default,url-select,clipboard,keyboard-select,cwd-spawn
+! URxvt*.perl-ext-common: default,url-select,clipboard,keyboard-select,cwd-spawn
+URxvt*.perl-ext-common: default,clipboard
 
-URxvt*.keysym.M-Escape: perl:keyboard-select:activate
-URxvt*.keysym.M-s: perl:keyboard-select:search
+! URxvt*.keysym.M-Escape: perl:keyboard-select:activate
+! URxvt*.keysym.M-s: perl:keyboard-select:search
 
-URxvt*.keysym.M-u: perl:url-select:select_next
-URxvt*.url-select.autocopy: true
-URxvt*.url-select.button: 2
-URxvt*.url-select.launcher: /usr/bin/google-chrome
-URxvt*.url-select.underline: true
+! URxvt*.keysym.M-u: perl:url-select:select_next
+! URxvt*.url-select.autocopy: true
+! URxvt*.url-select.button: 2
+! URxvt*.url-select.launcher: /usr/bin/google-chrome
+! URxvt*.url-select.underline: true
 
 URxvt*.keysym.C-C: perl:clipboard:copy
 URxvt*.keysym.C-V: perl:clipboard:paste
 URxvt*.keysym.M-C-V: perl:clipboard:paste_escaped
 URxvt*.clipboard.autocopy: true
 
-URxvt*keysym.M-o: perl:cwd-spawn
+! URxvt*keysym.M-o: perl:cwd-spawn
 
 ! URxvt*.clipboard.copycmd: xsel -ib
 ! URxvt*.clipboard.pastecmd: xsel -ob
@@ -152,7 +144,6 @@ URxvt*keysym.M-o: perl:cwd-spawn
 ! URxvt*boldFont: fontname
 ! URxvt*italicFont: fontname
 ! URxvt*boldItalicFont: fontname
-! URxvt*intensityStyles: boolean
 ! URxvt*inputMethod: name
 ! URxvt*preeditType: style
 ! URxvt*imLocale: string

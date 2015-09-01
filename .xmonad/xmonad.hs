@@ -28,7 +28,8 @@ import XMonad.Util.EZConfig
 import XMonad.Util.Run(spawnPipe)
 import qualified XMonad.StackSet as W
 
-myTerminal = "gnome-terminal"
+-- myTerminal = "gnome-terminal"
+myTerminal = "urxvt"
 
 myFocusFollowsMouse = False
 
@@ -76,10 +77,11 @@ myKeys =
   , ((mod4Mask, xK_F8), spawn "xdotool key XF86AudioPlay")
   , ((mod4Mask, xK_F9), spawn "xdotool key XF86AudioLowerVolume")
   , ((mod4Mask, xK_F10), spawn "xdotool key XF86AudioRaiseVolume")
-  ] ++ [
+  ] 
+  -- ++ [
     -- swap screen order
-    ((m .|. mod4Mask, key), screenWorkspace sc >>= flip whenJust (windows . f)) | (key, sc) <- zip [xK_w, xK_e, xK_r] [1,0,2] , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]
-  ]
+    -- ((m .|. mod4Mask, key), screenWorkspace sc >>= flip whenJust (windows . f)) | (key, sc) <- zip [xK_w, xK_e, xK_r] [1,0,2] , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]
+  --]
 
 myLogHook xmproc = dynamicLogWithPP xmobarPP
   { ppOutput = hPutStrLn xmproc
