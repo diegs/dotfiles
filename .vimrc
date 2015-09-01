@@ -178,7 +178,7 @@ let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
       \ --ignore "**/*.pyc"
       \ --ignore dist
       \ --ignore out
-      \ --ignore .stack_work
+      \ --ignore .stack-work
       \ --ignore .git5_specs
       \ --ignore review
       \ -g ""'
