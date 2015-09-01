@@ -33,6 +33,7 @@ Plug 'schickling/vim-bufonly'
 Plug 'tpope/vim-commentary'
 " Plug 'scrooloose/syntastic'
 Plug 'b4winckler/vim-angry'
+Plug 'vasconcelloslf/vim-interestingwords'
 
 " VCS.
 " Plug 'tpope/vim-fugitive'
@@ -129,11 +130,8 @@ set colorcolumn=+1
 set hlsearch
 set hidden
 
-if strftime("%H") > 18
-  set background=dark
-else
-  set background=light
-endif
+" if strftime("%H") > 17
+set background=dark
 colorscheme base16-ocean
 
 " GUI-only
