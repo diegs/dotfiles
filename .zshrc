@@ -7,6 +7,7 @@ unsetopt beep
 zstyle :compinstall filename '/usr/local/google/home/diegs/.zshrc'
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path ~/.zsh/cache
+export BLAZE_COMPLETION_PACKAGE_PATH=%workspace%
 zstyle ':completion:*' users root $USER
 setopt completealiases
 autoload -Uz compinit colors
@@ -40,6 +41,10 @@ vcs_info_wrapper() {
   fi
 }
 RPROMPT=$'$(vcs_info_wrapper)'
+
+autoload -z edit-command-line
+zle -N edit-command-line
+bindkey -M vicmd v edit-command-line
 
 fancy-ctrl-z () {
   if [[ $#BUFFER -eq 0 ]]; then

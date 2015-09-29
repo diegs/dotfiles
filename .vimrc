@@ -30,7 +30,8 @@ Plug 'schickling/vim-bufonly'
 
 " Coding.
 " Plug 'scrooloose/nerdcommenter'
-Plug 'tpope/vim-commentary'
+" Plug 'tpope/vim-commentary'
+Plug 'tomtom/tcomment_vim'
 " Plug 'scrooloose/syntastic'
 Plug 'b4winckler/vim-angry'
 Plug 'vasconcelloslf/vim-interestingwords'
@@ -196,11 +197,13 @@ let g:syntastic_auto_loc_list=1
 "let g:syntastic_cpp_compiler_options = ' -std=c++11'
 let g:syntastic_always_populate_loc_list = 1
 
-" Haskell stuff.
-" map <silent> tu :call GHC_BrowseAll()<CR>
-" map <silent> tw :call GHC_ShowType(1)<CR>
+" Slime.
 let g:slime_target = "tmux"
 let g:slime_paste_file = tempname()
+"let g:slime_no_mappings = 1
+"xmap <leader>s <Plug>SlimeRegionSend
+"nmap <leader>s <Plug>SlimeMotionSend
+"nmap <leader>ss <Plug>SlimeLineSend
 
 " vim2hs
 " let g:hpaste_author = 'step_function'
@@ -210,6 +213,8 @@ let g:slime_paste_file = tempname()
 " au FileType haskell nnoremap <buffer> <Leader>ht :HdevtoolsType<CR>
 " au FileType haskell nnoremap <buffer> <silent> <Leader>hc :HdevtoolsClear<CR>
 " au FileType haskell nnoremap <buffer> <silent> <Leader>hi :HdevtoolsInfo<CR>
+" map <silent> tu :call GHC_BrowseAll()<CR>
+" map <silent> tw :call GHC_ShowType(1)<CR>
 
 " Airline.
 let g:airline_left_sep=''

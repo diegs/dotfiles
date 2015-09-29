@@ -1,12 +1,3 @@
- -- import XMonad
- -- import XMonad.Hooks.EwmhDesktops
-
--- myConfig = ewmh defaultConfig
- --  { handleEventHook = handleEventHook defaultConfig <+> fullscreenEventHook
- --  }
-
- -- main = xmonad $ myConfig
-
 import System.IO
 import System.Exit
 
@@ -28,7 +19,6 @@ import XMonad.Util.EZConfig
 import XMonad.Util.Run(spawnPipe)
 import qualified XMonad.StackSet as W
 
--- myTerminal = "gnome-terminal"
 myTerminal = "urxvt"
 
 myFocusFollowsMouse = False
