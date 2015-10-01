@@ -61,6 +61,7 @@ Plug 'vim-scripts/YankRing.vim'
 " Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sensible'
+Plug 'starcraftman/cmdalias.vim'
 
 " Tmux.
 " Plug 'tmux-plugins/vim-tmux-focus-events'
@@ -259,6 +260,10 @@ let g:yankring_history_dir = '~/.vim'
 " let g:signify_vcs_list = ['git5', 'git']
 " let g:signify_diffoptions = {'git5': '--uncommitted'}
 " nnoremap <Leader>vt :SignifyToggle<CR>
+
+" Cmdalias.
+call cmdalias#add('bd', 'BD')
+call cmdalias#add('ag', 'Ag')
 
 " Highlight all instances of word under cursor, when idle.
 " Useful when studying strange source code.
