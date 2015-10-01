@@ -97,6 +97,7 @@ syntax on
 " Behavior.
 set ignorecase
 set smartcase
+set nojoinspaces
 set wildmode=longest,list:longest,full
 set nobackup
 set nowb
