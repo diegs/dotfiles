@@ -69,7 +69,7 @@ export BROWSER="google-chrome"
 export EDITOR="vim"
 export VISUAL="vim"
 alias less="less -R"
-alias du="du -sch .[!.]* * | sort -h"
+#alias du="du -sch .[!.]* * | sort -h"
 
 if [[ $(uname -s) = 'Darwin' ]]; then
   alias ls="ls -G"
