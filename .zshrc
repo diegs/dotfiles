@@ -79,10 +79,4 @@ fi
 
 alias l="ls"
 
-# Repo.
-alias rs="repo sync -j100 -c -q"
-alias rr="repo rebase"
-alias rp="repo prune"
-alias ruc="repo upload --cbr ."
-
 [ -f ~/.zshrc-local ] && source ~/.zshrc-local
