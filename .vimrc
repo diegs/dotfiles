@@ -107,7 +107,10 @@ set noswapfile
 " set shortmess=at
 " inoremap jk <esc>
 " nnoremap ho :noh<CR>
+set ruler
 set relativenumber
+" autocmd InsertEnter * :set norelativenumber
+" autocmd InsertLeave * :set relativenumber
 command! Q q
 command! W w
 command! WA wa
@@ -275,6 +278,10 @@ let g:yankring_history_dir = '~/.vim'
 " Cmdalias.
 call cmdalias#add('bd', 'BD')
 call cmdalias#add('ag', 'Ag')
+
+
+" Go is the worst.
+au BufRead,BufNewFile *.go set noet ts=2 sw=2
 
 " Highlight all instances of word under cursor, when idle.
 " Useful when studying strange source code.
