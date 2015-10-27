@@ -130,11 +130,15 @@ set smartindent
 
 " Appearance.
 set number
+set showcmd
 set novisualbell
 set noerrorbells
 set cursorline
+set lazyredraw
+set showmatch
 set colorcolumn=+1
 set hlsearch
+set incsearch
 set hidden
 
 " if strftime("%H") > 17
