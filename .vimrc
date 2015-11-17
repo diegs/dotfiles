@@ -57,7 +57,7 @@ Plug 'jeetsukumaran/vim-filebeagle'
 " Plug 'xolox/vim-easytags'
 " Plug 'majutsushi/tagbar'
 " Plug 'sjl/gundo.vim'
-Plug 'vim-scripts/YankRing.vim'
+" Plug 'vim-scripts/YankRing.vim'
 
 " Misc.
 " Plug 'tpope/vim-dispatch'
