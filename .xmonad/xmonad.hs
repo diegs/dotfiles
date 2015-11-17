@@ -31,7 +31,9 @@ myNormalBorderColor = "#81a2be"
 
 myFocusedBorderColor = "#cc6666"
 
-myWorkspaces = map show [1..9]
+myExtraWorkspaces = [(xK_0, "0"),(xK_minus, "tmp"),(xK_equal, "swap")]
+
+myWorkspaces = map show [1..9] ++ (map snd myExtraWorkspaces)
 
 myManageHook = fullFloatHook <+> manageHook gnomeConfig
   where fullFloatHook = composeAll [ isFullscreen --> doFullFloat ]
@@ -67,6 +69,10 @@ myKeys =
   , ((mod4Mask, xK_F8), spawn "xdotool key XF86AudioPlay")
   , ((mod4Mask, xK_F9), spawn "xdotool key XF86AudioLowerVolume")
   , ((mod4Mask, xK_F10), spawn "xdotool key XF86AudioRaiseVolume")
+  ] ++ [
+    ((myModMask, key), (windows $ W.greedyView ws)) | (key,ws) <- myExtraWorkspaces
+  ] ++ [
+    ((myModMask .|. shiftMask, key), (windows $ W.shift ws)) | (key,ws) <- myExtraWorkspaces
   ] 
   -- ++ [
     -- swap screen order
@@ -89,6 +95,7 @@ myStartupHook = do
   spawn "setxkbmap -layout us -option ctrl:nocaps"
   spawn "gnome-settings-daemon"
   spawn "drive-sync"
+  spawn "redshift"
   spawn "/usr/bin/xcompmgr -a"
   -- spawn "xset r rate 250 60"
   spawn "xsetroot -solid '#2b303b'"
