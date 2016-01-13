@@ -15,8 +15,8 @@ compinit
 colors
 PROMPT="%{$fg[green]%}%n%{$reset_color%}@%{$fg[blue]%}%m%{$reset_color%}:%{$fg_no_bold[yellow]%}%1~%{$reset_color%}%# "
 
-export KEYTIMEOUT=1
 bindkey -v
+export KEYTIMEOUT=1
 bindkey '^P' up-history
 bindkey '^N' down-history
 bindkey '^?' backward-delete-char
@@ -80,3 +80,5 @@ fi
 alias l="ls"
 
 [ -f ~/.zshrc-local ] && source ~/.zshrc-local
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
