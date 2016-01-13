@@ -25,7 +25,8 @@ Plug 'chriskempson/base16-vim'
 " Movement.
 " Plug 'Lokaltog/vim-easymotion'
 Plug 'tpope/vim-unimpaired'
-Plug 'kien/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'FelikZ/ctrlp-py-matcher'
 Plug 'vim-scripts/bufkill.vim'
 Plug 'schickling/vim-bufonly'
@@ -148,7 +149,7 @@ set hidden
 set background=dark
 colorscheme base16-ocean
 
-if has('unnamedplus')
+if has('nvim') || has('unnamedplus')
   set clipboard=unnamed,unnamedplus
 else
   set clipboard=unnamed
@@ -161,7 +162,8 @@ if has('gui_running')
   if s:uname == "Darwin\n"
     set guifont=Inconsolata:h15,Menlo:h14
   else
-    set guifont=Anonymous\ Pro\ 10
+    " set guifont=Anonymous\ Pro\ 10
+    set guifont=envypn\ 15
   endif
 endif
 
@@ -172,6 +174,10 @@ endif
 " nnoremap <C-H> <C-W><C-H>
 set splitbelow
 set splitright
+if has('nvim')
+  " Fix for C-h in nvim.
+  nmap <BS> <C-w>h
+endif
 
 " CtrlP.
 " nunmap <C-b>
@@ -250,6 +256,9 @@ nmap <leader>b :ls<CR>:b<space>
 
 " vim-pad.
 let g:pad#dir = '~/txt'
+let g:pad#search_backend = 'ag'
+let g:pad#open_in_split = 0
+let g:pad#default_file_extension = '.md'
 
 " Tagbar.
 " map <leader>t :TagbarToggle<CR>
