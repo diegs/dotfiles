@@ -54,9 +54,10 @@ myLayout = avoidStruts $ tiled ||| Mirror tiled
 myKeys =
   [ ((mod4Mask, xK_c), spawn "google-chrome")
   , ((mod4Mask .|. shiftMask, xK_q), io (exitWith ExitSuccess))
-  , ((mod4Mask, xK_x), spawn "gnome-screensaver-command -a")
+  -- , ((mod4Mask, xK_x), spawn "gnome-screensaver-command -a")
+  , ((mod4Mask, xK_x), spawn "xscreensaver-command -lock")
   , ((mod4Mask, xK_o), spawn myTerminal)
-  , ((mod4Mask, xK_p), spawn "dmenu_run -nf '#c0c5ce' -nb '#2b303b' -fn 'anonymous pro:pixelsize=12'")
+  , ((mod4Mask, xK_p), spawn "dmenu_run -nf '#c0c5ce' -nb '#2b303b' -fn 'envypn:pixelsize=15'")
   , ((mod4Mask, xK_n), spawn "touch ~/.pomodoro_session")
   , ((mod4Mask, xK_m), spawn "rm ~/.pomodoro_session")
   -- , ((mod4Mask, xK_Left), spawn "ncmpcpp prev")
@@ -93,6 +94,7 @@ myStartupHook = do
   setWMName "LG3D"
   -- spawn "unclutter -grab"
   spawn "setxkbmap -layout us -option ctrl:nocaps"
+  spawn "xscreensaver -nosplash"
   spawn "gnome-settings-daemon"
   spawn "drive-sync"
   spawn "redshift"
