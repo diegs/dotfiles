@@ -81,3 +81,5 @@ alias rp="repo prune"
 alias ruc="repo upload --cbr ."
 
 [ -f ~/.zshrc-local ] && source ~/.zshrc-local
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
