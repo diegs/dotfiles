@@ -7,6 +7,7 @@ unsetopt beep
 zstyle :compinstall filename '/usr/local/google/home/diegs/.zshrc'
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path ~/.zsh/cache
+export BLAZE_COMPLETION_PACKAGE_PATH=%workspace%
 zstyle ':completion:*' users root $USER
 setopt completealiases
 autoload -Uz compinit colors
@@ -14,8 +15,8 @@ compinit
 colors
 PROMPT="%{$fg[green]%}%n%{$reset_color%}@%{$fg[blue]%}%m%{$reset_color%}:%{$fg_no_bold[yellow]%}%1~%{$reset_color%}%# "
 
-export KEYTIMEOUT=1
 bindkey -v
+export KEYTIMEOUT=1
 bindkey '^P' up-history
 bindkey '^N' down-history
 bindkey '^?' backward-delete-char
@@ -41,6 +42,10 @@ vcs_info_wrapper() {
 }
 RPROMPT=$'$(vcs_info_wrapper)'
 
+autoload -z edit-command-line
+zle -N edit-command-line
+bindkey -M vicmd v edit-command-line
+
 fancy-ctrl-z () {
   if [[ $#BUFFER -eq 0 ]]; then
     BUFFER="fg"
@@ -64,7 +69,7 @@ export BROWSER="google-chrome"
 export EDITOR="vim"
 export VISUAL="vim"
 alias less="less -R"
-alias du="du -sch .[!.]* * | sort -h"
+#alias du="du -sch .[!.]* * | sort -h"
 
 if [[ $(uname -s) = 'Darwin' ]]; then
   alias ls="ls -G"
@@ -73,12 +78,6 @@ else
 fi
 
 alias l="ls"
-
-# Repo.
-alias rs="repo sync -j100 -c -q"
-alias rr="repo rebase"
-alias rp="repo prune"
-alias ruc="repo upload --cbr ."
 
 [ -f ~/.zshrc-local ] && source ~/.zshrc-local
 

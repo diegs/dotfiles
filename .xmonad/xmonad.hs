@@ -1,12 +1,3 @@
- -- import XMonad
- -- import XMonad.Hooks.EwmhDesktops
-
--- myConfig = ewmh defaultConfig
- --  { handleEventHook = handleEventHook defaultConfig <+> fullscreenEventHook
- --  }
-
- -- main = xmonad $ myConfig
-
 import System.IO
 import System.Exit
 
@@ -28,7 +19,6 @@ import XMonad.Util.EZConfig
 import XMonad.Util.Run(spawnPipe)
 import qualified XMonad.StackSet as W
 
--- myTerminal = "gnome-terminal"
 myTerminal = "urxvt"
 
 myFocusFollowsMouse = False
@@ -41,7 +31,9 @@ myNormalBorderColor = "#81a2be"
 
 myFocusedBorderColor = "#cc6666"
 
-myWorkspaces = map show [1..9]
+myExtraWorkspaces = [(xK_0, "0"),(xK_minus, "tmp"),(xK_equal, "swap")]
+
+myWorkspaces = map show [1..9] ++ (map snd myExtraWorkspaces)
 
 myManageHook = fullFloatHook <+> manageHook gnomeConfig
   where fullFloatHook = composeAll [ isFullscreen --> doFullFloat ]
@@ -62,9 +54,10 @@ myLayout = avoidStruts $ tiled ||| Mirror tiled
 myKeys =
   [ ((mod4Mask, xK_c), spawn "google-chrome")
   , ((mod4Mask .|. shiftMask, xK_q), io (exitWith ExitSuccess))
-  , ((mod4Mask, xK_x), spawn "gnome-screensaver-command -a")
+  -- , ((mod4Mask, xK_x), spawn "gnome-screensaver-command -a")
+  , ((mod4Mask, xK_x), spawn "xscreensaver-command -lock")
   , ((mod4Mask, xK_o), spawn myTerminal)
-  , ((mod4Mask, xK_p), spawn "dmenu_run -nf '#c0c5ce' -nb '#2b303b' -fn 'anonymous pro:pixelsize=12'")
+  , ((mod4Mask, xK_p), spawn "dmenu_run -nf '#c0c5ce' -nb '#2b303b' -fn 'envypn:pixelsize=15'")
   , ((mod4Mask, xK_n), spawn "touch ~/.pomodoro_session")
   , ((mod4Mask, xK_m), spawn "rm ~/.pomodoro_session")
   -- , ((mod4Mask, xK_Left), spawn "ncmpcpp prev")
@@ -77,6 +70,10 @@ myKeys =
   , ((mod4Mask, xK_F8), spawn "xdotool key XF86AudioPlay")
   , ((mod4Mask, xK_F9), spawn "xdotool key XF86AudioLowerVolume")
   , ((mod4Mask, xK_F10), spawn "xdotool key XF86AudioRaiseVolume")
+  ] ++ [
+    ((myModMask, key), (windows $ W.greedyView ws)) | (key,ws) <- myExtraWorkspaces
+  ] ++ [
+    ((myModMask .|. shiftMask, key), (windows $ W.shift ws)) | (key,ws) <- myExtraWorkspaces
   ] 
   -- ++ [
     -- swap screen order
@@ -97,8 +94,10 @@ myStartupHook = do
   setWMName "LG3D"
   -- spawn "unclutter -grab"
   spawn "setxkbmap -layout us -option ctrl:nocaps"
+  spawn "xscreensaver -nosplash"
   spawn "gnome-settings-daemon"
   spawn "drive-sync"
+  spawn "redshift"
   spawn "/usr/bin/xcompmgr -a"
   -- spawn "xset r rate 250 60"
   spawn "xsetroot -solid '#2b303b'"

@@ -25,7 +25,8 @@ Plug 'chriskempson/base16-vim'
 " Movement.
 " Plug 'Lokaltog/vim-easymotion'
 Plug 'tpope/vim-unimpaired'
-Plug 'kien/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'FelikZ/ctrlp-py-matcher'
 Plug 'vim-scripts/bufkill.vim'
 Plug 'schickling/vim-bufonly'
@@ -33,7 +34,9 @@ Plug 'schickling/vim-bufonly'
 
 " Coding.
 " Plug 'scrooloose/nerdcommenter'
-Plug 'tpope/vim-commentary'
+" Plug 'tpope/vim-commentary'
+Plug 'tomtom/tcomment_vim'
+Plug 'ConradIrwin/vim-comment-object'
 " Plug 'scrooloose/syntastic'
 Plug 'b4winckler/vim-angry'
 Plug 'vasconcelloslf/vim-interestingwords'
@@ -55,12 +58,13 @@ Plug 'jeetsukumaran/vim-filebeagle'
 " Plug 'xolox/vim-easytags'
 " Plug 'majutsushi/tagbar'
 " Plug 'sjl/gundo.vim'
-Plug 'vim-scripts/YankRing.vim'
+" Plug 'vim-scripts/YankRing.vim'
 
 " Misc.
 " Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sensible'
+Plug 'starcraftman/cmdalias.vim'
 
 " Tmux.
 " Plug 'tmux-plugins/vim-tmux-focus-events'
@@ -96,6 +100,7 @@ syntax on
 " Behavior.
 set ignorecase
 set smartcase
+set nojoinspaces
 set wildmode=longest,list:longest,full
 set nobackup
 set nowb
@@ -103,7 +108,10 @@ set noswapfile
 " set shortmess=at
 " inoremap jk <esc>
 " nnoremap ho :noh<CR>
+set ruler
 set relativenumber
+" autocmd InsertEnter * :set norelativenumber
+" autocmd InsertLeave * :set relativenumber
 command! Q q
 command! W w
 command! WA wa
@@ -126,18 +134,22 @@ set smartindent
 
 " Appearance.
 set number
+set showcmd
 set novisualbell
 set noerrorbells
 set cursorline
+set lazyredraw
+set showmatch
 set colorcolumn=+1
 set hlsearch
+set incsearch
 set hidden
 
 " if strftime("%H") > 17
 set background=dark
 colorscheme base16-ocean
 
-if has('unnamedplus')
+if has('nvim') || has('unnamedplus')
   set clipboard=unnamed,unnamedplus
 else
   set clipboard=unnamed
@@ -150,7 +162,8 @@ if has('gui_running')
   if s:uname == "Darwin\n"
     set guifont=Inconsolata:h15,Menlo:h14
   else
-    set guifont=Anonymous\ Pro\ 10
+    " set guifont=Anonymous\ Pro\ 10
+    set guifont=envypn\ 15
   endif
 endif
 
@@ -161,6 +174,10 @@ endif
 " nnoremap <C-H> <C-W><C-H>
 set splitbelow
 set splitright
+if has('nvim')
+  " Fix for C-h in nvim.
+  nmap <BS> <C-w>h
+endif
 
 " CtrlP.
 " nunmap <C-b>
@@ -199,11 +216,13 @@ let g:syntastic_auto_loc_list=1
 "let g:syntastic_cpp_compiler_options = ' -std=c++11'
 let g:syntastic_always_populate_loc_list = 1
 
-" Haskell stuff.
-" map <silent> tu :call GHC_BrowseAll()<CR>
-" map <silent> tw :call GHC_ShowType(1)<CR>
+" Slime.
 let g:slime_target = "tmux"
 let g:slime_paste_file = tempname()
+"let g:slime_no_mappings = 1
+"xmap <leader>s <Plug>SlimeRegionSend
+"nmap <leader>s <Plug>SlimeMotionSend
+"nmap <leader>ss <Plug>SlimeLineSend
 
 " vim2hs
 " let g:hpaste_author = 'step_function'
@@ -213,6 +232,8 @@ let g:slime_paste_file = tempname()
 " au FileType haskell nnoremap <buffer> <Leader>ht :HdevtoolsType<CR>
 " au FileType haskell nnoremap <buffer> <silent> <Leader>hc :HdevtoolsClear<CR>
 " au FileType haskell nnoremap <buffer> <silent> <Leader>hi :HdevtoolsInfo<CR>
+" map <silent> tu :call GHC_BrowseAll()<CR>
+" map <silent> tw :call GHC_ShowType(1)<CR>
 
 " Airline.
 let g:airline_left_sep=''
@@ -235,6 +256,9 @@ nmap <leader>b :ls<CR>:b<space>
 
 " vim-pad.
 let g:pad#dir = '~/txt'
+let g:pad#search_backend = 'ag'
+let g:pad#open_in_split = 0
+let g:pad#default_file_extension = '.md'
 
 " Tagbar.
 " map <leader>t :TagbarToggle<CR>
@@ -259,6 +283,14 @@ let g:yankring_history_dir = '~/.vim'
 " let g:signify_vcs_list = ['git5', 'git']
 " let g:signify_diffoptions = {'git5': '--uncommitted'}
 " nnoremap <Leader>vt :SignifyToggle<CR>
+
+" Cmdalias.
+call cmdalias#add('bd', 'BD')
+call cmdalias#add('ag', 'Ag')
+
+
+" Go is the worst.
+au BufRead,BufNewFile *.go set noet ts=2 sw=2
 
 " Highlight all instances of word under cursor, when idle.
 " Useful when studying strange source code.

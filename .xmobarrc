@@ -1,4 +1,6 @@
-Config { font = "xft:anonymous pro:pixelsize=12"
+Config {
+  --font = "xft:anonymous pro:pixelsize=12"
+  font = "xft:envypn:pixelsize=15"
   , bgColor = "#2b303b"
   , fgColor = "#c0c5ce"
   , border = NoBorder
@@ -8,8 +10,8 @@ Config { font = "xft:anonymous pro:pixelsize=12"
   , position = Bottom
   , pickBroadest = True
   , lowerOnStart = False
-  , commands = [ Run Weather "KNUQ" ["-t"," <tempC>C <skyCondition>","-L","64","-H","77","--normal","#c0c5ce","--high","#c0c5ce","--low","#c0c5ce"] 36000
-               , Run DynNetwork ["-t","Net: <txbar>","-L","0","-H","1024","--normal","#c0c5ce","--high","#c0c5ce"] 10
+  , commands = [ Run Weather "KSFO" ["-t"," <tempC>C <skyCondition>","-L","64","-H","77","--normal","#c0c5ce","--high","#c0c5ce","--low","#c0c5ce"] 36000
+               , Run DynNetwork ["-t","Net: <rxbar>|<txbar>","-S","True","-L","0","-H","1024","--normal","#c0c5ce","--high","#c0c5ce"] 10
                , Run Cpu ["-L","3","-H","50","--normal","#657b83","--high","#c0c5ce","--template","Cpu: <bar>"] 10
                , Run Memory ["-t","Mem: <usedbar>"] 10
                , Run Date "<fc=#c0c5ce>%a %b %_d %Y %H:%M</fc>" "date" 10
@@ -17,9 +19,9 @@ Config { font = "xft:anonymous pro:pixelsize=12"
                , Run Com "hostname" [] "" 36000
                , Run StdinReader
                , Run Locks
-               , Run MPD ["-t", "<state>: <artist> - <title>"] 10
+--               , Run MPD ["-t", "<state>: <artist> - <title>"] 10
                ]
   , sepChar = "%"
   , alignSep = "}{"
-  , template = " %mpd% | %StdinReader% | %locks% }{ %hostname% | %pomodoro% | %cpu% | %memory% | %dynnetwork% | MTV:%KNUQ% | %date%"
+  , template = " %StdinReader% | %locks% }{ %hostname% | %pomodoro% | %cpu% | %memory% | %dynnetwork% | SFO:%KSFO% | %date%"
   }
