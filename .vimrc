@@ -177,7 +177,7 @@ set splitbelow
 set splitright
 if has('nvim')
   " Fix for C-h in nvim.
-  nmap <BS> <C-w>h
+  nmap <silent> <bs> :<c-u>TmuxNavigateLeft<cr>
 endif
 
 " CtrlP.
