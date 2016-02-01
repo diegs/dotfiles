@@ -81,6 +81,7 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'raichoo/haskell-vim'
 Plug 'rust-lang/rust.vim'
 Plug 'cespare/vim-toml'
+Plug 'google/vim-ft-bzl'
 " Plug 'lukerandall/haskellmode-vim'
 " Plug 'Twinside/vim-hoogle'
 " Plug 'dag/vim2hs'
@@ -176,7 +177,7 @@ set splitbelow
 set splitright
 if has('nvim')
   " Fix for C-h in nvim.
-  nmap <BS> <C-w>h
+  nmap <silent> <bs> :<c-u>TmuxNavigateLeft<cr>
 endif
 
 " CtrlP.
