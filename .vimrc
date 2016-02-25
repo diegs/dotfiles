@@ -27,7 +27,6 @@ Plug 'vim-airline/vim-airline-themes'
 " Plug 'Lokaltog/vim-easymotion'
 Plug 'tpope/vim-unimpaired'
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'FelikZ/ctrlp-py-matcher'
 Plug 'vim-scripts/bufkill.vim'
 Plug 'schickling/vim-bufonly'

@@ -97,6 +97,3 @@ fi
 alias l="ls"
 
 [ -f ~/.zshrc-local ] && source ~/.zshrc-local
-
-export FZF_DEFAULT_OPTS="-e"
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
