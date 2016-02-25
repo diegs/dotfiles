@@ -67,6 +67,8 @@ URxvt*.keysym.C-C: perl:clipboard:copy
 URxvt*.keysym.C-V: perl:clipboard:paste
 URxvt*.keysym.M-C-V: perl:clipboard:paste_escaped
 URxvt*.clipboard.autocopy: true
+Urxvt*.clipboard.copycmd: xclip -i -selection clipboard
+Urxvt*.clipboard.pastecmd: xclip -o -selection clipboard
 
 ! URxvt*keysym.M-o: perl:cwd-spawn
 

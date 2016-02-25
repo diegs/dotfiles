@@ -20,7 +20,8 @@ Plug 'chriskempson/base16-vim'
 " Plug 'noahfrederick/vim-hemisu'
 " Plug 'noahfrederick/vim-noctu'
 " Plug 'morhetz/gruvbox'
-" Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
 " Movement.
 " Plug 'Lokaltog/vim-easymotion'
@@ -39,7 +40,8 @@ Plug 'tomtom/tcomment_vim'
 Plug 'ConradIrwin/vim-comment-object'
 " Plug 'scrooloose/syntastic'
 Plug 'b4winckler/vim-angry'
-Plug 'vasconcelloslf/vim-interestingwords'
+Plug 'lfv89/vim-interestingwords'
+Plug 'benekastah/neomake'
 
 " VCS.
 " Plug 'tpope/vim-fugitive'
@@ -217,6 +219,8 @@ let g:syntastic_auto_loc_list=1
 "let g:syntastic_cpp_compiler_options = ' -std=c++11'
 let g:syntastic_always_populate_loc_list = 1
 
+"autocmd! BufWritePost * Neomake
+
 " Slime.
 let g:slime_target = "tmux"
 let g:slime_paste_file = tempname()
@@ -237,9 +241,9 @@ let g:slime_paste_file = tempname()
 " map <silent> tw :call GHC_ShowType(1)<CR>
 
 " Airline.
-let g:airline_left_sep=''
-let g:airline_right_sep=''
-let g:airline_section_z=''
+" let g:airline_left_sep=''
+" let g:airline_right_sep=''
+" let g:airline_section_z=''
 
 " Buffer selector.
 nmap <leader>b :ls<CR>:b<space>

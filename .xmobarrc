@@ -18,10 +18,10 @@ Config {
                , Run CommandReader "pymodoro" "pomodoro"
                , Run Com "hostname" [] "" 36000
                , Run StdinReader
-               , Run Locks
+--               , Run Locks
 --               , Run MPD ["-t", "<state>: <artist> - <title>"] 10
                ]
   , sepChar = "%"
   , alignSep = "}{"
-  , template = " %StdinReader% | %locks% }{ %hostname% | %pomodoro% | %cpu% | %memory% | %dynnetwork% | SFO:%KSFO% | %date%"
+  , template = " %hostname% | %StdinReader% }{ %pomodoro% | %cpu% | %memory% | %dynnetwork% | SFO:%KSFO% | %date%"
   }
