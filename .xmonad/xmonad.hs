@@ -45,7 +45,7 @@ myManageHook = fullFloatHook <+> manageHook gnomeConfig
 --      nmaster = 1
 --      ratio = 1/2
 --      delta = 3/100
-myLayout = avoidStruts $ tiled ||| Mirror tiled ||| ThreeColMid 1 (3/100) (1/2)||| ThreeCol 1 (3/100) (1/3)
+myLayout = avoidStruts $ tiled ||| Mirror tiled ||| ThreeColMid 1 (3/100) (1/2) -- ||| ThreeCol 1 (3/100) (1/3)
   where
      tiled = Tall nmaster delta ratio
      nmaster = 1

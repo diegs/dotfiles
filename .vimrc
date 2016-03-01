@@ -240,9 +240,9 @@ let g:slime_paste_file = tempname()
 " map <silent> tw :call GHC_ShowType(1)<CR>
 
 " Airline.
-" let g:airline_left_sep=''
-" let g:airline_right_sep=''
-" let g:airline_section_z=''
+let g:airline_left_sep=''
+let g:airline_right_sep=''
+let g:airline_section_z=''
 
 " Buffer selector.
 nmap <leader>b :ls<CR>:b<space>
