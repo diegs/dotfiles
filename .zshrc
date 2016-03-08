@@ -3,6 +3,7 @@ HISTSIZE=10000
 SAVEHIST=10000
 setopt HIST_IGNORE_DUPS
 setopt appendhistory
+unsetopt flow_control
 unsetopt beep
 zstyle :compinstall filename '/usr/local/google/home/diegs/.zshrc'
 zstyle ':completion:*' use-cache on
