@@ -79,7 +79,7 @@ Plug 'christoomey/vim-tmux-navigator'
 " Plug 'stgpetrovic/syntastic-async'
 
 " Languages.
-Plug 'raichoo/haskell-vim'
+Plug 'neovimhaskell/haskell-vim'
 Plug 'rust-lang/rust.vim'
 Plug 'cespare/vim-toml'
 Plug 'google/vim-ft-bzl'
@@ -242,7 +242,8 @@ let g:slime_paste_file = tempname()
 " Airline.
 let g:airline_left_sep=''
 let g:airline_right_sep=''
-let g:airline_section_z=''
+" let g:airline_section_z=''
+let g:airline_theme = 'base16'
 
 " Buffer selector.
 nmap <leader>b :ls<CR>:b<space>
