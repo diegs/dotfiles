@@ -149,12 +149,14 @@ set hidden
 
 " if strftime("%H") > 17
 set background=dark
-colorscheme base16-ocean
+colorscheme base16-tomorrow
 
-if has('nvim') || has('unnamedplus')
-  set clipboard=unnamed,unnamedplus
-else
-  set clipboard=unnamed
+if (executable('pbcopy') || executable('xclip') || executable('xsel'))
+  if has('unnamedplus')
+    set clipboard=unnamed,unnamedplus
+  else
+    set clipboard=unnamed
+  endif
 endif
 
 let s:uname = system("uname -s")

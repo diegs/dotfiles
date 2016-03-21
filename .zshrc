@@ -84,8 +84,9 @@ export ADB_VENDOR_KEYS="$HOME/etc/adb_key:"
 export PATH=${PATH/\/usr\/local\/buildtools\/java\/jdk\/bin:/}
 
 export BROWSER="google-chrome"
-export EDITOR="vim"
-export VISUAL="vim"
+export EDITOR="nvim"
+export VISUAL="nvim"
+alias vim="nvim"
 alias less="less -R"
 #alias du="du -sch .[!.]* * | sort -h"
 
