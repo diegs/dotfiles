@@ -57,7 +57,8 @@ Plug 'aaronbieber/vim-quicktask'
 Plug 'jeetsukumaran/vim-filebeagle'
 " Plug 'xolox/vim-misc'
 " Plug 'xolox/vim-easytags'
-" Plug 'majutsushi/tagbar'
+Plug 'majutsushi/tagbar'
+Plug 'ivalkeen/vim-ctrlp-tjump'
 " Plug 'sjl/gundo.vim'
 " Plug 'vim-scripts/YankRing.vim'
 
@@ -149,7 +150,7 @@ set hidden
 
 " if strftime("%H") > 17
 set background=dark
-colorscheme base16-ocean
+colorscheme base16-tomorrow
 
 if has('nvim') || has('unnamedplus')
   set clipboard=unnamed,unnamedplus
@@ -190,9 +191,13 @@ let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
       \ --ignore .git
       \ --ignore .svn
       \ --ignore .hg
+      \ --ignore ".AndroidStudio*"
       \ --ignore .DS_Store
       \ --ignore .cache
       \ --ignore .config
+      \ --ignore .local
+      \ --ignore .gnome
+      \ --ignore .gradle
       \ --ignore "**/*.pyc"
       \ --ignore dist
       \ --ignore out
