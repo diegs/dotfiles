@@ -61,25 +61,11 @@ myKeys =
   , ((mod4Mask, xK_p), spawn "dmenu_run -nf '#c0c5ce' -nb '#1d1f21' -fn 'envypn:pixelsize=15'")
   , ((mod4Mask, xK_n), spawn "touch ~/.pomodoro_session")
   , ((mod4Mask, xK_m), spawn "rm ~/.pomodoro_session")
-  -- , ((mod4Mask, xK_Left), spawn "ncmpcpp prev")
-  -- , ((mod4Mask, xK_Right), spawn "ncmpcpp next")
-  -- , ((mod4Mask, xK_F8), spawn "ncmpcpp toggle")
-  -- , ((mod4Mask, xK_F9), spawn "ncmpcpp volume -5")
-  -- , ((mod4Mask, xK_F10), spawn "ncmpcpp volume +5")
-  , ((mod4Mask, xK_Left), spawn "xdotool key XF86AudioPrev")
-  , ((mod4Mask, xK_Right), spawn "xdotool key XF86AudioNext")
-  , ((mod4Mask, xK_F8), spawn "xdotool key XF86AudioPlay")
-  , ((mod4Mask, xK_F9), spawn "xdotool key XF86AudioLowerVolume")
-  , ((mod4Mask, xK_F10), spawn "xdotool key XF86AudioRaiseVolume")
   ] ++ [
     ((myModMask, key), (windows $ W.greedyView ws)) | (key,ws) <- myExtraWorkspaces
   ] ++ [
     ((myModMask .|. shiftMask, key), (windows $ W.shift ws)) | (key,ws) <- myExtraWorkspaces
   ]
-  -- ++ [
-    -- swap screen order
-    -- ((m .|. mod4Mask, key), screenWorkspace sc >>= flip whenJust (windows . f)) | (key, sc) <- zip [xK_w, xK_e, xK_r] [1,0,2] , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]
-  --]
 
 myLogHook xmproc = dynamicLogWithPP xmobarPP
   { ppOutput = hPutStrLn xmproc
@@ -97,10 +83,9 @@ myStartupHook = do
   spawn "setxkbmap -layout us -option ctrl:nocaps"
   spawn "xscreensaver -nosplash"
   spawn "gnome-settings-daemon"
-  spawn "drive-sync"
+  spawn "pgrep drive-sync || drive-sync"
   spawn "redshift"
   spawn "/usr/bin/xcompmgr -a"
-  -- spawn "xset r rate 250 60"
   spawn "xsetroot -solid '#1d1f21'"
 
 myEventHook = handleEventHook gnomeConfig <+> fullscreenEventHook
