@@ -57,7 +57,8 @@ Plug 'aaronbieber/vim-quicktask'
 Plug 'jeetsukumaran/vim-filebeagle'
 " Plug 'xolox/vim-misc'
 " Plug 'xolox/vim-easytags'
-" Plug 'majutsushi/tagbar'
+Plug 'majutsushi/tagbar'
+Plug 'ivalkeen/vim-ctrlp-tjump'
 " Plug 'sjl/gundo.vim'
 " Plug 'vim-scripts/YankRing.vim'
 
@@ -83,6 +84,7 @@ Plug 'neovimhaskell/haskell-vim'
 Plug 'rust-lang/rust.vim'
 Plug 'cespare/vim-toml'
 Plug 'google/vim-ft-bzl'
+Plug 'fatih/vim-go'
 " Plug 'lukerandall/haskellmode-vim'
 " Plug 'Twinside/vim-hoogle'
 " Plug 'dag/vim2hs'
@@ -151,13 +153,14 @@ set hidden
 set background=dark
 colorscheme base16-tomorrow
 
-if (executable('pbcopy') || executable('xclip') || executable('xsel'))
-  if has('unnamedplus')
-    set clipboard=unnamed,unnamedplus
-  else
-    set clipboard=unnamed
-  endif
-endif
+set clipboard=unnamed
+" if (executable('pbcopy') || executable('xclip') || executable('xsel'))
+"   if has('unnamedplus')
+"     set clipboard=unnamed,unnamedplus
+"   else
+"     set clipboard=unnamed
+"   endif
+" endif
 
 let s:uname = system("uname -s")
 if has('gui_running')
@@ -192,9 +195,13 @@ let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
       \ --ignore .git
       \ --ignore .svn
       \ --ignore .hg
+      \ --ignore ".AndroidStudio*"
       \ --ignore .DS_Store
       \ --ignore .cache
       \ --ignore .config
+      \ --ignore .local
+      \ --ignore .gnome
+      \ --ignore .gradle
       \ --ignore "**/*.pyc"
       \ --ignore dist
       \ --ignore out

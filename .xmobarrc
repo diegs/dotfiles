@@ -1,8 +1,8 @@
 Config {
   --font = "xft:anonymous pro:pixelsize=12"
   font = "xft:envypn:pixelsize=15"
-  , bgColor = "#2b303b"
-  , fgColor = "#c0c5ce"
+  , bgColor = "#1d1f21"
+  , fgColor = "#c5c8c6"
   , border = NoBorder
   , borderColor = "black"
   , hideOnStart = False
