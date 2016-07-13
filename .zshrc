@@ -3,8 +3,17 @@ HISTSIZE=10000
 SAVEHIST=10000
 setopt HIST_IGNORE_DUPS
 setopt appendhistory
-unsetopt flow_control
+setopt COMPLETE_IN_WORD    # Complete from both ends of a word.
+setopt ALWAYS_TO_END       # Move cursor to the end of a completed word.
+setopt PATH_DIRS           # Perform path search even on command names with slashes.
+setopt AUTO_MENU           # Show completion menu on a successive tab press.
+setopt AUTO_LIST           # Automatically list choices on ambiguous completion.
+setopt AUTO_PARAM_SLASH    # If completed parameter is a directory, add a trailing slash.
+unsetopt MENU_COMPLETE     # Do not autoselect the first completion entry.
+unsetopt FLOW_CONTROL      # Disable start/stop characters in shell editor
+stty stop '' -ixoff -ixon
 unsetopt beep
+unsetopt nomatch
 zstyle :compinstall filename '/usr/local/google/home/diegs/.zshrc'
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path ~/.zsh/cache
@@ -12,6 +21,7 @@ export BLAZE_COMPLETION_PACKAGE_PATH=%workspace%
 zstyle ':completion:*' users root $USER
 setopt completealiases
 autoload -Uz compinit colors
+autoload -U +X bashcompinit && bashcompinit
 compinit
 colors
 PROMPT="%{$fg[green]%}%n%{$reset_color%}@%{$fg[blue]%}%m%{$reset_color%}:%{$fg_no_bold[yellow]%}%1~%{$reset_color%}%# "
@@ -84,10 +94,11 @@ export ADB_VENDOR_KEYS="$HOME/etc/adb_key:"
 export PATH=${PATH/\/usr\/local\/buildtools\/java\/jdk\/bin:/}
 
 export BROWSER="google-chrome"
-export EDITOR="nvim"
-export VISUAL="nvim"
-alias vim="nvim"
+export EDITOR="vim"
+export VISUAL="vim"
+#alias vim="nvim"
 alias less="less -R"
+alias gvim="gvim --remote-silent --display=:0"
 #alias du="du -sch .[!.]* * | sort -h"
 
 if [[ $(uname -s) = 'Darwin' ]]; then
@@ -97,5 +108,6 @@ else
 fi
 
 alias l="ls"
+alias ll="ls -l"
 
 [ -f ~/.zshrc-local ] && source ~/.zshrc-local

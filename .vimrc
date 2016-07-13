@@ -37,7 +37,7 @@ Plug 'schickling/vim-bufonly'
 " Plug 'tpope/vim-commentary'
 Plug 'tomtom/tcomment_vim'
 Plug 'ConradIrwin/vim-comment-object'
-" Plug 'scrooloose/syntastic'
+Plug 'scrooloose/syntastic'
 Plug 'b4winckler/vim-angry'
 Plug 'lfv89/vim-interestingwords'
 Plug 'benekastah/neomake'
@@ -74,21 +74,22 @@ Plug 'jpalardy/vim-slime'
 Plug 'christoomey/vim-tmux-navigator'
 
 " Disabled.
-" Plug 'Shougo/vimproc.vim'
 " Plug 'Shougo/unite.vim'
 " Plug 'pydave/AsyncCommand'
 " Plug 'stgpetrovic/syntastic-async'
 
 " Languages.
 Plug 'neovimhaskell/haskell-vim'
+Plug 'Shougo/vimproc.vim', { 'do': 'make' }
+Plug 'eagletmt/ghcmod-vim'
+Plug 'eagletmt/neco-ghc'
 Plug 'rust-lang/rust.vim'
 Plug 'cespare/vim-toml'
 Plug 'google/vim-ft-bzl'
-Plug 'fatih/vim-go'
+" Plug 'fatih/vim-go'
 " Plug 'lukerandall/haskellmode-vim'
 " Plug 'Twinside/vim-hoogle'
 " Plug 'dag/vim2hs'
-" Plug 'eagletmt/ghcmod-vim'
 " Plug 'bitc/vim-hdevtools'
 call plug#end()
 
@@ -148,10 +149,11 @@ set colorcolumn=+1
 set hlsearch
 set incsearch
 set hidden
+autocmd VimResized * :wincmd =
 
 " if strftime("%H") > 17
 set background=dark
-colorscheme base16-tomorrow
+colorscheme base16-tomorrow-night
 
 set clipboard=unnamed
 " if (executable('pbcopy') || executable('xclip') || executable('xsel'))
@@ -172,6 +174,7 @@ if has('gui_running')
     " set guifont=Anonymous\ Pro\ 10
     set guifont=envypn\ 15
   endif
+  set clipboard=unnamedplus
 endif
 
 " Splits.
@@ -188,9 +191,10 @@ endif
 
 " CtrlP.
 " nunmap <C-b>
+let g:ctrlp_use_caching = 0
 nnoremap <silent> <C-b> :CtrlPBuffer<CR>
 let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_switch_buffer = 'VH'
+let g:ctrlp_switch_buffer = ''
 let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
       \ --ignore .git
       \ --ignore .svn
@@ -241,6 +245,7 @@ let g:slime_paste_file = tempname()
 " let g:hpaste_author = 'step_function'
 
 " Haskell.
+let g:ycm_semantic_triggers = {'haskell' : ['.']}
 " let g:haddock_browser="open"
 " au FileType haskell nnoremap <buffer> <Leader>ht :HdevtoolsType<CR>
 " au FileType haskell nnoremap <buffer> <silent> <Leader>hc :HdevtoolsClear<CR>
