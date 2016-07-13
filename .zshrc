@@ -96,7 +96,6 @@ export PATH=${PATH/\/usr\/local\/buildtools\/java\/jdk\/bin:/}
 export BROWSER="google-chrome"
 export EDITOR="vim"
 export VISUAL="vim"
-#alias vim="nvim"
 alias less="less -R"
 alias gvim="gvim --remote-silent --display=:0"
 #alias du="du -sch .[!.]* * | sort -h"
@@ -111,3 +110,4 @@ alias l="ls"
 alias ll="ls -l"
 
 [ -f ~/.zshrc-local ] && source ~/.zshrc-local
+alias yi-cfg="nix-shell -p haskellPackages.yi"
