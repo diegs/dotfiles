@@ -32,7 +32,7 @@ myNormalBorderColor = "#81a2be"
 
 myFocusedBorderColor = "#cc6666"
 
-myExtraWorkspaces = [(xK_0, "0"),(xK_minus, "tmp"),(xK_equal, "swap")]
+myExtraWorkspaces = [(xK_0, "0"),(xK_minus, "tmp"),(xK_quoteleft, "swap")]
 
 myWorkspaces = map show [1..9] ++ (map snd myExtraWorkspaces)
 
@@ -84,8 +84,8 @@ myStartupHook = do
   spawn "xscreensaver -nosplash"
   spawn "gnome-settings-daemon"
   spawn "pgrep drive-sync || drive-sync"
-  spawn "redshift"
-  spawn "/usr/bin/xcompmgr -a"
+  -- spawn "redshift"
+  -- spawn "/usr/bin/xcompmgr -a"
   spawn "xsetroot -solid '#1d1f21'"
 
 myEventHook = handleEventHook gnomeConfig <+> fullscreenEventHook
@@ -107,5 +107,5 @@ myConfig xmproc = ewmh gnomeConfig
   } `additionalKeys` myKeys
 
 main = do
-  xmproc <- spawnPipe "MPD_PORT=6666 ~/.cabal/bin/xmobar ~/.xmobarrc"
+  xmproc <- spawnPipe "MPD_PORT=6666 xmobar ~/.xmobarrc"
   xmonad $ myConfig xmproc

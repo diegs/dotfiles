@@ -8,7 +8,7 @@ Config {
   , hideOnStart = False
   , persistent = True
   , position = Bottom
-  , pickBroadest = True
+--  , pickBroadest = True
   , lowerOnStart = False
   , commands = [ Run Weather "KSFO" ["-t"," <tempC>C <skyCondition>","-L","64","-H","77","--normal","#c0c5ce","--high","#c0c5ce","--low","#c0c5ce"] 36000
                , Run DynNetwork ["-t","Net: <rxbar>|<txbar>","-S","True","-L","0","-H","1024","--normal","#c0c5ce","--high","#c0c5ce"] 10
