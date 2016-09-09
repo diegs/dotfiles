@@ -39,7 +39,7 @@ Plug 'tomtom/tcomment_vim'
 Plug 'ConradIrwin/vim-comment-object'
 Plug 'scrooloose/syntastic'
 Plug 'b4winckler/vim-angry'
-Plug 'lfv89/vim-interestingwords'
+" Plug 'lfv89/vim-interestingwords'
 Plug 'benekastah/neomake'
 
 " VCS.
@@ -86,6 +86,7 @@ Plug 'eagletmt/neco-ghc'
 Plug 'rust-lang/rust.vim'
 Plug 'cespare/vim-toml'
 Plug 'google/vim-ft-bzl'
+Plug 'vim-scripts/SWIG-syntax'
 " Plug 'fatih/vim-go'
 " Plug 'lukerandall/haskellmode-vim'
 " Plug 'Twinside/vim-hoogle'
@@ -115,6 +116,7 @@ set noswapfile
 " nnoremap ho :noh<CR>
 set ruler
 set relativenumber
+set matchpairs+=<:>
 " autocmd InsertEnter * :set norelativenumber
 " autocmd InsertLeave * :set relativenumber
 command! Q q
@@ -175,6 +177,8 @@ if has('gui_running')
     set guifont=envypn\ 15
   endif
   set clipboard=unnamedplus
+else
+  set mouse=
 endif
 
 " Splits.
@@ -224,12 +228,22 @@ if exists(":Tabularize")
 endif
 
 " synatastic
+map <Leader>s :SyntasticToggleMode<CR>
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 0
+let g:syntastic_check_on_open = 0
+let g:syntastic_check_on_wq = 0
+
 "let g:syntastic_enable_signs=1
 "map <silent> <Leader>e :Errors<CR>
 "map <Leader>s :SyntasticToggleMode<CR>
-let g:syntastic_auto_loc_list=1
+" let g:syntastic_auto_loc_list=1
 "let g:syntastic_cpp_compiler_options = ' -std=c++11'
-let g:syntastic_always_populate_loc_list = 1
 
 "autocmd! BufWritePost * Neomake
 
@@ -246,6 +260,10 @@ let g:slime_paste_file = tempname()
 
 " Haskell.
 let g:ycm_semantic_triggers = {'haskell' : ['.']}
+map <silent> tw :GhcModTypeInsert<CR>
+map <silent> ts :GhcModSplitFunCase<CR>
+map <silent> tq :GhcModType<CR>
+map <silent> te :GhcModTypeClear<CR>
 " let g:haddock_browser="open"
 " au FileType haskell nnoremap <buffer> <Leader>ht :HdevtoolsType<CR>
 " au FileType haskell nnoremap <buffer> <silent> <Leader>hc :HdevtoolsClear<CR>
@@ -310,6 +328,7 @@ call cmdalias#add('ag', 'Ag')
 
 " Go is the worst.
 au BufRead,BufNewFile *.go set noet ts=2 sw=2
+au BufRead,BufNewFile *.swig set filetype=swig
 
 " Highlight all instances of word under cursor, when idle.
 " Useful when studying strange source code.

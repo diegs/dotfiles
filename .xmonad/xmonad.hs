@@ -58,7 +58,7 @@ myKeys =
   -- , ((mod4Mask, xK_x), spawn "gnome-screensaver-command -a")
   , ((mod4Mask, xK_x), spawn "xscreensaver-command -lock")
   , ((mod4Mask, xK_o), spawn myTerminal)
-  , ((mod4Mask, xK_p), spawn "dmenu_run -nf '#c0c5ce' -nb '#1d1f21' -fn 'envypn:pixelsize=15'")
+  , ((mod4Mask, xK_p), spawn "dmenu_run -nf '#c0c5ce' -nb '#1d1f21' -fn 'envypn-15'")
   , ((mod4Mask, xK_n), spawn "touch ~/.pomodoro_session")
   , ((mod4Mask, xK_m), spawn "rm ~/.pomodoro_session")
   ] ++ [
@@ -80,12 +80,13 @@ myStartupHook = do
   startupHook gnomeConfig
   setWMName "LG3D"
   -- spawn "unclutter -grab"
+  -- spawn "xset +fp ~/.fonts/envypn"
   spawn "setxkbmap -layout us -option ctrl:nocaps"
   spawn "xscreensaver -nosplash"
   spawn "gnome-settings-daemon"
   spawn "pgrep drive-sync || drive-sync"
   -- spawn "redshift"
-  -- spawn "/usr/bin/xcompmgr -a"
+  spawn "/usr/bin/xcompmgr -a"
   spawn "xsetroot -solid '#1d1f21'"
 
 myEventHook = handleEventHook gnomeConfig <+> fullscreenEventHook

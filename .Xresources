@@ -35,15 +35,17 @@
 *color14: #a3685a
 *color15: #ffffff
 
-Xft.dpi: 96
+! Xft.dpi: 96
 
-! Xcursor.theme: DMZ-White
-! Xcursor.size: 16 ! 32, 48 or 64 may also be good values
+!Xcursor.theme: Adwaita
+!Xcursor.size: 32 ! 32, 48 or 64 may also be good values
 
 URxvt*.scrollBar: false
 URxvt*.externalBorder: false
 URxvt*.internalBorder: false
-URxvt*.font: xft:envypn:pixelsize=15
+URxvt*.font: -*-envypn-Medium-R-*-*-15-*-*-*-*-*-ISO8859-1
+URxvt*.boldFont: -*-envypn-Medium-R-*-*-15-*-*-*-*-*-ISO8859-1
+! URxvt*.font: xft:envypn:pixelsize=15
 ! URxvt*.font: xft:PragmataPro:size=10
 ! URxvt*.boldFont: xft:PragmataPro:size=10
 URxvt*intensityStyles: false

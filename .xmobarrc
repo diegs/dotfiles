@@ -1,6 +1,7 @@
 Config {
   --font = "xft:anonymous pro:pixelsize=12"
-  font = "xft:envypn:pixelsize=15"
+  font = "xft:Envy Code R:pixelsize=13"
+	-- font = "-*-envypn-Medium-R-*-*-15-*-*-*-*-*-ISO8859-1"
   , bgColor = "#1d1f21"
   , fgColor = "#c5c8c6"
   , border = NoBorder
