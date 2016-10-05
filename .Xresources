@@ -43,13 +43,13 @@
 URxvt*.scrollBar: false
 URxvt*.externalBorder: false
 URxvt*.internalBorder: false
-URxvt*.font: -*-envypn-Medium-R-*-*-15-*-*-*-*-*-ISO8859-1
+! URxvt*.font: -*-envypn-Medium-R-*-*-15-*-*-*-*-*-ISO8859-1
 URxvt*.boldFont:
 URxvt*.italicFont:
 URxvt*.boldItalicFont:
+URxvt*.font: envypn-15
 ! URxvt*.font: xft:envypn:pixelsize=15
 ! URxvt*.font: xft:PragmataPro:size=10
-! URxvt*.boldFont: xft:PragmataPro:size=10
 URxvt*intensityStyles: false
 
 URxvt*.iso14755: false

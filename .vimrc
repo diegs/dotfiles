@@ -325,10 +325,6 @@ let g:yankring_history_dir = '~/.vim'
 call cmdalias#add('bd', 'BD')
 call cmdalias#add('ag', 'Ag')
 
-
-" Go is the worst.
-au BufRead,BufNewFile *.go set noet ts=2 sw=2
-
 " Highlight all instances of word under cursor, when idle.
 " Useful when studying strange source code.
 " Type z/ to toggle highlighting on/off.
