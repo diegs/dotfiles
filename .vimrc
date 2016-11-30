@@ -59,6 +59,9 @@ Plug 'jeetsukumaran/vim-filebeagle'
 " Plug 'xolox/vim-easytags'
 Plug 'majutsushi/tagbar'
 Plug 'ivalkeen/vim-ctrlp-tjump'
+Plug 'let-def/vimbufsync'
+Plug 'kana/vim-textobj-user'
+Plug 'Julian/vim-textobj-variable-segment'
 " Plug 'sjl/gundo.vim'
 " Plug 'vim-scripts/YankRing.vim'
 
@@ -87,6 +90,8 @@ Plug 'rust-lang/rust.vim'
 Plug 'cespare/vim-toml'
 Plug 'google/vim-ft-bzl'
 Plug 'vim-scripts/SWIG-syntax'
+Plug 'jvoorhis/coq.vim'
+Plug 'the-lambda-church/coquille'
 " Plug 'fatih/vim-go'
 " Plug 'lukerandall/haskellmode-vim'
 " Plug 'Twinside/vim-hoogle'
@@ -180,6 +185,15 @@ if has('gui_running')
 else
   set mouse=
 endif
+
+" Coquille
+nnoremap <silent> <leader>cn :CoqNext<CR>
+nnoremap <silent> <leader>cu :CoqUndo<CR>
+nnoremap <silent> <leader>cc :CoqToCursor<CR>
+nnoremap <silent> <leader>ck :CoqKill<CR>
+let g:coquille_auto_move="true"
+hi link CheckedByCoq Folded
+hi link SentToCoq Folded
 
 " Splits.
 " nnoremap <C-J> <C-W><C-J>
