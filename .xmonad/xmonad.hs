@@ -20,7 +20,7 @@ import XMonad.Util.EZConfig
 import XMonad.Util.Run(spawnPipe)
 import qualified XMonad.StackSet as W
 
-myTerminal = "urxvt"
+myTerminal = "alacritty"
 
 myFocusFollowsMouse = False
 
@@ -55,8 +55,8 @@ myLayout = avoidStruts $ tiled ||| Mirror tiled ||| ThreeColMid 1 (3/100) (1/2)
 myKeys =
   [ ((mod4Mask, xK_c), spawn "google-chrome")
   , ((mod4Mask .|. shiftMask, xK_q), io (exitWith ExitSuccess))
-  -- , ((mod4Mask, xK_x), spawn "gnome-screensaver-command -a")
-  , ((mod4Mask, xK_x), spawn "xscreensaver-command -lock")
+  , ((mod4Mask, xK_x), spawn "gnome-screensaver-command -a")
+  -- , ((mod4Mask, xK_x), spawn "xscreensaver-command -lock")
   , ((mod4Mask, xK_o), spawn myTerminal)
   , ((mod4Mask, xK_p), spawn "dmenu_run -nf '#c0c5ce' -nb '#1d1f21' -fn 'envypn-15'")
   , ((mod4Mask, xK_n), spawn "touch ~/.pomodoro_session")
@@ -82,7 +82,7 @@ myStartupHook = do
   -- spawn "unclutter -grab"
   -- spawn "xset +fp ~/.fonts/envypn"
   spawn "setxkbmap -layout us -option ctrl:nocaps"
-  spawn "xscreensaver -nosplash"
+  -- spawn "xscreensaver -nosplash"
   spawn "gnome-settings-daemon"
   spawn "pgrep drive-sync || drive-sync"
   -- spawn "redshift"

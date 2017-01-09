@@ -52,8 +52,9 @@ Plug 'godlygeek/tabular'
 Plug 'rking/ag.vim'
 
 " Plugs.
-Plug 'fmoralesc/vim-pad'
-Plug 'aaronbieber/vim-quicktask'
+" Plug 'fmoralesc/vim-pad'
+" Plug 'aaronbieber/vim-quicktask'
+Plug 'vimwiki/vimwiki'
 Plug 'jeetsukumaran/vim-filebeagle'
 " Plug 'xolox/vim-misc'
 " Plug 'xolox/vim-easytags'
@@ -120,7 +121,6 @@ set noswapfile
 " inoremap jk <esc>
 " nnoremap ho :noh<CR>
 set ruler
-set relativenumber
 set matchpairs+=<:>
 " autocmd InsertEnter * :set norelativenumber
 " autocmd InsertLeave * :set relativenumber
@@ -145,7 +145,8 @@ set smartindent
 " autocmd Syntax * normal zR
 
 " Appearance.
-set number
+" set number
+set relativenumber
 set showcmd
 set novisualbell
 set noerrorbells
@@ -179,7 +180,7 @@ if has('gui_running')
     set guifont=Inconsolata:h15,Menlo:h14
   else
     " set guifont=Anonymous\ Pro\ 10
-    set guifont=envypn\ 15
+    set guifont=Envy\ Code\ R\ 10
   endif
   set clipboard=unnamedplus
 else
@@ -310,6 +311,9 @@ let g:pad#dir = '~/txt'
 let g:pad#search_backend = 'ag'
 let g:pad#open_in_split = 0
 let g:pad#default_file_extension = '.md'
+
+" Wiki.
+let g:vimwiki_list = [{'path': '~/txt'}]
 
 " Tagbar.
 " map <leader>t :TagbarToggle<CR>
