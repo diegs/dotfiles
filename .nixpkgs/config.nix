@@ -1,0 +1,5 @@
+pkgs : {
+  vim = {
+    python = true;
+  };
+}

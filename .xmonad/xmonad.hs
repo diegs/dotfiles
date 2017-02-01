@@ -20,7 +20,7 @@ import XMonad.Util.EZConfig
 import XMonad.Util.Run(spawnPipe)
 import qualified XMonad.StackSet as W
 
-myTerminal = "alacritty"
+myTerminal = "urxvt"
 
 myFocusFollowsMouse = False
 

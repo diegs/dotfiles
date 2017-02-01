@@ -37,10 +37,10 @@ Plug 'schickling/vim-bufonly'
 " Plug 'tpope/vim-commentary'
 Plug 'tomtom/tcomment_vim'
 Plug 'ConradIrwin/vim-comment-object'
-Plug 'scrooloose/syntastic'
+" Plug 'scrooloose/syntastic'
 Plug 'b4winckler/vim-angry'
 " Plug 'lfv89/vim-interestingwords'
-Plug 'benekastah/neomake'
+" Plug 'benekastah/neomake'
 
 " VCS.
 " Plug 'tpope/vim-fugitive'
@@ -84,9 +84,9 @@ Plug 'christoomey/vim-tmux-navigator'
 
 " Languages.
 Plug 'neovimhaskell/haskell-vim'
-Plug 'Shougo/vimproc.vim', { 'do': 'make' }
-Plug 'eagletmt/ghcmod-vim'
-Plug 'eagletmt/neco-ghc'
+" Plug 'Shougo/vimproc.vim', { 'do': 'make' }
+" Plug 'eagletmt/ghcmod-vim'
+" Plug 'eagletmt/neco-ghc'
 Plug 'rust-lang/rust.vim'
 Plug 'cespare/vim-toml'
 Plug 'google/vim-ft-bzl'
@@ -243,16 +243,16 @@ if exists(":Tabularize")
 endif
 
 " synatastic
-map <Leader>s :SyntasticToggleMode<CR>
-
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 0
-let g:syntastic_check_on_open = 0
-let g:syntastic_check_on_wq = 0
+" map <Leader>s :SyntasticToggleMode<CR>
+"
+" set statusline+=%#warningmsg#
+" set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%*
+"
+" let g:syntastic_always_populate_loc_list = 1
+" let g:syntastic_auto_loc_list = 0
+" let g:syntastic_check_on_open = 0
+" let g:syntastic_check_on_wq = 0
 
 "let g:syntastic_enable_signs=1
 "map <silent> <Leader>e :Errors<CR>
