@@ -1,30 +1,23 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
-# stty -ixon
-#
-# # don't put duplicate lines or lines starting with space in the history.
-# # See bash(1) for more options
-# export HISTCONTROL=ignoredups:erasedups
-# export HISTIGNORE="s:bg:fg:history"
-#
-# # append to the history file, don't overwrite it
-# shopt -s histappend
-#
-# export HISTSIZE=
-# export HISTFILESIZE=
-#
-# # Save and reload the history after each command finishes
-# # export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
-#
-# # check the window size after each command and, if necessary,
-# # update the values of LINES and COLUMNS.
-# shopt -s checkwinsize
+stty -ixon
+
+export HISTCONTROL=ignoredups:erasedups
+export HISTIGNORE="s:bg:fg:history"
+shopt -s histappend
+export HISTSIZE=
+export HISTFILESIZE=
+
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
 
 # make less more friendly for non-text input files, see lesspipe(1)
-# [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 PROMPT_COMMAND='__git_ps1 "${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u\[\033[00m\]@\[\033[01;34m\]\h\[\033[00m\]:\[\033[01;33m\]\W\[\033[00m\]" "\[\033[00m\]% " " [%s]"'
+PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
 GIT_PS1_SHOWDIRTYSTATE=1
 GIT_PS1_SHOWSTASHSTATE=1
@@ -53,9 +46,9 @@ if [ -x /usr/bin/dircolors ]; then
 
   alias ls='ls --color=auto'
   alias ll='ls -alF'
+  alias less="less -R"
 fi
 
-# alias less="less -R"
 # alias du="du -sch .[!.]* * | sort -h"
 # alias yi-cfg="nix-shell -p haskellPackages.yi"
 
