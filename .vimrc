@@ -50,6 +50,7 @@ Plug 'b4winckler/vim-angry'
 Plug 'tpope/vim-surround'
 Plug 'godlygeek/tabular'
 Plug 'rking/ag.vim'
+Plug 'roxma/vim-paste-easy'
 
 " Plugs.
 " Plug 'fmoralesc/vim-pad'

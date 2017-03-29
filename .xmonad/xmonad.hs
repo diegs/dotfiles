@@ -3,6 +3,7 @@ import System.Exit
 
 import XMonad
 import XMonad.Actions.DynamicWorkspaceGroups
+import XMonad.Actions.Navigation2D
 import XMonad.Actions.PhysicalScreens
 import XMonad.Config.Gnome
 import XMonad.Hooks.DynamicLog
@@ -53,6 +54,16 @@ myKeys =
   , ((mod4Mask, xK_n), spawn "touch ~/.pomodoro_session")
   , ((mod4Mask, xK_m), spawn "rm ~/.pomodoro_session")
   , ((mod4Mask, xK_s), sendMessage ToggleStruts)
+  , ((mod4Mask, xK_u), sendMessage Shrink)
+  , ((mod4Mask, xK_i), sendMessage Expand)
+  , ((mod4Mask, xK_h), windowGo L False)
+  , ((mod4Mask, xK_k), windowGo U False)
+  , ((mod4Mask, xK_j), windowGo D False)
+  , ((mod4Mask, xK_l), windowGo R False)
+  , ((mod4Mask .|. shiftMask, xK_h), windowSwap L False)
+  , ((mod4Mask .|. shiftMask, xK_k), windowSwap U False)
+  , ((mod4Mask .|. shiftMask, xK_j), windowSwap D False)
+  , ((mod4Mask .|. shiftMask, xK_l), windowSwap R False)
   ] ++ [
     ((myModMask, key), (windows $ W.greedyView ws)) | (key,ws) <- myExtraWorkspaces
   ] ++ [
@@ -91,4 +102,5 @@ myConfig xmproc = ewmh gnomeConfig
 
 main = do
   xmproc <- spawnPipe "MPD_PORT=6666 xmobar ~/.xmobarrc"
-  xmonad $ fullscreenSupport $ myConfig xmproc
+  let config = myConfig xmproc
+   in xmonad $ fullscreenSupport $ config --withNavigation2DConfig config $ config
