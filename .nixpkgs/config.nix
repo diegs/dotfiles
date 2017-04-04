@@ -6,7 +6,7 @@ pkgs : {
   packageOverrides = pkgs: rec {
     myHaskellEnv = self.haskellPackages.ghcWithHoogle
                      (haskellPackages: with haskellPackages; [
-                       xmonad xmonad-contrib xmonad-extras xmobar yi
+                       xmonad xmonad-contrib xmonad-extras xmobar
                      ]);
     all = with pkgs; buildEnv {
       name = "all";
