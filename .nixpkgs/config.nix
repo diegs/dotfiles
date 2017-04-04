@@ -1,12 +1,18 @@
 pkgs : {
+  allowUnfree = true;
   vim = {
     python = true;
   };
-  packageOverrides = super: let self = super.pkgs; in
-  {
+  packageOverrides = pkgs: rec {
     myHaskellEnv = self.haskellPackages.ghcWithHoogle
                      (haskellPackages: with haskellPackages; [
                        xmonad xmonad-contrib xmonad-extras xmobar yi
                      ]);
+    all = with pkgs; buildEnv {
+      name = "all";
+      paths = [
+        dmenu git go htop irssi myHaskellEnv installed silver-searcher rustc screenFetch stack tmux xmobar
+      ];
+    };
   };
 }

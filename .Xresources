@@ -1,9 +1,3 @@
-# 1 "/usr/local/google/home/diegs/.Xresources.src"
-# 1 "<built-in>"
-# 1 "<command-line>"
-# 1 "/usr/include/stdc-predef.h" 1 3 4
-# 1 "<command-line>" 2
-# 1 "/usr/local/google/home/diegs/.Xresources.src"
 ! *************************************************
 ! Do not edit ~/.Xresources, but ~/.Xresources.src
 ! Use $HOME/.Xresources.edit to edit this file
@@ -12,7 +6,6 @@
 !
 ! Base16 Tomorrow
 ! Scheme: Chris Kempson (http:
-# 27 "/usr/local/google/home/diegs/.Xresources.src"
 *foreground: #c5c8c6
 *background: #1d1f21
 *cursorColor: #c5c8c6
@@ -38,7 +31,7 @@
 ! Xft.dpi: 96
 
 !Xcursor.theme: Adwaita
-!Xcursor.size: 32 ! 32, 48 or 64 may also be good values
+Xcursor.size: 48
 
 URxvt*.scrollBar: false
 URxvt*.externalBorder: false
@@ -47,7 +40,7 @@ URxvt*.internalBorder: false
 URxvt*.boldFont:
 URxvt*.italicFont:
 URxvt*.boldItalicFont:
-URxvt*.font: envypn-15
+URxvt*.font: xft:Roboto Mono:pixelsize=18
 ! URxvt*.font: xft:envypn:pixelsize=15
 ! URxvt*.font: xft:PragmataPro:size=10
 URxvt*intensityStyles: false

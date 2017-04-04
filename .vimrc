@@ -93,6 +93,7 @@ Plug 'google/vim-ft-bzl'
 Plug 'vim-scripts/SWIG-syntax'
 Plug 'jvoorhis/coq.vim'
 Plug 'the-lambda-church/coquille'
+Plug 'LnL7/vim-nix'
 " Plug 'fatih/vim-go'
 " Plug 'lukerandall/haskellmode-vim'
 " Plug 'Twinside/vim-hoogle'
@@ -244,11 +245,11 @@ endif
 
 " synatastic
 " map <Leader>s :SyntasticToggleMode<CR>
-"
+
 " set statusline+=%#warningmsg#
 " set statusline+=%{SyntasticStatuslineFlag()}
 " set statusline+=%*
-"
+
 " let g:syntastic_always_populate_loc_list = 1
 " let g:syntastic_auto_loc_list = 0
 " let g:syntastic_check_on_open = 0
@@ -342,6 +343,8 @@ let g:yankring_history_dir = '~/.vim'
 " Cmdalias.
 call cmdalias#add('bd', 'BD')
 call cmdalias#add('ag', 'Ag')
+
+cnoremap sudow w !sudo tee % >/dev/null
 
 " Highlight all instances of word under cursor, when idle.
 " Useful when studying strange source code.

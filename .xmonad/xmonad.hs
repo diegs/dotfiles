@@ -45,11 +45,11 @@ myLayout = avoidStruts $ tiled ||| Mirror tiled ||| ThreeColMid 1 (3/100) (1/2)
      delta = 3/100
 
 myKeys =
-  [ ((mod4Mask, xK_c), spawn "google-chrome")
+  [ ((mod4Mask, xK_c), spawn "google-chrome-stable")
   , ((mod4Mask .|. shiftMask, xK_q), io (exitWith ExitSuccess))
   , ((mod4Mask, xK_x), spawn "gnome-screensaver-command -a")
   , ((mod4Mask, xK_o), spawn myTerminal)
-  , ((mod4Mask, xK_p), spawn "dmenu_run -nf '#c0c5ce' -nb '#1d1f21' -fn 'envypn-15'")
+  , ((mod4Mask, xK_p), spawn "dmenu_run -nf '#c0c5ce' -nb '#1d1f21'")
   , ((mod4Mask, xK_n), spawn "touch ~/.pomodoro_session")
   , ((mod4Mask, xK_m), spawn "rm ~/.pomodoro_session")
   , ((mod4Mask, xK_s), sendMessage ToggleStruts)
@@ -90,5 +90,5 @@ myConfig xmproc = ewmh gnomeConfig
   } `additionalKeys` myKeys
 
 main = do
-  xmproc <- spawnPipe "MPD_PORT=6666 xmobar ~/.xmobarrc"
+  xmproc <- spawnPipe "xmobar -x 1 ~/.xmobarrc"
   xmonad $ fullscreenSupport $ myConfig xmproc

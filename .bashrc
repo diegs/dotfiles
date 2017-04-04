@@ -2,6 +2,7 @@
 [ -z "$PS1" ] && return
 
 stty -ixon
+set -o vi
 
 export HISTCONTROL=ignoredups:erasedups
 export HISTIGNORE="s:bg:fg:history"
