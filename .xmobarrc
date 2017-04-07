@@ -1,6 +1,6 @@
 Config {
   --font = "xft:anonymous pro:pixelsize=12"
-  font = "xft:Roboto Mono:pixelsize=18"
+  font = "xft:Roboto Mono:pixelsize=13"
 	-- font = "-*-envypn-Medium-R-*-*-15-*-*-*-*-*-ISO8859-1"
   , bgColor = "#1d1f21"
   , fgColor = "#c5c8c6"
@@ -16,6 +16,7 @@ Config {
                , Run Cpu ["-L","3","-H","50","--normal","#657b83","--high","#c0c5ce","--template","Cpu: <bar>"] 10
                , Run Memory ["-t","Mem: <usedbar>"] 10
                , Run Date "<fc=#c0c5ce>%a %b %_d %Y %H:%M</fc>" "date" 10
+               , Run Com "whoami" [] "" 36000
                , Run Com "hostname" [] "" 36000
                , Run StdinReader
 --               , Run Locks
@@ -23,5 +24,5 @@ Config {
                ]
   , sepChar = "%"
   , alignSep = "}{"
-  , template = " %hostname% | %StdinReader% }{ %cpu% | %memory% | %dynnetwork% | SFO:%KSFO% | %date%"
+  , template = " %whoami%@%hostname% | %StdinReader% }{ %cpu% | %memory% | %dynnetwork% | SFO:%KSFO% | %date%"
   }

@@ -3,15 +3,15 @@ pkgs : {
   vim = {
     python = true;
   };
-  packageOverrides = pkgs: rec {
-    myHaskellEnv = self.haskellPackages.ghcWithHoogle
+  packageOverrides = super: let pkgs = super.pkgs; in with pkgs; rec {
+    myHaskellEnv = haskellPackages.ghcWithHoogle
                      (haskellPackages: with haskellPackages; [
-                       xmonad xmonad-contrib xmonad-extras xmobar
+                       xmonad xmonad-contrib xmonad-extras taffybar
                      ]);
-    all = with pkgs; buildEnv {
+    all = pkgs.buildEnv {
       name = "all";
       paths = [
-        dmenu git go htop irssi myHaskellEnv installed silver-searcher rustc screenFetch stack tmux xmobar
+        dmenu git gnumake go gocode godef goimports htop irssi myHaskellEnv silver-searcher rustc screenfetch stack tmux tree vagrant
       ];
     };
   };

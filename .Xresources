@@ -40,7 +40,7 @@ URxvt*.internalBorder: false
 URxvt*.boldFont:
 URxvt*.italicFont:
 URxvt*.boldItalicFont:
-URxvt*.font: xft:Roboto Mono:pixelsize=18
+URxvt*.font: xft:Roboto Mono:pixelsize=13
 ! URxvt*.font: xft:envypn:pixelsize=15
 ! URxvt*.font: xft:PragmataPro:size=10
 URxvt*intensityStyles: false

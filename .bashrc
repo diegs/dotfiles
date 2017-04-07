@@ -18,7 +18,7 @@ shopt -s checkwinsize
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 PROMPT_COMMAND='__git_ps1 "${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u\[\033[00m\]@\[\033[01;34m\]\h\[\033[00m\]:\[\033[01;33m\]\W\[\033[00m\]" "\[\033[00m\]% " " [%s]"'
-PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+# PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
 GIT_PS1_SHOWDIRTYSTATE=1
 GIT_PS1_SHOWSTASHSTATE=1
@@ -50,14 +50,14 @@ if [ -x /usr/bin/dircolors ]; then
   alias less="less -R"
 fi
 
-# alias du="du -sch .[!.]* * | sort -h"
 # alias yi-cfg="nix-shell -p haskellPackages.yi"
 
 export BROWSER="google-chrome"
 export EDITOR="vim"
 export VISUAL="vim"
-# set -o vi
 
 if [ -f ~/.bashrc-local ]; then
   . ~/.bashrc-local
 fi
+
+PATH="~/go/bin:$PATH"

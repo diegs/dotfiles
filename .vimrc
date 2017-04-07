@@ -95,7 +95,7 @@ Plug 'vim-scripts/SWIG-syntax'
 Plug 'jvoorhis/coq.vim'
 Plug 'the-lambda-church/coquille'
 Plug 'LnL7/vim-nix'
-" Plug 'fatih/vim-go'
+Plug 'fatih/vim-go'
 " Plug 'lukerandall/haskellmode-vim'
 " Plug 'Twinside/vim-hoogle'
 " Plug 'dag/vim2hs'
@@ -189,6 +189,9 @@ else
   set mouse=
 endif
 
+" Go
+let g:go_fmt_command = "goimports"
+
 " Coquille
 nnoremap <silent> <leader>cn :CoqNext<CR>
 nnoremap <silent> <leader>cu :CoqUndo<CR>
@@ -220,19 +223,16 @@ let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
       \ --ignore .git
       \ --ignore .svn
       \ --ignore .hg
-      \ --ignore ".AndroidStudio*"
-      \ --ignore .DS_Store
       \ --ignore .cache
       \ --ignore .config
       \ --ignore .local
       \ --ignore .gnome
       \ --ignore .gradle
-      \ --ignore "**/*.pyc"
+      \ --ignore .stack-work
+      \ --ignore .vagrant
       \ --ignore dist
       \ --ignore out
-      \ --ignore .stack-work
-      \ --ignore .git5_specs
-      \ --ignore review
+      \ --ignore vendor
       \ -g ""'
 let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
 
