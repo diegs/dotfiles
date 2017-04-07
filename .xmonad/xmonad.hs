@@ -6,6 +6,7 @@ import Graphics.X11.ExtraTypes.XF86
 import XMonad
 import XMonad.Actions.DynamicWorkspaceGroups
 import XMonad.Actions.Navigation2D
+import XMonad.Config.Gnome
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.EwmhDesktops (ewmh)
@@ -60,9 +61,9 @@ myKeys =
   , ((mod4Mask, xK_x), spawn myScreensaver)
   , ((mod4Mask, xK_o), spawn myTerminal)
   , ((mod4Mask, xK_p), spawn "dmenu_run -nf '#c0c5ce' -nb '#1d1f21'")
-  , ((mod4Mask, xK_s), sendMessage ToggleStruts)
-  ,	((0, xF86XK_MonBrightnessUp), spawn "xbacklight +10")
-  ,	((0, xF86XK_MonBrightnessDown), spawn "xbacklight -10")
+  -- , ((mod4Mask, xK_s), sendMessage ToggleStruts)
+  -- ,	((0, xF86XK_MonBrightnessUp), spawn "xbacklight +10")
+  -- ,	((0, xF86XK_MonBrightnessDown), spawn "xbacklight -10")
   , ((mod4Mask, xK_d), toggleDisplays)
   , ((mod4Mask, xK_u), sendMessage Shrink)
   , ((mod4Mask, xK_i), sendMessage Expand)
@@ -91,7 +92,7 @@ myKeys =
 
 myStartupHook = setWMName "LG3D"
 
-myConfig = defaultConfig
+myConfig = gnomeConfig
   { terminal           = myTerminal
   , focusFollowsMouse  = myFocusFollowsMouse
   , borderWidth        = myBorderWidth
