@@ -31,14 +31,13 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
-# If this is an xterm set the title to user@host:dir
-# case "$TERM" in
-# xterm*|rxvt*)
-#     PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \W\a\]$PS1"
-#     ;;
-# *)
-#     ;;
-# esac
+case "$TERM" in
+  rxvt-unicode-256color)
+      TERM=xterm-256color
+      ;;
+  *)
+      ;;
+esac
 
 if [ -x /usr/bin/dircolors ]; then
   alias grep='grep --color=auto'

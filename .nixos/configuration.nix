@@ -1,91 +1,97 @@
-# x260
-
 { config, pkgs, ... }:
 
 {
   imports =
     [
       ./hardware-configuration.nix
-      # ./local.nix
     ];
 
-#  boot.loader.grub = {
-#    enable = true;
-#    version = 2;
-#    efiSupport = true;
-#    device = "nodev";
-#  };
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi = {
-    canTouchEfiVariables = true;
-    efiSysMountPoint = "/boot";
+  boot.loader = {
+    systemd-boot.enable = true;
+    efi = {
+      canTouchEfiVariables = true;
+      efiSysMountPoint = "/boot";
+    };
   };
 
-  networking.hostName = "diegs-x260";
-  networking.networkmanager.enable = true;
+  networking = {
+    hostName = "x260";
+    networkmanager.enable = true;
+  };
 
-  time.timeZone = "America/Los_Angeles";
-  time.hardwareClockInLocalTime = true;
+  time = {
+    timeZone = "America/Los_Angeles";
+    hardwareClockInLocalTime = true;
+  };
 
   environment.systemPackages = with pkgs; [
-    google-chrome networkmanagerapplet vim virtualbox
+    autorandr dmenu i3status i3lock git google-chrome networkmanagerapplet polybar xclip xss-lock xorg.xbacklight vim virtualbox
   ];
   nixpkgs.config.allowUnfree = true;
 
-  system.autoUpgrade.enable = true;
-  system.stateVersion = "17.03";
-
-  nix.gc = {
-    automatic = true;
-    options = "-d";
+  hardware = {
+    cpu.intel.updateMicrocode = true;
+    pulseaudio.enable = true;
   };
-
-  hardware.pulseaudio.enable = true;
-  services.acpid.enable = true;
-  powerManagement.enable = true;
-  services.printing.enable = true;
-  services.journald.extraConfig = "SystemMaxUse=50M";
-  services.thermald.enable = true;
-  services.xserver = {
-#    exportConfiguration = true;
-    enable = true;
-    layout = "us";
-#    synaptics = {
-#      enable = true;
-#      twoFingerScroll = true;
-#    };
-    videoDrivers = [ "intel" ];
-#    xkbOptions = "caps:super";
-    desktopManager.gnome3.enable = true;
-    displayManager.gdm.enable = true;
-#    windowManager.xmonad = {
-#      enable = true;
-#      enableContribAndExtras = true;
-#      extraPackages = haskellPackages: [
-#        haskellPackages.xmonad-contrib 
-#        haskellPackages.xmonad-extras 
-#        haskellPackages.xmonad
-#        haskellPackages.taffybar
-#      ];
-#    };
-#    windowManager.default = "xmonad";
+  virtualisation = {
+    docker.enable = true;
+    rkt.enable = true;
+    virtualbox.host.enable = true;
   };
- 
-#  fonts = {
-#    enableFontDir = true;
-#    fonts = with pkgs; [ fira-mono hack-font inconsolata ];
-#  };
-
-  virtualisation.virtualbox.host.enable = true;
+  services = {
+    journald.extraConfig = "SystemMaxUse=50M";
+    xserver = {
+      enable = true;
+      layout = "us";
+      libinput = {
+        clickMethod = "clickfinger";
+        enable = true;
+        naturalScrolling = true;
+      };
+#      synaptics = {
+#        enable = true;
+#        twoFingerScroll = true;
+#        additionalOptions = ''
+#          Option "VertScrollDelta" "-111"
+#          Option "HorizScrollDelta" "-111"
+#        '';
+#      }; 
+      xkbOptions = "caps:super";
+      videoDrivers = [ "intel" ];
+      windowManager.i3.enable = true;
+    };
+#    services.compton = {
+#      enable = true;
+#      fade = true;
+#      inactiveOpacity = "0.9";
+#      shadow = true;
+#      fadeDelta = 4;
+#      backend = "xrender";
+#    };
+  };
+  fonts = {
+    fonts = with pkgs; [ corefonts font-awesome-ttf hack-font noto-fonts terminus_font ];
+    fontconfig.ultimate.enable = true;
+  };
 
   users.extraUsers.diegs = {
     isNormalUser = true;
-    extraGroups = ["networkmanager" "vboxusers" "wheel"];
+    uid = 1000;
+    extraGroups = [ "docker" "networkmanager" "rkt" "vboxusers" "wheel" ];
   };
   security.sudo.wheelNeedsPassword = false;
 
   programs.bash = {
-    promptInit = "PS1=\"\\u@\\h \\w% \"";
     enableCompletion = true;
+    promptInit = "PS1=\"\\u@\\h \\w% \"";
+  };
+
+  system = {
+    stateVersion = "17.03";
+    autoUpgrade.enable = true;
+  };
+  nix.gc = {
+    automatic = true;
+    options = "-d";
   };
 }
