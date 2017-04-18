@@ -7,39 +7,75 @@
     ];
 
   boot.loader = {
+    efi.canTouchEfiVariables = true;
     systemd-boot.enable = true;
-    efi = {
-      canTouchEfiVariables = true;
-      efiSysMountPoint = "/boot";
-    };
-  };
-
-  networking = {
-    hostName = "x260";
-    networkmanager.enable = true;
-  };
-
-  time = {
-    timeZone = "America/Los_Angeles";
-    hardwareClockInLocalTime = true;
   };
 
   environment.systemPackages = with pkgs; [
-    autorandr dmenu i3status i3lock git google-chrome networkmanagerapplet polybar xclip xss-lock xorg.xbacklight vim virtualbox
+    autorandr
+    dmenu
+    i3status
+    i3lock
+    git
+    gnupg
+    google-chrome
+    hfsprogs
+    mercurial
+    networkmanagerapplet
+    pcsctools
+    polybar
+    xclip
+    xss-lock
+    xorg.xbacklight
+    vim
+    virtualbox
+    yubikey-personalization
   ];
-  nixpkgs.config.allowUnfree = true;
+
+  fonts = {
+    fontconfig.defaultFonts = {
+      monospace = [ "Cousine" ];
+      sansSerif = [ "Arimo" ];
+      serif = [ "Tinos" ];
+    };
+    fonts = with pkgs; [ corefonts envypn-font noto-fonts terminus_font ];
+  };
 
   hardware = {
-    cpu.intel.updateMicrocode = true;
+    opengl.driSupport32Bit = true;
     pulseaudio.enable = true;
   };
-  virtualisation = {
-    docker.enable = true;
-    rkt.enable = true;
-    virtualbox.host.enable = true;
+
+  networking = {
+    networkmanager.enable = true;
   };
+
+  nix.gc = {
+    automatic = true;
+    options = "-d";
+  };
+  nixpkgs.config.allowUnfree = true;
+
+  programs = {
+    bash = {
+      enableCompletion = true;
+      promptInit = "PS1=\"\\u@\\h \\w% \"";
+    };
+    ssh = {
+      extraConfig = "AddKeysToAgent yes";
+    };
+  };
+
+  security.sudo = {
+    enable = true;
+    wheelNeedsPassword = false;
+  };
+
   services = {
     journald.extraConfig = "SystemMaxUse=50M";
+    ntp.enable = true;
+    pcscd.enable = true;
+    udev.packages = with pkgs; [ libu2f-host ];
     xserver = {
       enable = true;
       layout = "us";
@@ -48,30 +84,30 @@
         enable = true;
         naturalScrolling = true;
       };
-#      synaptics = {
-#        enable = true;
-#        twoFingerScroll = true;
-#        additionalOptions = ''
-#          Option "VertScrollDelta" "-111"
-#          Option "HorizScrollDelta" "-111"
-#        '';
-#      }; 
       xkbOptions = "caps:super";
-      videoDrivers = [ "intel" ];
       windowManager.i3.enable = true;
     };
-#    services.compton = {
-#      enable = true;
+    compton = {
+      enable = true;
 #      fade = true;
 #      inactiveOpacity = "0.9";
 #      shadow = true;
 #      fadeDelta = 4;
-#      backend = "xrender";
-#    };
+      backend = "xrender";
+    };
   };
-  fonts = {
-    fonts = with pkgs; [ corefonts font-awesome-ttf hack-font noto-fonts terminus_font ];
-    fontconfig.ultimate.enable = true;
+
+  system = {
+    autoUpgrade = {
+      channel = "https://nixos.org/channels/nixos-unstable";
+      enable = true;
+    };
+    stateVersion = "17.03";
+  };
+
+  time = {
+    timeZone = "America/Los_Angeles";
+    hardwareClockInLocalTime = true;
   };
 
   users.extraUsers.diegs = {
@@ -79,19 +115,10 @@
     uid = 1000;
     extraGroups = [ "docker" "networkmanager" "rkt" "vboxusers" "wheel" ];
   };
-  security.sudo.wheelNeedsPassword = false;
 
-  programs.bash = {
-    enableCompletion = true;
-    promptInit = "PS1=\"\\u@\\h \\w% \"";
-  };
-
-  system = {
-    stateVersion = "17.03";
-    autoUpgrade.enable = true;
-  };
-  nix.gc = {
-    automatic = true;
-    options = "-d";
+  virtualisation = {
+    docker.enable = true;
+    rkt.enable = true;
+    virtualbox.host.enable = true;
   };
 }

@@ -51,7 +51,7 @@ fi
 
 # alias yi-cfg="nix-shell -p haskellPackages.yi"
 
-export BROWSER="google-chrome"
+export BROWSER="google-chrome-stable"
 export EDITOR="vim"
 export VISUAL="vim"
 
@@ -59,4 +59,5 @@ if [ -f ~/.bashrc-local ]; then
   . ~/.bashrc-local
 fi
 
-PATH="~/go/bin:$PATH"
+export GOPATH=$HOME
+export CLUSTER_PREFIX="diegs"

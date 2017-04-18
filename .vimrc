@@ -53,6 +53,7 @@ Plug 'rking/ag.vim'
 Plug 'roxma/vim-paste-easy'
 
 " Plugs.
+Plug 'Shougo/neocomplete.vim'
 " Plug 'fmoralesc/vim-pad'
 " Plug 'aaronbieber/vim-quicktask'
 Plug 'vimwiki/vimwiki'
@@ -96,6 +97,7 @@ Plug 'jvoorhis/coq.vim'
 Plug 'the-lambda-church/coquille'
 Plug 'LnL7/vim-nix'
 Plug 'fatih/vim-go'
+Plug 'nsf/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
 " Plug 'lukerandall/haskellmode-vim'
 " Plug 'Twinside/vim-hoogle'
 " Plug 'dag/vim2hs'
@@ -275,8 +277,10 @@ let g:slime_paste_file = tempname()
 " vim2hs
 " let g:hpaste_author = 'step_function'
 
+" neocomplete.
+let g:neocomplete#enable_at_startup = 1
+
 " Haskell.
-let g:ycm_semantic_triggers = {'haskell' : ['.']}
 map <silent> tw :GhcModTypeInsert<CR>
 map <silent> ts :GhcModSplitFunCase<CR>
 map <silent> tq :GhcModType<CR>

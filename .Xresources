@@ -28,10 +28,8 @@
 *color14: #a3685a
 *color15: #ffffff
 
-! Xft.dpi: 96
-
-!Xcursor.theme: Adwaita
-Xcursor.size: 48
+Xcursor.theme: Elementary
+!Xcursor.size: 16
 
 URxvt*.scrollBar: false
 URxvt*.externalBorder: false
@@ -40,9 +38,7 @@ URxvt*.internalBorder: false
 URxvt*.boldFont:
 URxvt*.italicFont:
 URxvt*.boldItalicFont:
-URxvt*.font: xft:Cousine:pixelsize=13
-! URxvt*.font: xft:envypn:pixelsize=15
-! URxvt*.font: xft:PragmataPro:size=10
+URxvt*.font: xft:envypn:pixelsize=15
 URxvt*intensityStyles: false
 
 URxvt*.iso14755: false

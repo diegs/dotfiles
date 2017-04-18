@@ -1,3 +1,4 @@
+xsetroot -solid '#1d1f21'
 xset s 300
 xss-lock -- i3lock &
 nm-applet &
