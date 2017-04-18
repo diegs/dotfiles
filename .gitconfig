@@ -1,0 +1,4 @@
+[core]
+  excludesfile = ~/.gitignore
+[remote "origin"]
+	prune = true
