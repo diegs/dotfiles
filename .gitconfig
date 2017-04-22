@@ -1,4 +1,7 @@
 [core]
   excludesfile = ~/.gitignore
-[remote "origin"]
+[fetch]
 	prune = true
+[user]
+	email = diego.pontoriero@coreos.com
+	name = Diego Pontoriero

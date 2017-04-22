@@ -12,39 +12,28 @@ call plug#begin('~/.vim/plugged')
 
 " Visual.
 " Plug 'w0ng/vim-hybrid'
-Plug 'chriskempson/base16-vim'
+" Plug 'chriskempson/base16-vim'
 " Plug 'ajh17/Spacegray.vim'
 " Plug 'NLKNguyen/papercolor-theme'
 " Plug 'jordwalke/flatlandia'
 " Plug 'romainl/Apprentice'
-" Plug 'noahfrederick/vim-hemisu'
-" Plug 'noahfrederick/vim-noctu'
+Plug 'noahfrederick/vim-hemisu'
+"" Plug 'noahfrederick/vim-noctu'
 " Plug 'morhetz/gruvbox'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
 " Movement.
-" Plug 'Lokaltog/vim-easymotion'
 Plug 'tpope/vim-unimpaired'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'FelikZ/ctrlp-py-matcher'
 Plug 'vim-scripts/bufkill.vim'
 Plug 'schickling/vim-bufonly'
-" Plug 'unblevable/quick-scope'
 
 " Coding.
-" Plug 'scrooloose/nerdcommenter'
-" Plug 'tpope/vim-commentary'
 Plug 'tomtom/tcomment_vim'
 Plug 'ConradIrwin/vim-comment-object'
-" Plug 'scrooloose/syntastic'
 Plug 'b4winckler/vim-angry'
-" Plug 'lfv89/vim-interestingwords'
-" Plug 'benekastah/neomake'
-
-" VCS.
-" Plug 'tpope/vim-fugitive'
-" Plug 'mhinz/vim-signify'
 
 " Text.
 Plug 'tpope/vim-surround'
@@ -54,41 +43,25 @@ Plug 'roxma/vim-paste-easy'
 
 " Plugs.
 Plug 'Shougo/neocomplete.vim'
-" Plug 'fmoralesc/vim-pad'
-" Plug 'aaronbieber/vim-quicktask'
 Plug 'vimwiki/vimwiki'
 Plug 'jeetsukumaran/vim-filebeagle'
-" Plug 'xolox/vim-misc'
-" Plug 'xolox/vim-easytags'
 Plug 'majutsushi/tagbar'
 Plug 'ivalkeen/vim-ctrlp-tjump'
 Plug 'let-def/vimbufsync'
 Plug 'kana/vim-textobj-user'
 Plug 'Julian/vim-textobj-variable-segment'
-" Plug 'sjl/gundo.vim'
-" Plug 'vim-scripts/YankRing.vim'
 
 " Misc.
-" Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sensible'
 Plug 'starcraftman/cmdalias.vim'
 
 " Tmux.
-" Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'jpalardy/vim-slime'
 Plug 'christoomey/vim-tmux-navigator'
 
-" Disabled.
-" Plug 'Shougo/unite.vim'
-" Plug 'pydave/AsyncCommand'
-" Plug 'stgpetrovic/syntastic-async'
-
 " Languages.
 Plug 'neovimhaskell/haskell-vim'
-" Plug 'Shougo/vimproc.vim', { 'do': 'make' }
-" Plug 'eagletmt/ghcmod-vim'
-" Plug 'eagletmt/neco-ghc'
 Plug 'rust-lang/rust.vim'
 Plug 'cespare/vim-toml'
 Plug 'google/vim-ft-bzl'
@@ -98,16 +71,7 @@ Plug 'the-lambda-church/coquille'
 Plug 'LnL7/vim-nix'
 Plug 'fatih/vim-go'
 Plug 'nsf/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
-" Plug 'lukerandall/haskellmode-vim'
-" Plug 'Twinside/vim-hoogle'
-" Plug 'dag/vim2hs'
-" Plug 'bitc/vim-hdevtools'
 call plug#end()
-
-" Google.
-if filereadable(glob('~/.vim/google.vim'))
-  source ~/.vim/google.vim
-endif
 
 " End of plugins.
 filetype plugin indent on
@@ -144,10 +108,6 @@ set autoindent    " Always set autoindenting on
 set copyindent    " copy the previous indentation on autoindenting
 set smartindent
 
-" autocmd InsertLeave * if pumvisible() == 0|pclose|endif
-" autocmd BufWritePre * :%s/\s\+$//e
-" autocmd Syntax * normal zR
-
 " Appearance.
 " set number
 set relativenumber
@@ -164,8 +124,8 @@ set hidden
 autocmd VimResized * :wincmd =
 
 " if strftime("%H") > 17
-set background=dark
-colorscheme base16-tomorrow-night
+set background=light
+colorscheme hemisu
 
 set clipboard=unnamed
 " if (executable('pbcopy') || executable('xclip') || executable('xsel'))
@@ -246,26 +206,6 @@ if exists(":Tabularize")
   vmap <Leader>a: :Tabularize /:\zs<CR>
 endif
 
-" synatastic
-" map <Leader>s :SyntasticToggleMode<CR>
-
-" set statusline+=%#warningmsg#
-" set statusline+=%{SyntasticStatuslineFlag()}
-" set statusline+=%*
-
-" let g:syntastic_always_populate_loc_list = 1
-" let g:syntastic_auto_loc_list = 0
-" let g:syntastic_check_on_open = 0
-" let g:syntastic_check_on_wq = 0
-
-"let g:syntastic_enable_signs=1
-"map <silent> <Leader>e :Errors<CR>
-"map <Leader>s :SyntasticToggleMode<CR>
-" let g:syntastic_auto_loc_list=1
-"let g:syntastic_cpp_compiler_options = ' -std=c++11'
-
-"autocmd! BufWritePost * Neomake
-
 " Slime.
 let g:slime_target = "tmux"
 let g:slime_paste_file = tempname()
@@ -274,43 +214,11 @@ let g:slime_paste_file = tempname()
 "nmap <leader>s <Plug>SlimeMotionSend
 "nmap <leader>ss <Plug>SlimeLineSend
 
-" vim2hs
-" let g:hpaste_author = 'step_function'
-
-" neocomplete.
-let g:neocomplete#enable_at_startup = 1
-
-" Haskell.
-map <silent> tw :GhcModTypeInsert<CR>
-map <silent> ts :GhcModSplitFunCase<CR>
-map <silent> tq :GhcModType<CR>
-map <silent> te :GhcModTypeClear<CR>
-" let g:haddock_browser="open"
-" au FileType haskell nnoremap <buffer> <Leader>ht :HdevtoolsType<CR>
-" au FileType haskell nnoremap <buffer> <silent> <Leader>hc :HdevtoolsClear<CR>
-" au FileType haskell nnoremap <buffer> <silent> <Leader>hi :HdevtoolsInfo<CR>
-" map <silent> tu :call GHC_BrowseAll()<CR>
-" map <silent> tw :call GHC_ShowType(1)<CR>
-
 " Airline.
 let g:airline_left_sep=''
 let g:airline_right_sep=''
 " let g:airline_section_z=''
-let g:airline_theme = 'base16'
-
-" Buffer selector.
-nmap <leader>b :ls<CR>:b<space>
-
-" Commentary.
-" setglobal commentstring=#\ %s
-" autocmd FileType c,cpp,cs   setlocal commentstring=//\ %s
-" autocmd FileType java       setlocal commentstring=/*%s*/
-
-" Nerdtree.
-" map <leader>n :NERDTreeToggle<CR>
-
-" Netrw
-" let g:netrw_altfile = 1
+let g:airline_theme = 'papercolor'
 
 " vim-pad.
 let g:pad#dir = '~/txt'
@@ -324,52 +232,18 @@ let g:vimwiki_list = [{'path': '~/txt'}]
 " Tagbar.
 " map <leader>t :TagbarToggle<CR>
 
-" Gundo.
-" nnoremap <silent> <leader>g :GundoToggle<CR>
-" nnoremap <F5> :GundoToggle<CR>
-" let g:gundo_right = 1
-
-" Yankring.
-if has('gui_running')
-  let g:yankring_replace_n_pkey = '<m-p>'
-  let g:yankring_replace_n_nkey = '<m-n>'
-else
-  let g:yankring_replace_n_pkey = '<esc>p'
-  let g:yankring_replace_n_nkey = '<esc>n'
-endif
-let g:yankring_history_dir = '~/.vim'
-
-" Signify.
-" let g:signify_disable_by_default = 1
-" let g:signify_vcs_list = ['git5', 'git']
-" let g:signify_diffoptions = {'git5': '--uncommitted'}
-" nnoremap <Leader>vt :SignifyToggle<CR>
-
 " Cmdalias.
 call cmdalias#add('bd', 'BD')
 call cmdalias#add('ag', 'Ag')
 
 cnoremap sudow w !sudo tee % >/dev/null
 
-" Highlight all instances of word under cursor, when idle.
-" Useful when studying strange source code.
-" Type z/ to toggle highlighting on/off.
-nnoremap <leader>h :if AutoHighlightToggle()<Bar>set hls<Bar>endif<CR>
-function! AutoHighlightToggle()
-  let @/ = ''
-  if exists('#auto_highlight')
-    au! auto_highlight
-    augroup! auto_highlight
-    setl updatetime=4000
-    echo 'Highlight current word: off'
-    return 0
-  else
-    augroup auto_highlight
-      au!
-      au CursorHold * let @/ = '\V\<'.escape(expand('<cword>'), '\').'\>'
-    augroup end
-    setl updatetime=500
-    echo 'Highlight current word: on'
-    return 1
-  endif
-endfunction
+" Neocomplete.
+let g:acp_enableAtStartup = 0
+let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#enable_smart_case = 1
+inoremap <expr><tab>  pumvisible() ? "\<C-n>" : "\<tab>"
+inoremap <expr><S-tab>  pumvisible() ? "\<C-p>" : "\<S-tab>"
+"inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+let g:neocomplete#enable_auto_select = 1
+set completeopt-=preview

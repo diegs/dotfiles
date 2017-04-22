@@ -12,33 +12,37 @@
   };
 
   environment.systemPackages = with pkgs; [
-    autorandr
+#    autorandr
     dmenu
     i3status
     i3lock
+    fwupd
     git
+    glib_networking
     gnupg
     google-chrome
     hfsprogs
     mercurial
     networkmanagerapplet
     pcsctools
-    polybar
+#    polybar
+    slack
+    sway
     xclip
     xss-lock
     xorg.xbacklight
     vim
-    virtualbox
     yubikey-personalization
   ];
 
   fonts = {
-    fontconfig.defaultFonts = {
-      monospace = [ "Cousine" ];
-      sansSerif = [ "Arimo" ];
-      serif = [ "Tinos" ];
-    };
-    fonts = with pkgs; [ corefonts envypn-font noto-fonts terminus_font ];
+#    fontconfig.defaultFonts = {
+#      monospace = [ "Cousine" ];
+#      sansSerif = [ "Arimo" ];
+#      serif = [ "Tinos" ];
+#    };
+    fonts = with pkgs; [ corefonts ];
+#    fonts = with pkgs; [ corefonts envypn-font noto-fonts terminus_font ];
   };
 
   hardware = {
@@ -75,28 +79,22 @@
     journald.extraConfig = "SystemMaxUse=50M";
     ntp.enable = true;
     pcscd.enable = true;
+    printing = {
+      drivers = with pkgs; [ hplip ];
+      enable = true;
+    };
     udev.packages = with pkgs; [ libu2f-host ];
     xserver = {
       enable = true;
       layout = "us";
-      libinput = {
-        clickMethod = "clickfinger";
-        enable = true;
-        naturalScrolling = true;
-      };
-      xkbOptions = "caps:super";
-      windowManager.i3.enable = true;
-    };
-    compton = {
-      enable = true;
-#      fade = true;
-#      inactiveOpacity = "0.9";
-#      shadow = true;
-#      fadeDelta = 4;
-      backend = "xrender";
+      #monitorSection = "DisplaySize 293 165";
+      displayManager.gdm.enable = true;
+      desktopManager.gnome3.enable = true;
     };
   };
 
+  systemd.packages = with pkgs; [ fwupd ];
+  systemd.targets."multi-user".conflicts = [ "getty@tty1.service" ];
   system = {
     autoUpgrade = {
       channel = "https://nixos.org/channels/nixos-unstable";
@@ -114,6 +112,7 @@
     isNormalUser = true;
     uid = 1000;
     extraGroups = [ "docker" "networkmanager" "rkt" "vboxusers" "wheel" ];
+    password = "changeme";
   };
 
   virtualisation = {
