@@ -2,7 +2,7 @@
 
 {
   imports =
-    [
+    [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
     ];
 
@@ -11,43 +11,41 @@
     systemd-boot.enable = true;
   };
 
-  environment.systemPackages = with pkgs; [
-#    autorandr
-    dmenu
-    i3status
-    i3lock
-    fwupd
-    git
-    glib_networking
-    gnupg
-    google-chrome
-    hfsprogs
-    mercurial
-    networkmanagerapplet
-    pcsctools
-#    polybar
-    slack
-    sway
-    xclip
-    xss-lock
-    xorg.xbacklight
-    vim
-    yubikey-personalization
-  ];
+  environment = {
+    gnome3.excludePackages = with pkgs.gnome3; [
+      epiphany
+      evolution
+      totem
+    ];
+    systemPackages = with pkgs; [
+      git
+      gnumake
+      google-chrome
+      mercurial
+      slack
+      spotify
+      vagrant
+      vimHugeX
+      yubikey-neo-manager
+    ];
+  };
 
   fonts = {
-#    fontconfig.defaultFonts = {
-#      monospace = [ "Cousine" ];
-#      sansSerif = [ "Arimo" ];
-#      serif = [ "Tinos" ];
-#    };
     fonts = with pkgs; [ corefonts ];
-#    fonts = with pkgs; [ corefonts envypn-font noto-fonts terminus_font ];
   };
 
   hardware = {
     opengl.driSupport32Bit = true;
-    pulseaudio.enable = true;
+    pulseaudio = {
+      enable = true;
+      support32Bit = true;
+    };
+  };
+
+  i18n = {
+    consoleFont = "Lat2-Terminus16";
+    consoleKeyMap = "us";
+    defaultLocale = "en_US.UTF-8";
   };
 
   networking = {
@@ -77,7 +75,6 @@
 
   services = {
     journald.extraConfig = "SystemMaxUse=50M";
-    ntp.enable = true;
     pcscd.enable = true;
     printing = {
       drivers = with pkgs; [ hplip ];
@@ -87,17 +84,21 @@
     xserver = {
       enable = true;
       layout = "us";
-      #monitorSection = "DisplaySize 293 165";
-      displayManager.gdm.enable = true;
-      desktopManager.gnome3.enable = true;
+      #libinput.enable = true;
+      monitorSection = "DisplaySize 293 165";
+      displayManager = {
+        gdm.enable = true;
+      };
+      desktopManager = {
+        gnome3.enable = true;
+        xterm.enable = false;
+      };
     };
   };
 
-  systemd.packages = with pkgs; [ fwupd ];
   systemd.targets."multi-user".conflicts = [ "getty@tty1.service" ];
   system = {
     autoUpgrade = {
-      channel = "https://nixos.org/channels/nixos-unstable";
       enable = true;
     };
     stateVersion = "17.03";
@@ -110,9 +111,9 @@
 
   users.extraUsers.diegs = {
     isNormalUser = true;
-    uid = 1000;
     extraGroups = [ "docker" "networkmanager" "rkt" "vboxusers" "wheel" ];
     password = "changeme";
+    uid = 1000;
   };
 
   virtualisation = {
