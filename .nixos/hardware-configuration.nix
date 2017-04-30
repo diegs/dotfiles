@@ -8,34 +8,38 @@
     [ <nixpkgs/nixos/modules/installer/scan/not-detected.nix>
     ];
 
-  boot = { 
-    #extraModprobeConfig = ''
-    #  options i915 modeset=1 i915_enable_rc6=1 i915_enable_fbc=1 lvds_downclock=1
-    #'';
+  boot = {
+    blacklistedKernelModules = [ "psmouse" ];
+    extraModprobeConfig = ''
+      options i915 modeset=1 enable_rc6=1 enable_fbc=1 enable_guc_loading=1 enable_guc_submission=1
+    '';
+    extraModulePackages = [ ];
     initrd = {
       availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" "rtsx_pci_sdmmc" ];
       luks.devices."crypted".device = "/dev/disk/by-uuid/2ca960c9-fad6-4d6a-a0bc-b0719dbdaa9c";
     };
-    kernelModules = [ "kvm-intel" ];
-    extraModulePackages = [ ];
-    blacklistedKernelModules = [ "psmouse" ];
+    kernelModules = [ "intel_agp" "kvm-intel" ];
   };
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/06ca9d2e-62ec-4df5-9308-06a5a79c964d";
+    { device = "/dev/disk/by-label/nixos";
       fsType = "ext4";
     };
 
+
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/0BE0-2E62";
+    { device = "/dev/disk/by-label/UEFI";
       fsType = "vfat";
     };
 
   swapDevices =
-    [ { device = "/dev/disk/by-uuid/36dac656-09f3-42e5-82d8-89e2b3dea3f4"; }
+    [ { device = "/dev/disk/by-label/swap"; }
     ];
 
-  hardware.cpu.intel.updateMicrocode = true;
+  hardware = {
+    cpu.intel.updateMicrocode = true;
+    enableAllFirmware = true;
+  };
   networking.hostName = "xps13";
   nix.maxJobs = lib.mkDefault 4;
   powerManagement = {

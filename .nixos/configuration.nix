@@ -18,12 +18,17 @@
       totem
     ];
     systemPackages = with pkgs; [
+      fwupd
       git
       gnumake
+      go
       google-chrome
       mercurial
       slack
       spotify
+      sway
+      xwayland
+      usbutils
       vagrant
       vimHugeX
       yubikey-neo-manager
@@ -74,6 +79,7 @@
   };
 
   services = {
+    #dbus.packages = with pkgs; [ fwupd ];
     journald.extraConfig = "SystemMaxUse=50M";
     pcscd.enable = true;
     printing = {
@@ -84,7 +90,12 @@
     xserver = {
       enable = true;
       layout = "us";
-      #libinput.enable = true;
+      libinput = {
+        clickMethod = "clickfinger";
+        enable = true;
+        disableWhileTyping = true;
+        naturalScrolling = true;
+      };
       monitorSection = "DisplaySize 293 165";
       displayManager = {
         gdm.enable = true;
@@ -96,7 +107,10 @@
     };
   };
 
-  systemd.targets."multi-user".conflicts = [ "getty@tty1.service" ];
+  systemd = {
+    packages = with pkgs; [ fwupd ];
+    targets."multi-user".conflicts = [ "getty@tty1.service" ];
+  };
   system = {
     autoUpgrade = {
       enable = true;
