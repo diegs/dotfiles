@@ -42,7 +42,7 @@ Plug 'rking/ag.vim'
 Plug 'roxma/vim-paste-easy'
 
 " Plugs.
-Plug 'Shougo/neocomplete.vim'
+" Plug 'Shougo/neocomplete.vim'
 Plug 'vimwiki/vimwiki'
 Plug 'jeetsukumaran/vim-filebeagle'
 Plug 'majutsushi/tagbar'
@@ -181,21 +181,27 @@ let g:ctrlp_use_caching = 0
 nnoremap <silent> <C-b> :CtrlPBuffer<CR>
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_switch_buffer = ''
-let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
-      \ --ignore .git
-      \ --ignore .svn
-      \ --ignore .hg
-      \ --ignore .cache
-      \ --ignore .config
-      \ --ignore .local
-      \ --ignore .gnome
-      \ --ignore .gradle
-      \ --ignore .stack-work
-      \ --ignore .vagrant
-      \ --ignore dist
-      \ --ignore out
-      \ --ignore vendor
-      \ -g ""'
+set wildignore+=*/.git/*,*/tmp/*,*.swp
+if executable('rg')
+  set grepprg=rg\ --color=never
+  let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
+" else
+"   let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
+"         \ --ignore .git
+"         \ --ignore .svn
+"         \ --ignore .hg
+"         \ --ignore .cache
+"         \ --ignore .config
+"         \ --ignore .local
+"         \ --ignore .gnome
+"         \ --ignore .gradle
+"         \ --ignore .stack-work
+"         \ --ignore .vagrant
+"         \ --ignore dist
+"         \ --ignore out
+"         \ --ignore vendor
+"         \ -g ""'
+endif
 let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
 
 " Tabularize.
@@ -239,11 +245,11 @@ call cmdalias#add('ag', 'Ag')
 cnoremap sudow w !sudo tee % >/dev/null
 
 " Neocomplete.
-let g:acp_enableAtStartup = 0
-let g:neocomplete#enable_at_startup = 1
-let g:neocomplete#enable_smart_case = 1
-inoremap <expr><tab>  pumvisible() ? "\<C-n>" : "\<tab>"
-inoremap <expr><S-tab>  pumvisible() ? "\<C-p>" : "\<S-tab>"
-"inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-let g:neocomplete#enable_auto_select = 1
-set completeopt-=preview
+" let g:acp_enableAtStartup = 0
+" let g:neocomplete#enable_at_startup = 1
+" let g:neocomplete#enable_smart_case = 1
+" inoremap <expr><tab>  pumvisible() ? "\<C-n>" : "\<tab>"
+" inoremap <expr><S-tab>  pumvisible() ? "\<C-p>" : "\<S-tab>"
+" inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+" let g:neocomplete#enable_auto_select = 1
+" set completeopt-=preview
