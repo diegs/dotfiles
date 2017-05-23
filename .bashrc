@@ -24,6 +24,9 @@ fi
 GIT_PROMPT_COMMAND='__git_ps1 "${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u\[\033[00m\]@\[\033[01;34m\]\h\[\033[00m\]:\[\033[01;33m\]\W\[\033[00m\]" "\[\033[00m\]% " " [%s]"'
 PROMPT_COMMAND="$GIT_PROMPT_COMMAND; $PROMPT_COMMAND"
 
+BASE16_SHELL=$HOME/.config/base16-shell/
+[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
+
 GIT_PS1_SHOWDIRTYSTATE=1
 GIT_PS1_SHOWSTASHSTATE=1
 GIT_PS1_SHOWUNTRACKEDFILES=1
@@ -44,7 +47,7 @@ if [ -d ~/bin ]; then
 fi
 
 case "$TERM" in
-  rxvt-unicode-256color)
+  rxvt-unicode-256color|xterm-termite)
       TERM=xterm-256color
       ;;
   *)
@@ -70,6 +73,3 @@ export VISUAL="vim"
 if [ -f ~/.bashrc-local ]; then
   . ~/.bashrc-local
 fi
-
-export GOPATH=$HOME
-export CLUSTER_PREFIX="diegs"

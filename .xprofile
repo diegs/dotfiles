@@ -1,4 +1,4 @@
-xsetroot -solid '#1d1f21'
+xsetroot -solid '#181818'
+xrandr --dpi 144 --output HDMI-0 --off
 xset s 300
 xss-lock -- i3lock &
-nm-applet &

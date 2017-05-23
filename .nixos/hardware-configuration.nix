@@ -40,7 +40,10 @@
     cpu.intel.updateMicrocode = true;
     enableAllFirmware = true;
   };
-  networking.hostName = "xps13";
+  networking = {
+    hostName = "xps13";
+    networkmanager.enable = true;
+  };
   nix.maxJobs = lib.mkDefault 4;
   powerManagement = {
     enable = true;
@@ -50,5 +53,13 @@
   #  enable = true;
   #  hwRender = true;
   #};
-  services.xserver.videoDrivers = [ "intel" ];
+  services.xserver = {
+    videoDrivers = [ "intel" ];
+    libinput = {
+      clickMethod = "clickfinger";
+      enable = true;
+      disableWhileTyping = true;
+      naturalScrolling = true;
+    };
+  };
 }

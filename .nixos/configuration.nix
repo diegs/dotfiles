@@ -1,44 +1,41 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
-
+  imports = [ ./hardware-configuration.nix ];
   boot.loader = {
     efi.canTouchEfiVariables = true;
     systemd-boot.enable = true;
   };
-
-  environment = {
-    gnome3.excludePackages = with pkgs.gnome3; [
-      epiphany
-      evolution
-      totem
-    ];
-    systemPackages = with pkgs; [
-      fwupd
-      git
-      gnumake
-      go
-      google-chrome
-      mercurial
-      slack
-      spotify
-      sway
-      xwayland
-      usbutils
-      vagrant
-      vimHugeX
-      yubikey-neo-manager
-    ];
-  };
-
+  environment.systemPackages = with pkgs; [
+    dmenu
+    i3blocks
+    i3-gaps
+    i3lock
+    jsoncpp
+    git
+    gnupg
+    gnumake
+    go
+    google-chrome
+    lemonbar
+    libu2f-host
+    lxappearance
+    polybar
+    rofi
+    slack
+    spotify
+    steam
+    termite
+    tree
+    vanilla-dmz
+    vimHugeX
+    xss-lock
+    yabar
+    yubikey-neo-manager
+  ];
   fonts = {
-    fonts = with pkgs; [ corefonts ];
+    fonts = with pkgs; [ font-awesome-ttf siji unifont ];
   };
-
   hardware = {
     opengl.driSupport32Bit = true;
     pulseaudio = {
@@ -46,23 +43,18 @@
       support32Bit = true;
     };
   };
-
   i18n = {
     consoleFont = "Lat2-Terminus16";
     consoleKeyMap = "us";
     defaultLocale = "en_US.UTF-8";
   };
-
-  networking = {
-    networkmanager.enable = true;
-  };
-
   nix.gc = {
     automatic = true;
     options = "-d";
   };
-  nixpkgs.config.allowUnfree = true;
-
+  nixpkgs.config = {
+    allowUnfree = true;
+  };
   programs = {
     bash = {
       enableCompletion = true;
@@ -72,44 +64,20 @@
       extraConfig = "AddKeysToAgent yes";
     };
   };
-
   security.sudo = {
     enable = true;
     wheelNeedsPassword = false;
   };
-
   services = {
-    #dbus.packages = with pkgs; [ fwupd ];
     journald.extraConfig = "SystemMaxUse=50M";
     pcscd.enable = true;
-    printing = {
-      drivers = with pkgs; [ hplip ];
-      enable = true;
-    };
     udev.packages = with pkgs; [ libu2f-host ];
     xserver = {
       enable = true;
       layout = "us";
-      libinput = {
-        clickMethod = "clickfinger";
-        enable = true;
-        disableWhileTyping = true;
-        naturalScrolling = true;
-      };
-      monitorSection = "DisplaySize 293 165";
-      displayManager = {
-        gdm.enable = true;
-      };
-      desktopManager = {
-        gnome3.enable = true;
-        xterm.enable = false;
-      };
+      displayManager.lightdm.enable = true;
+      windowManager.bspwm.enable = true;
     };
-  };
-
-  systemd = {
-    packages = with pkgs; [ fwupd ];
-    targets."multi-user".conflicts = [ "getty@tty1.service" ];
   };
   system = {
     autoUpgrade = {
@@ -117,19 +85,16 @@
     };
     stateVersion = "17.03";
   };
-
   time = {
     timeZone = "America/Los_Angeles";
     hardwareClockInLocalTime = true;
   };
-
   users.extraUsers.diegs = {
     isNormalUser = true;
     extraGroups = [ "docker" "networkmanager" "rkt" "vboxusers" "wheel" ];
     password = "changeme";
     uid = 1000;
   };
-
   virtualisation = {
     docker.enable = true;
     rkt.enable = true;

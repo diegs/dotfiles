@@ -12,12 +12,12 @@ call plug#begin('~/.vim/plugged')
 
 " Visual.
 " Plug 'w0ng/vim-hybrid'
-" Plug 'chriskempson/base16-vim'
+Plug 'chriskempson/base16-vim'
 " Plug 'ajh17/Spacegray.vim'
 " Plug 'NLKNguyen/papercolor-theme'
 " Plug 'jordwalke/flatlandia'
 " Plug 'romainl/Apprentice'
-Plug 'noahfrederick/vim-hemisu'
+" Plug 'noahfrederick/vim-hemisu'
 "" Plug 'noahfrederick/vim-noctu'
 " Plug 'morhetz/gruvbox'
 Plug 'vim-airline/vim-airline'
@@ -123,9 +123,11 @@ set incsearch
 set hidden
 autocmd VimResized * :wincmd =
 
-" if strftime("%H") > 17
-set background=light
-colorscheme hemisu
+set background=dark
+if filereadable(expand("~/.vimrc_background"))
+  let base16colorspace=256
+  source ~/.vimrc_background
+endif
 
 set clipboard=unnamed
 " if (executable('pbcopy') || executable('xclip') || executable('xsel'))
@@ -224,7 +226,7 @@ let g:slime_paste_file = tempname()
 let g:airline_left_sep=''
 let g:airline_right_sep=''
 " let g:airline_section_z=''
-let g:airline_theme = 'papercolor'
+let g:airline_theme = 'base16'
 
 " vim-pad.
 let g:pad#dir = '~/txt'
