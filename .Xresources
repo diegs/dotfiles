@@ -1,64 +1,9 @@
-! *************************************************
-! Do not edit ~/.Xresources, but ~/.Xresources.src
-! Use $HOME/.Xresources.edit to edit this file
-! *************************************************
-! vim:set ft=xdefaults:
-!
-! Base16 Tomorrow
-! Scheme: Chris Kempson (http:
-*foreground: #c5c8c6
-*background: #1d1f21
-*cursorColor: #c5c8c6
+Xft.dpi: 144
+Xft.autohint: 0
+Xft.lcdfilter:  lcddefault
+Xft.hintstyle:  hintfull
+Xft.hinting: 1
+Xft.antialias: 1
+Xft.rgba: rgb
 
-*color0: #1d1f21
-*color1: #cc6666
-*color2: #b5bd68
-*color3: #f0c674
-*color4: #81a2be
-*color5: #b294bb
-*color6: #8abeb7
-*color7: #c5c8c6
-
-*color8: #969896
-*color9: #de935f
-*color10: #282a2e
-*color11: #373b41
-*color12: #b4b7b4
-*color13: #e0e0e0
-*color14: #a3685a
-*color15: #ffffff
-
-Xcursor.theme: Elementary
-!Xcursor.size: 16
-
-URxvt*.scrollBar: false
-URxvt*.externalBorder: false
-URxvt*.internalBorder: false
-! URxvt*.font: -*-envypn-Medium-R-*-*-15-*-*-*-*-*-ISO8859-1
-URxvt*.boldFont:
-URxvt*.italicFont:
-URxvt*.boldItalicFont:
-URxvt*.font: xft:envypn:pixelsize=15
-URxvt*intensityStyles: false
-
-URxvt*.iso14755: false
-URxvt*.iso14755_52: false
-
-! URxvt*.perl-ext-common: default,url-select,clipboard,keyboard-select,cwd-spawn
-URxvt*.perl-ext-common: default,clipboard
-
-! URxvt*.keysym.M-Escape: perl:keyboard-select:activate
-! URxvt*.keysym.M-s: perl:keyboard-select:search
-
-! URxvt*.keysym.M-u: perl:url-select:select_next
-! URxvt*.url-select.autocopy: true
-! URxvt*.url-select.button: 2
-! URxvt*.url-select.launcher: /usr/bin/google-chrome
-! URxvt*.url-select.underline: true
-
-URxvt*.keysym.C-C: perl:clipboard:copy
-URxvt*.keysym.C-V: perl:clipboard:paste
-URxvt*.keysym.M-C-V: perl:clipboard:paste_escaped
-URxvt*.clipboard.autocopy: true
-Urxvt*.clipboard.copycmd: xclip -i -selection clipboard
-Urxvt*.clipboard.pastecmd: xclip -o -selection clipboard
+Xcursor.size: 64
