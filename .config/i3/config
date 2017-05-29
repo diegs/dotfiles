@@ -2,11 +2,16 @@
 #
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
+new_window pixel
+
 #exec_always --no-startup-id yabar
 
 set $mod Mod4
 
 font pango:DejaVu Sans Mono 9
+
+gaps inner 5
+gaps outer 5
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -106,14 +111,14 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # Pulse Audio controls
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl -- set-sink-volume @DEFAULT_SINK@ +10%
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl -- set-sink-volume @DEFAULT_SINK@ -10%
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl -- set-sink-volume @DEFAULT_SINK@ +5%
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl -- set-sink-volume @DEFAULT_SINK@ -5%
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle
 
 # Sreen brightness controls
-bindsym XF86MonBrightnessUp exec xbacklight -inc 10 # increase screen brightness
-bindsym XF86MonBrightnessDown exec xbacklight -dec 10 # decrease screen brightness
+bindsym XF86MonBrightnessUp exec xbacklight -inc 10 -time 0 -steps 1
+bindsym XF86MonBrightnessDown exec xbacklight -dec 10 -time 0 -steps 1
 
 ## Base16 Default Dark
 # Author: Chris Kempson (http://chriskempson.com)
@@ -139,7 +144,7 @@ set $base0F #a16946
 
 # Basic bar configuration using the Base16 variables.
 bar {
-    status_command i3blocks
+    status_command i3status
 
     colors {
         background $base00

@@ -1,4 +1,7 @@
 xsetroot -solid '#181818'
-xrandr --dpi 144 --output HDMI-0 --off
+xrandr --dpi 96 --output eDP1 --mode 1600x900 --output DP1-2 --auto --right-of eDP1
 xset s 300
 xss-lock -- i3lock &
+# polybar example &
+gpg-connect-agent /bye
+export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
