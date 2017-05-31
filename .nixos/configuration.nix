@@ -8,7 +8,8 @@
   };
   environment.interactiveShellInit = ". ${pkgs.gnome3.vte}/etc/profile.d/vte.sh";
   environment.systemPackages = with pkgs; [
-    aws
+    autorandr
+    awscli
     dmenu
     i3blocks
     i3-gaps
@@ -24,6 +25,7 @@
     gotools
     htop
     jq
+    keybase
     kubernetes
     lemonbar
     libu2f-host
