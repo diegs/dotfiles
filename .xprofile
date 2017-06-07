@@ -1,5 +1,5 @@
 xsetroot -solid '#181818'
-xrandr --dpi 96 --output eDP1 --mode 1600x900 --output DP1-2 --auto --right-of eDP1
+xrandr --dpi 96 --output eDP1 --mode 1600x900 --output DP1-2 --auto --primary --right-of eDP1
 xset s 300
 xss-lock -- i3lock -n -e -c 181818 &
 # polybar example &
