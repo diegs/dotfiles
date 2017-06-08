@@ -3,9 +3,9 @@
 [fetch]
   prune = true
 [user]
-  email = diego.pontoriero@coreos.com
   name = Diego Pontoriero
-	signingkey = 503D20E1A024E97A
+  email = dpontor@gmail.com
+  signingkey = 503D20E1A024E97A!
 [gpg]
 	program = gpg2
 [commit]
