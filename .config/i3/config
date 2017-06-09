@@ -20,6 +20,7 @@ floating_modifier $mod
 bindsym $mod+Return exec termite
 
 bindsym $mod+x exec loginctl -- lock-session
+bindsym $mod+d exec autorandr -- -c
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -117,8 +118,8 @@ bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ to
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle
 
 # Sreen brightness controls
-bindsym XF86MonBrightnessUp exec xbacklight -inc 10 -time 0 -steps 1
-bindsym XF86MonBrightnessDown exec xbacklight -dec 10 -time 0 -steps 1
+bindsym XF86MonBrightnessUp exec xbacklight -inc 5 -time 0 -steps 1
+bindsym XF86MonBrightnessDown exec xbacklight -dec 5 -time 0 -steps 1
 
 ## Base16 Default Dark
 # Author: Chris Kempson (http://chriskempson.com)

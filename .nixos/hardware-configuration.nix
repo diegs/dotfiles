@@ -12,13 +12,15 @@
     blacklistedKernelModules = [ "psmouse" ];
     extraModprobeConfig = ''
       options i915 modeset=1 enable_rc6=1 enable_fbc=1 enable_guc_loading=1 enable_guc_submission=1
+      options snd_hda_intel power_save=1
     '';
     extraModulePackages = [ ];
     initrd = {
       availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" "rtsx_pci_sdmmc" ];
-      luks.devices."crypted".device = "/dev/disk/by-uuid/2ca960c9-fad6-4d6a-a0bc-b0719dbdaa9c";
+      luks.devices."crypted".device = "/dev/disk/by-uuid/5a4dbda6-a794-48bc-abb7-34a82c633ea4";
     };
     kernelModules = [ "intel_agp" "kvm-intel" ];
+    # kernelParams = [ "pci=noaer" ];
   };
 
   fileSystems."/" =
@@ -26,9 +28,8 @@
       fsType = "ext4";
     };
 
-
   fileSystems."/boot" =
-    { device = "/dev/disk/by-label/UEFI";
+    { device = "/dev/nvme0n1p1";
       fsType = "vfat";
     };
 
@@ -42,17 +43,17 @@
   };
   networking = {
     hostName = "xps13";
-    networkmanager.enable = true;
+    #networkmanager.enable = true;
+    wireless = {
+      enable = true;
+      userControlled = true;
+    };
   };
   nix.maxJobs = lib.mkDefault 4;
   powerManagement = {
     enable = true;
     cpuFreqGovernor = "powersave";
   };
-  #services.kmscon = {
-  #  enable = true;
-  #  hwRender = true;
-  #};
   services.xserver = {
     videoDrivers = [ "intel" ];
     libinput = {

@@ -70,6 +70,7 @@ Plug 'jvoorhis/coq.vim'
 Plug 'the-lambda-church/coquille'
 Plug 'LnL7/vim-nix'
 Plug 'fatih/vim-go'
+Plug 'garyburd/go-explorer'
 Plug 'nsf/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
 call plug#end()
 
@@ -109,8 +110,8 @@ set copyindent    " copy the previous indentation on autoindenting
 set smartindent
 
 " Appearance.
-" set number
 set relativenumber
+set number
 set showcmd
 set novisualbell
 set noerrorbells
@@ -238,7 +239,32 @@ let g:pad#default_file_extension = '.md'
 let g:vimwiki_list = [{'path': '~/txt'}]
 
 " Tagbar.
-" map <leader>t :TagbarToggle<CR>
+let $TMPDIR = "/tmp"
+map <leader>t :TagbarToggle<CR>
+let g:tagbar_type_go = {
+    \ 'ctagstype': 'go',
+    \ 'kinds' : [
+        \'p:package',
+        \'f:function',
+        \'v:variables',
+        \'t:type',
+        \'c:const'
+    \]
+\}
+let g:tagbar_type_make = {
+            \ 'kinds':[
+                \ 'm:macros',
+                \ 't:targets'
+            \ ]
+\}
+let g:tagbar_type_markdown = {
+    \ 'ctagstype' : 'markdown',
+    \ 'kinds' : [
+        \ 'h:Heading_L1',
+        \ 'i:Heading_L2',
+        \ 'k:Heading_L3'
+    \ ]
+\ }
 
 " Cmdalias.
 call cmdalias#add('bd', 'BD')

@@ -2,15 +2,17 @@
 
 {
   imports = [ ./hardware-configuration.nix ];
-  boot.loader = {
-    efi.canTouchEfiVariables = true;
-    systemd-boot.enable = true;
+  boot = {
+    kernelPackages = pkgs.linuxPackages_4_11;
+    loader = {
+      efi.canTouchEfiVariables = true;
+      systemd-boot.enable = true;
+    };
   };
   environment.interactiveShellInit = ". ${pkgs.gnome3.vte}/etc/profile.d/vte.sh";
   environment.systemPackages = with pkgs; [
     autorandr
     awscli
-    cryptsetup
     dmenu
     i3blocks
     i3-gaps
@@ -32,12 +34,16 @@
     libu2f-host
     lxappearance
     nodejs
+    pass
     pciutils
     pinentry
     polybar
+    powertop
     python
+    redshift
     ripgrep
     rofi
+    rofi-pass
     screenfetch
     sxhkd
     slack
@@ -49,6 +55,7 @@
     xclip
     xorg.xbacklight
     xss-lock
+    universal-ctags
     unzip
     usbutils
     vagrant
@@ -58,7 +65,7 @@
     yubikey-neo-manager
   ];
   fonts = {
-    fonts = with pkgs; [ font-awesome-ttf siji unifont ];
+    fonts = with pkgs; [ corefonts font-awesome-ttf siji unifont ];
   };
   hardware = {
     opengl.driSupport32Bit = true;
@@ -93,6 +100,7 @@
     wheelNeedsPassword = false;
   };
   services = {
+    acpid.enable = true;
     journald.extraConfig = "SystemMaxUse=50M";
     pcscd.enable = true;
     thermald.enable = true;
