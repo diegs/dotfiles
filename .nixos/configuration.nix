@@ -40,6 +40,7 @@
     polybar
     powertop
     python
+    python27Packages.bugwarrior
     redshift
     ripgrep
     rofi
@@ -48,6 +49,8 @@
     sxhkd
     slack
     spotify
+    taskwarrior
+    timewarrior
     termite
     tree
     vanilla-dmz
@@ -106,6 +109,7 @@
     thermald.enable = true;
     udev.packages = with pkgs; [ libu2f-host ];
     xserver = {
+      desktopManager.xterm.enable = false;
       displayManager.slim = {
         defaultUser = "diegs";
         enable = true;
