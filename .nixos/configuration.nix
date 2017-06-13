@@ -13,6 +13,7 @@
   environment.systemPackages = with pkgs; [
     autorandr
     awscli
+    cryptsetup
     dmenu
     i3blocks
     i3-gaps
