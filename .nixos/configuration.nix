@@ -63,6 +63,7 @@
     unzip
     usbutils
     vagrant
+    weechat
     wpa_supplicant_gui
     yabar
     yarn
@@ -105,8 +106,17 @@
   };
   services = {
     acpid.enable = true;
+    avahi.enable = true;
     journald.extraConfig = "SystemMaxUse=50M";
     pcscd.enable = true;
+    printing = {
+      enable = true;
+    };
+    redshift = {
+      enable = true;
+      latitude = "37.758750";
+      longitude = "-122.416155";
+    };
     thermald.enable = true;
     udev.packages = with pkgs; [ libu2f-host ];
     xserver = {
