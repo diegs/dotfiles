@@ -31,3 +31,5 @@ rofi.color-urgent:  #282828, #ab4642, #282828, #282828, #ab4642
 
 ! Set the desired separator style
 rofi.separator-style: solid
+
+rofi.font:  Envy Code R 11

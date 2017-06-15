@@ -14,11 +14,8 @@
     autorandr
     awscli
     cryptsetup
-    dmenu
-    i3blocks
-    i3-gaps
+    dunst
     i3lock
-    i3status
     jsoncpp
     git
     gnupg
@@ -31,7 +28,7 @@
     jq
     keybase
     kubernetes
-    lemonbar
+    lemonbar-xft
     libu2f-host
     lxappearance
     nodejs
@@ -42,11 +39,11 @@
     powertop
     python
     python27Packages.bugwarrior
-    redshift
     ripgrep
     rofi
     rofi-pass
     screenfetch
+    sutils
     sxhkd
     slack
     spotify
@@ -65,7 +62,8 @@
     vagrant
     weechat
     wpa_supplicant_gui
-    yabar
+    xdo
+    xtitle
     yarn
     yubikey-neo-manager
   ];
@@ -136,11 +134,6 @@
       layout = "us";
       windowManager = {
         bspwm.enable = true;
-        default = "i3";
-        i3 = {
-          enable = true;
-          package = pkgs.i3-gaps;
-        };
       };
     };
   };

@@ -1,7 +1,6 @@
-xrandr --dpi 96 --output eDP1 --mode 1600x900 --output DP1-2 --auto --primary --right-of eDP1
+xrandr --output eDP1 --mode 1600x900 --output DP1-2 --auto --right-of eDP1
 xsetroot -solid '#181818' -cursor_name left_ptr
 xset s 300
-xss-lock -- i3lock -n -e -c 181818 &
-redshift &
+xss-lock i3lock -- -n -e -c 181818 &
 gpg-connect-agent /bye
 export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
