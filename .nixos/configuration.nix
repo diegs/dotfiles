@@ -3,7 +3,6 @@
 {
   imports = [ ./hardware-configuration.nix ];
   boot = {
-    kernelPackages = pkgs.linuxPackages_4_11;
     loader = {
       efi.canTouchEfiVariables = true;
       systemd-boot.enable = true;
@@ -11,6 +10,7 @@
   };
   environment.interactiveShellInit = ". ${pkgs.gnome3.vte}/etc/profile.d/vte.sh";
   environment.systemPackages = with pkgs; [
+    asciinema
     autorandr
     awscli
     cryptsetup
@@ -106,7 +106,10 @@
   };
   services = {
     acpid.enable = true;
-    avahi.enable = true;
+    avahi = {
+      enable = true;
+      nssmdns = true;
+    };
     journald.extraConfig = "SystemMaxUse=50M";
     pcscd.enable = true;
     printing = {
