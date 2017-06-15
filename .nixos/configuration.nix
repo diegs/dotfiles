@@ -15,7 +15,7 @@
     awscli
     cryptsetup
     dunst
-    i3lock
+    i3lock-color
     jsoncpp
     git
     gnupg
