@@ -110,6 +110,7 @@
     pcscd.enable = true;
     printing = {
       enable = true;
+      drivers = [ pkgs.hplip ];
     };
     redshift = {
       enable = true;
