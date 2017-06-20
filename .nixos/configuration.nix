@@ -31,9 +31,7 @@
     lemonbar-xft
     libu2f-host
     lxappearance
-    nodejs
     pass
-    pciutils
     pinentry
     polybar
     powertop
@@ -117,6 +115,10 @@
       enable = true;
       latitude = "37.758750";
       longitude = "-122.416155";
+    };
+    unclutter = {
+      enable = true;
+      package = pkgs.unclutter-xfixes;
     };
     thermald.enable = true;
     udev.packages = with pkgs; [ libu2f-host ];
