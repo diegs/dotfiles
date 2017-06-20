@@ -40,6 +40,8 @@
     ripgrep
     rofi
     rofi-pass
+    rustStable.rustc
+    rustStable.cargo
     screenfetch
     sutils
     sxhkd
