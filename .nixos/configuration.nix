@@ -119,10 +119,7 @@
       latitude = "37.758750";
       longitude = "-122.416155";
     };
-    unclutter = {
-      enable = true;
-      package = pkgs.unclutter-xfixes;
-    };
+    unclutter-xfixes.enable = true;
     thermald.enable = true;
     udev.packages = with pkgs; [ libu2f-host ];
     xserver = {
