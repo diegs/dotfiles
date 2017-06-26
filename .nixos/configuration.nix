@@ -18,6 +18,7 @@
     i3lock-color
     jsoncpp
     git
+    glide
     gnupg
     gnumake
     go
