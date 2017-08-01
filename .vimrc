@@ -86,6 +86,7 @@ set wildmode=longest,list:longest,full
 set nobackup
 set nowb
 set noswapfile
+set spell
 " set shortmess=at
 " inoremap jk <esc>
 " nnoremap ho :noh<CR>
@@ -111,7 +112,7 @@ set smartindent
 
 " Appearance.
 set relativenumber
-set number
+" set number
 set showcmd
 set novisualbell
 set noerrorbells
@@ -130,7 +131,7 @@ if filereadable(expand("~/.vimrc_background"))
   source ~/.vimrc_background
 endif
 
-set clipboard=unnamed
+set clipboard=unnamedplus
 " if (executable('pbcopy') || executable('xclip') || executable('xsel'))
 "   if has('unnamedplus')
 "     set clipboard=unnamed,unnamedplus
@@ -155,7 +156,9 @@ else
 endif
 
 " Go
-let g:go_fmt_command = "goimports"
+let g:go_fmt_command = "gofmt"
+let g:go_fmt_options = "-s"
+nnoremap <silent> <leader>gd :GoDef<CR>
 
 " Coquille
 nnoremap <silent> <leader>cn :CoqNext<CR>
@@ -184,7 +187,7 @@ let g:ctrlp_use_caching = 0
 nnoremap <silent> <C-b> :CtrlPBuffer<CR>
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_switch_buffer = ''
-set wildignore+=*/.git/*,*/tmp/*,*.swp
+set wildignore+=*/.git/*,*.swp
 if executable('rg')
   set grepprg=rg\ --color=never
   let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
