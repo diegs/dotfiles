@@ -80,6 +80,7 @@ set wildmode=longest,list:longest,full
 set nobackup
 set nowb
 set noswapfile
+set spell
 " set shortmess=at
 " inoremap jk <esc>
 " nnoremap ho :noh<CR>
@@ -105,7 +106,7 @@ set smartindent
 
 " Appearance.
 set relativenumber
-set number
+" set number
 set showcmd
 set novisualbell
 set noerrorbells
@@ -154,6 +155,7 @@ let g:go_fmt_options = {
 	\ 'gofmt': '-s',
 	\ 'goimports': '-local github.com/coreos',
 	\ }
+nnoremap <silent> <leader>gd :GoDef<CR>
 
 " Rust
 let g:rustfmt_autosave = 1
@@ -185,7 +187,7 @@ let g:ctrlp_use_caching = 0
 nnoremap <silent> <C-b> :CtrlPBuffer<CR>
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_switch_buffer = ''
-set wildignore+=*/.git/*,*/tmp/*,*.swp
+set wildignore+=*/.git/*,*.swp
 if executable('rg')
   set grepprg=rg\ --color=never
   let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
