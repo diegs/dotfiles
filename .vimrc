@@ -11,15 +11,7 @@ let mapleader=','
 call plug#begin('~/.vim/plugged')
 
 " Visual.
-" Plug 'w0ng/vim-hybrid'
 Plug 'chriskempson/base16-vim'
-" Plug 'ajh17/Spacegray.vim'
-" Plug 'NLKNguyen/papercolor-theme'
-" Plug 'jordwalke/flatlandia'
-" Plug 'romainl/Apprentice'
-" Plug 'noahfrederick/vim-hemisu'
-"" Plug 'noahfrederick/vim-noctu'
-" Plug 'morhetz/gruvbox'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
@@ -43,7 +35,8 @@ Plug 'roxma/vim-paste-easy'
 
 " Plugs.
 " Plug 'Shougo/neocomplete.vim'
-Plug 'vimwiki/vimwiki'
+" Plug 'jceb/vim-orgmode'
+" Plug 'vimwiki/vimwiki'
 Plug 'jeetsukumaran/vim-filebeagle'
 Plug 'majutsushi/tagbar'
 Plug 'ivalkeen/vim-ctrlp-tjump'
@@ -57,15 +50,16 @@ Plug 'tpope/vim-sensible'
 Plug 'starcraftman/cmdalias.vim'
 
 " Tmux.
-Plug 'jpalardy/vim-slime'
-Plug 'christoomey/vim-tmux-navigator'
+" Plug 'jpalardy/vim-slime'
+" Plug 'christoomey/vim-tmux-navigator'
 
 " Languages.
 Plug 'neovimhaskell/haskell-vim'
 Plug 'rust-lang/rust.vim'
 Plug 'cespare/vim-toml'
+Plug 'racer-rust/vim-racer'
 Plug 'google/vim-ft-bzl'
-Plug 'vim-scripts/SWIG-syntax'
+" Plug 'vim-scripts/SWIG-syntax'
 Plug 'jvoorhis/coq.vim'
 Plug 'the-lambda-church/coquille'
 Plug 'LnL7/vim-nix'
@@ -130,7 +124,7 @@ if filereadable(expand("~/.vimrc_background"))
   source ~/.vimrc_background
 endif
 
-set clipboard=unnamed
+set clipboard=unnamed,unnamedplus
 " if (executable('pbcopy') || executable('xclip') || executable('xsel'))
 "   if has('unnamedplus')
 "     set clipboard=unnamed,unnamedplus
@@ -155,7 +149,14 @@ else
 endif
 
 " Go
-let g:go_fmt_command = "goimports"
+let g:go_fmt_command = "gofmt"
+let g:go_fmt_options = {
+	\ 'gofmt': '-s',
+	\ 'goimports': '-local github.com/coreos',
+	\ }
+
+" Rust
+let g:rustfmt_autosave = 1
 
 " Coquille
 nnoremap <silent> <leader>cn :CoqNext<CR>
@@ -173,10 +174,10 @@ hi link SentToCoq Folded
 " nnoremap <C-H> <C-W><C-H>
 set splitbelow
 set splitright
-if has('nvim')
-  " Fix for C-h in nvim.
-  nmap <silent> <bs> :<c-u>TmuxNavigateLeft<cr>
-endif
+" if has('nvim')
+"   " Fix for C-h in nvim.
+"   nmap <silent> <bs> :<c-u>TmuxNavigateLeft<cr>
+" endif
 
 " CtrlP.
 " nunmap <C-b>
@@ -216,8 +217,8 @@ if exists(":Tabularize")
 endif
 
 " Slime.
-let g:slime_target = "tmux"
-let g:slime_paste_file = tempname()
+" let g:slime_target = "tmux"
+" let g:slime_paste_file = tempname()
 "let g:slime_no_mappings = 1
 "xmap <leader>s <Plug>SlimeRegionSend
 "nmap <leader>s <Plug>SlimeMotionSend
@@ -227,7 +228,7 @@ let g:slime_paste_file = tempname()
 let g:airline_left_sep=''
 let g:airline_right_sep=''
 " let g:airline_section_z=''
-let g:airline_theme = 'base16'
+let g:airline_theme = 'base16_shell'
 
 " vim-pad.
 let g:pad#dir = '~/txt'

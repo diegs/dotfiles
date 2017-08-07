@@ -20,7 +20,7 @@ if [ -f /etc/profile.d/vte.sh ]; then
   . /etc/profile.d/vte.sh
 fi
 
-GIT_PROMPT_COMMAND='__git_ps1 "${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u\[\033[00m\]@\[\033[01;34m\]\h\[\033[00m\]:\[\033[01;33m\]\W\[\033[00m\]" "\[\033[00m\]% " " [%s]"'
+GIT_PROMPT_COMMAND='__git_ps1 "" "$ " "[%s] "'
 PROMPT_COMMAND="$GIT_PROMPT_COMMAND; $PROMPT_COMMAND"
 
 BASE16_SHELL=$HOME/.config/base16-shell/
@@ -39,10 +39,6 @@ GIT_PS1_SHOWUPSTREAM="auto git"
 
 if [ -f /usr/share/git/completion/git-prompt.sh ] && ! shopt -oq posix; then
   . /usr/share/git/completion/git-prompt.sh
-fi
-
-if [ -d ~/bin ]; then
-  export PATH=~/bin:$PATH
 fi
 
 case "$TERM" in

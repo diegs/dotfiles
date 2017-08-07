@@ -13,6 +13,9 @@ super + d
 super + x
   loginctl lock-session
 
+shift + super + x
+  systemctl suspend
+
 # make sxhkd reload its configuration files:
 super + Escape
   pkill -USR1 -x sxhkd
