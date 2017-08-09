@@ -152,9 +152,9 @@ endif
 " Go
 let g:go_fmt_command = "gofmt"
 let g:go_fmt_options = {
-	\ 'gofmt': '-s',
-	\ 'goimports': '-local github.com/coreos',
-	\ }
+  \ 'gofmt': '-s',
+  \ 'goimports': '-local github.com/coreos',
+  \ }
 nnoremap <silent> <leader>gd :GoDef<CR>
 
 " Rust
@@ -284,3 +284,6 @@ cnoremap sudow w !sudo tee % >/dev/null
 " inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
 " let g:neocomplete#enable_auto_select = 1
 " set completeopt-=preview
+"
+" YouCompleteMe
+let g:ycm_autoclose_preview_window_after_completion = 1
