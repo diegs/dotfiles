@@ -51,7 +51,7 @@ Plug 'starcraftman/cmdalias.vim'
 
 " Tmux.
 " Plug 'jpalardy/vim-slime'
-" Plug 'christoomey/vim-tmux-navigator'
+Plug 'christoomey/vim-tmux-navigator'
 
 " Languages.
 Plug 'neovimhaskell/haskell-vim'
