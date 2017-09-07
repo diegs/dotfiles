@@ -26,16 +26,14 @@ shopt -s checkwinsize
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-trap 'echo -ne "\033]0;$BASH_COMMAND\a"' DEBUG
-function show_name() {
+trap 'echo -ne "\e]0;${BASH_COMMAND%% *}\007"' DEBUG
+function show_name { 
   if [[ -n "$BASH_COMMAND" ]]; then
-    echo -en "\033]0;`pwd`\a";
-  else
-    echo -en "\033]0;$BASH_COMMAND\a";
-  fi
+    echo -en "\e]0;${PWD}\007"
+  fi 
 }
 
-PROMPT_COMMAND='__git_ps1 "" "$ " "[%s] "; show_name'
+PROMPT_COMMAND='__git_ps1 "" "» " "[%s] "; show_name'
 
 GIT_PS1_SHOWDIRTYSTATE=1
 GIT_PS1_SHOWSTASHSTATE=1
