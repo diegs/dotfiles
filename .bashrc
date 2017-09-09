@@ -106,7 +106,6 @@ BASE16_SHELL=$HOME/.config/base16-shell/
 export BROWSER="google-chrome-stable"
 export EDITOR="vim"
 export VISUAL="vim"
-eval "$(direnv hook bash)"
 export GOPATH="/home/diegs"
 
 export PATH="$HOME/bin:$PATH"
