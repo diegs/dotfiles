@@ -10,62 +10,61 @@ let mapleader=','
 " vim-plug.
 call plug#begin('~/.vim/plugged')
 
+" Meta.
+Plug 'tpope/vim-sensible'
+Plug 'starcraftman/cmdalias.vim'
+
+" Navigation.
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'FelikZ/ctrlp-py-matcher'
+Plug 'vim-scripts/bufkill.vim'
+Plug 'schickling/vim-bufonly'
+Plug 'jeetsukumaran/vim-filebeagle'
+Plug 'majutsushi/tagbar'
+Plug 'ivalkeen/vim-ctrlp-tjump'
+Plug 'let-def/vimbufsync'
+Plug 'christoomey/vim-tmux-navigator'
+
 " Visual.
 Plug 'chriskempson/base16-vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
-" Movement.
+" Text.
+Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-unimpaired'
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'FelikZ/ctrlp-py-matcher'
-Plug 'vim-scripts/bufkill.vim'
-Plug 'schickling/vim-bufonly'
+Plug 'tpope/vim-surround'
+Plug 'godlygeek/tabular'
+Plug 'rking/ag.vim'
+Plug 'roxma/vim-paste-easy'
+Plug 'kana/vim-textobj-user'
+Plug 'Julian/vim-textobj-variable-segment'
 
 " Coding.
 Plug 'tomtom/tcomment_vim'
 Plug 'ConradIrwin/vim-comment-object'
 Plug 'b4winckler/vim-angry'
 
-" Text.
-Plug 'tpope/vim-surround'
-Plug 'godlygeek/tabular'
-Plug 'rking/ag.vim'
-Plug 'roxma/vim-paste-easy'
-
-" Plugs.
-" Plug 'Shougo/neocomplete.vim'
+" Organization.
 " Plug 'jceb/vim-orgmode'
 " Plug 'vimwiki/vimwiki'
-Plug 'jeetsukumaran/vim-filebeagle'
-Plug 'majutsushi/tagbar'
-Plug 'ivalkeen/vim-ctrlp-tjump'
-Plug 'let-def/vimbufsync'
-Plug 'kana/vim-textobj-user'
-Plug 'Julian/vim-textobj-variable-segment'
-
-" Misc.
-Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-sensible'
-Plug 'starcraftman/cmdalias.vim'
-
-" Tmux.
-" Plug 'jpalardy/vim-slime'
-Plug 'christoomey/vim-tmux-navigator'
+"
+" Completion.
+"Plug 'nsf/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
+"Plug 'racer-rust/vim-racer'
+Plug 'Valloric/YouCompleteMe'
 
 " Languages.
-Plug 'neovimhaskell/haskell-vim'
-Plug 'rust-lang/rust.vim'
-Plug 'cespare/vim-toml'
-Plug 'racer-rust/vim-racer'
-Plug 'google/vim-ft-bzl'
-" Plug 'vim-scripts/SWIG-syntax'
 Plug 'jvoorhis/coq.vim'
 Plug 'the-lambda-church/coquille'
-Plug 'LnL7/vim-nix'
+Plug 'neovimhaskell/haskell-vim'
+Plug 'rust-lang/rust.vim'
+Plug 'google/vim-ft-bzl'
 Plug 'fatih/vim-go'
-Plug 'garyburd/go-explorer'
-Plug 'nsf/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
+Plug 'LnL7/vim-nix'
+" Plug 'jpalardy/vim-slime'
+Plug 'cespare/vim-toml'
+
 call plug#end()
 
 " End of plugins.
@@ -93,6 +92,7 @@ command! W w
 command! WA wa
 nnoremap Y y$
 nnoremap <Leader>w :w<CR>
+nnoremap <Leader>q :q<CR>
 
 " Indentation.
 set expandtab
@@ -119,7 +119,7 @@ set incsearch
 set hidden
 autocmd VimResized * :wincmd =
 
-set background=dark
+"set background=dark
 if filereadable(expand("~/.vimrc_background"))
   let base16colorspace=256
   source ~/.vimrc_background
@@ -227,8 +227,8 @@ endif
 "nmap <leader>ss <Plug>SlimeLineSend
 
 " Airline.
-let g:airline_left_sep=''
-let g:airline_right_sep=''
+" let g:airline_left_sep=''
+" let g:airline_right_sep=''
 " let g:airline_section_z=''
 let g:airline_theme = 'base16_shell'
 
@@ -274,16 +274,6 @@ call cmdalias#add('bd', 'BD')
 call cmdalias#add('ag', 'Ag')
 
 cnoremap sudow w !sudo tee % >/dev/null
-
-" Neocomplete.
-" let g:acp_enableAtStartup = 0
-" let g:neocomplete#enable_at_startup = 1
-" let g:neocomplete#enable_smart_case = 1
-" inoremap <expr><tab>  pumvisible() ? "\<C-n>" : "\<tab>"
-" inoremap <expr><S-tab>  pumvisible() ? "\<C-p>" : "\<S-tab>"
-" inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-" let g:neocomplete#enable_auto_select = 1
-" set completeopt-=preview
 "
 " YouCompleteMe
 let g:ycm_autoclose_preview_window_after_completion = 1
