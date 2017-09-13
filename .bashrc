@@ -98,15 +98,12 @@ fi
 ## START
 set -o vi
 
-export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
-
 BASE16_SHELL=$HOME/.config/base16-shell/
 [ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
 
 export BROWSER="google-chrome-stable"
 export EDITOR="vim"
 export VISUAL="vim"
-eval "$(direnv hook bash)"
 export GOPATH="/home/diegs"
 
 export PATH="$HOME/bin:$PATH"
