@@ -52,7 +52,12 @@ Plug 'b4winckler/vim-angry'
 " Completion.
 "Plug 'nsf/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
 "Plug 'racer-rust/vim-racer'
-Plug 'Valloric/YouCompleteMe'
+"Plug 'Valloric/YouCompleteMe'
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-gocode.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
 
 " Languages.
 Plug 'jvoorhis/coq.vim'
@@ -60,7 +65,7 @@ Plug 'the-lambda-church/coquille'
 Plug 'neovimhaskell/haskell-vim'
 Plug 'rust-lang/rust.vim'
 Plug 'google/vim-ft-bzl'
-Plug 'fatih/vim-go'
+" Plug 'fatih/vim-go'
 Plug 'LnL7/vim-nix'
 " Plug 'jpalardy/vim-slime'
 Plug 'cespare/vim-toml'
@@ -125,7 +130,7 @@ if filereadable(expand("~/.vimrc_background"))
   source ~/.vimrc_background
 endif
 
-set clipboard=unnamed,unnamedplus
+"set clipboard=unnamed,unnamedplus
 " if (executable('pbcopy') || executable('xclip') || executable('xsel'))
 "   if has('unnamedplus')
 "     set clipboard=unnamed,unnamedplus
@@ -155,7 +160,6 @@ let g:go_fmt_options = {
   \ 'gofmt': '-s',
   \ 'goimports': '-local github.com/coreos',
   \ }
-nnoremap <silent> <leader>gd :GoDef<CR>
 
 " Rust
 let g:rustfmt_autosave = 1
@@ -274,6 +278,40 @@ call cmdalias#add('bd', 'BD')
 call cmdalias#add('ag', 'Ag')
 
 cnoremap sudow w !sudo tee % >/dev/null
-"
-" YouCompleteMe
-let g:ycm_autoclose_preview_window_after_completion = 1
+
+" Asynccomplete.
+if executable('gocode')
+  call asyncomplete#register_source(asyncomplete#sources#gocode#get_source_options({
+        \ 'name': 'gocode',
+        \ 'whitelist': ['go'],
+        \ 'completor': function('asyncomplete#sources#gocode#completor'),
+        \ }))
+endif
+
+if executable('go-langserver')
+  au User lsp_setup call lsp#register_server({
+        \ 'name': 'go-langserver',
+        \ 'cmd': {server_info->['go-langserver', '-mode', 'stdio']},
+        \ 'whitelist': ['go'],
+        \ })
+endif
+
+if executable('rls')
+  au User lsp_setup call lsp#register_server({
+        \ 'name': 'rls',
+        \ 'cmd': {server_info->['rustup', 'run', 'nightly', 'rls']},
+        \ 'whitelist': ['rust'],
+        \ })
+endif
+
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
+imap <c-space> <Plug>(asyncomplete_force_refresh)
+let g:asyncomplete_auto_popup = 1
+autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+
+" LSP
+nnoremap <silent> <leader>gd :LspDefinition<CR>
+nnoremap <silent> <leader>gh :LspHover<CR>
+nnoremap <silent> <leader>gr :LspReferences<CR>
