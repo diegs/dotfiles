@@ -48,11 +48,8 @@ Plug 'b4winckler/vim-angry'
 " Organization.
 " Plug 'jceb/vim-orgmode'
 " Plug 'vimwiki/vimwiki'
-"
+
 " Completion.
-"Plug 'nsf/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
-"Plug 'racer-rust/vim-racer'
-"Plug 'Valloric/YouCompleteMe'
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-gocode.vim'
@@ -65,9 +62,8 @@ Plug 'the-lambda-church/coquille'
 Plug 'neovimhaskell/haskell-vim'
 Plug 'rust-lang/rust.vim'
 Plug 'google/vim-ft-bzl'
-" Plug 'fatih/vim-go'
+Plug 'fatih/vim-go'
 Plug 'LnL7/vim-nix'
-" Plug 'jpalardy/vim-slime'
 Plug 'cespare/vim-toml'
 
 call plug#end()
@@ -126,8 +122,8 @@ autocmd VimResized * :wincmd =
 
 "set background=dark
 if filereadable(expand("~/.vimrc_background"))
-  let base16colorspace=256
-  source ~/.vimrc_background
+	let base16colorspace=256
+	source ~/.vimrc_background
 endif
 
 "set clipboard=unnamed,unnamedplus
@@ -141,25 +137,25 @@ endif
 
 let s:uname = system("uname -s")
 if has('gui_running')
-  set guiheadroom=0
-  set guioptions=aceit
-  if s:uname == "Darwin\n"
-    set guifont=Inconsolata:h15,Menlo:h14
-  else
-    " set guifont=Anonymous\ Pro\ 10
-    set guifont=Envy\ Code\ R\ 10
-  endif
-  set clipboard=unnamedplus
+	set guiheadroom=0
+	set guioptions=aceit
+	if s:uname == "Darwin\n"
+		set guifont=Inconsolata:h15,Menlo:h14
+	else
+		" set guifont=Anonymous\ Pro\ 10
+		set guifont=Envy\ Code\ R\ 10
+	endif
+	set clipboard=unnamedplus
 else
-  set mouse=
+	set mouse=
 endif
 
 " Go
 let g:go_fmt_command = "gofmt"
 let g:go_fmt_options = {
-  \ 'gofmt': '-s',
-  \ 'goimports': '-local github.com/coreos',
-  \ }
+			\ 'gofmt': '-s',
+			\ 'goimports': '-local github.com/coreos',
+			\ }
 
 " Rust
 let g:rustfmt_autosave = 1
@@ -193,33 +189,33 @@ let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_switch_buffer = ''
 set wildignore+=*/.git/*,*.swp
 if executable('rg')
-  set grepprg=rg\ --color=never
-  let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
-" else
-"   let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
-"         \ --ignore .git
-"         \ --ignore .svn
-"         \ --ignore .hg
-"         \ --ignore .cache
-"         \ --ignore .config
-"         \ --ignore .local
-"         \ --ignore .gnome
-"         \ --ignore .gradle
-"         \ --ignore .stack-work
-"         \ --ignore .vagrant
-"         \ --ignore dist
-"         \ --ignore out
-"         \ --ignore vendor
-"         \ -g ""'
+	set grepprg=rg\ --color=never
+	let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
+	" else
+	"   let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
+	"         \ --ignore .git
+	"         \ --ignore .svn
+	"         \ --ignore .hg
+	"         \ --ignore .cache
+	"         \ --ignore .config
+	"         \ --ignore .local
+	"         \ --ignore .gnome
+	"         \ --ignore .gradle
+	"         \ --ignore .stack-work
+	"         \ --ignore .vagrant
+	"         \ --ignore dist
+	"         \ --ignore out
+	"         \ --ignore vendor
+	"         \ -g ""'
 endif
 let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
 
 " Tabularize.
 if exists(":Tabularize")
-  nmap <Leader>a= :Tabularize /=<CR>
-  vmap <Leader>a= :Tabularize /=<CR>
-  nmap <Leader>a: :Tabularize /:\zs<CR>
-  vmap <Leader>a: :Tabularize /:\zs<CR>
+	nmap <Leader>a= :Tabularize /=<CR>
+	vmap <Leader>a= :Tabularize /=<CR>
+	nmap <Leader>a: :Tabularize /:\zs<CR>
+	vmap <Leader>a: :Tabularize /:\zs<CR>
 endif
 
 " Slime.
@@ -249,29 +245,29 @@ let g:vimwiki_list = [{'path': '~/txt'}]
 let $TMPDIR = "/tmp"
 map <leader>t :TagbarToggle<CR>
 let g:tagbar_type_go = {
-    \ 'ctagstype': 'go',
-    \ 'kinds' : [
-        \'p:package',
-        \'f:function',
-        \'v:variables',
-        \'t:type',
-        \'c:const'
-    \]
-\}
+			\ 'ctagstype': 'go',
+			\ 'kinds' : [
+			\'p:package',
+			\'f:function',
+			\'v:variables',
+			\'t:type',
+			\'c:const'
+			\]
+			\}
 let g:tagbar_type_make = {
-            \ 'kinds':[
-                \ 'm:macros',
-                \ 't:targets'
-            \ ]
-\}
+			\ 'kinds':[
+			\ 'm:macros',
+			\ 't:targets'
+			\ ]
+			\}
 let g:tagbar_type_markdown = {
-    \ 'ctagstype' : 'markdown',
-    \ 'kinds' : [
-        \ 'h:Heading_L1',
-        \ 'i:Heading_L2',
-        \ 'k:Heading_L3'
-    \ ]
-\ }
+			\ 'ctagstype' : 'markdown',
+			\ 'kinds' : [
+			\ 'h:Heading_L1',
+			\ 'i:Heading_L2',
+			\ 'k:Heading_L3'
+			\ ]
+			\ }
 
 " Cmdalias.
 call cmdalias#add('bd', 'BD')
@@ -281,27 +277,27 @@ cnoremap sudow w !sudo tee % >/dev/null
 
 " Asynccomplete.
 if executable('gocode')
-  call asyncomplete#register_source(asyncomplete#sources#gocode#get_source_options({
-        \ 'name': 'gocode',
-        \ 'whitelist': ['go'],
-        \ 'completor': function('asyncomplete#sources#gocode#completor'),
-        \ }))
+	call asyncomplete#register_source(asyncomplete#sources#gocode#get_source_options({
+				\ 'name': 'gocode',
+				\ 'whitelist': ['go'],
+				\ 'completor': function('asyncomplete#sources#gocode#completor'),
+				\ }))
 endif
 
 if executable('go-langserver')
-  au User lsp_setup call lsp#register_server({
-        \ 'name': 'go-langserver',
-        \ 'cmd': {server_info->['go-langserver', '-mode', 'stdio']},
-        \ 'whitelist': ['go'],
-        \ })
+	au User lsp_setup call lsp#register_server({
+				\ 'name': 'go-langserver',
+				\ 'cmd': {server_info->['go-langserver', '-mode', 'stdio']},
+				\ 'whitelist': ['go'],
+				\ })
 endif
 
 if executable('rls')
-  au User lsp_setup call lsp#register_server({
-        \ 'name': 'rls',
-        \ 'cmd': {server_info->['rustup', 'run', 'nightly', 'rls']},
-        \ 'whitelist': ['rust'],
-        \ })
+	au User lsp_setup call lsp#register_server({
+				\ 'name': 'rls',
+				\ 'cmd': {server_info->['rustup', 'run', 'nightly', 'rls']},
+				\ 'whitelist': ['rust'],
+				\ })
 endif
 
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
