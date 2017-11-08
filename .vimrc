@@ -1,7 +1,6 @@
 " For plugin loading.
 set nocompatible
 filetype off
-
 syntax off
 
 " First things first I'm the lead-est.
