@@ -80,13 +80,8 @@ set nobackup
 set nowb
 set noswapfile
 set spell
-" set shortmess=at
-" inoremap jk <esc>
-" nnoremap ho :noh<CR>
 set ruler
 set matchpairs+=<:>
-" autocmd InsertEnter * :set norelativenumber
-" autocmd InsertLeave * :set relativenumber
 command! Q q
 command! W w
 command! WA wa
