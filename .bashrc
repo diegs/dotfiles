@@ -110,8 +110,14 @@ export PATH="$HOME/bin:$PATH"
 export PATH=/usr/lib/go-1.8/bin:$PATH
 export PATH="$HOME/.cargo/bin:$PATH"
 
+# Set SSH to use gpg-agent
+unset SSH_AGENT_PID
+if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
+  export SSH_AUTH_SOCK="/run/user/$UID/gnupg/S.gpg-agent.ssh"
+fi
+
 # Set GPG TTY
 export GPG_TTY=$(tty)
 
 # Make sure git commands always update the SSH TTY.
-export GIT_SSH=/home/diegs/bin/git_ssh
+export GIT_SSH=/home/diegs/.git_ssh
