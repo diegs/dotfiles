@@ -110,9 +110,8 @@ export PATH="$HOME/bin:$PATH"
 export PATH=/usr/lib/go-1.8/bin:$PATH
 export PATH="$HOME/.cargo/bin:$PATH"
 
+# Set GPG TTY
 export GPG_TTY=$(tty)
 
-_ssh_auth_save() {
-  ln -sf "$SSH_AUTH_SOCK" "$HOME/.ssh/ssh-auth-sock.$HOSTNAME"
-}
-alias tmux='_ssh_auth_save ; export HOSTNAME=$(hostname) ; tmux'
+# Make sure git commands always update the SSH TTY.
+export GIT_SSH=/home/diegs/bin/git_ssh
