@@ -43,6 +43,7 @@ Plug 'Julian/vim-textobj-variable-segment'
 Plug 'tomtom/tcomment_vim'
 Plug 'ConradIrwin/vim-comment-object'
 Plug 'b4winckler/vim-angry'
+Plug 'w0rp/ale'
 
 " Organization.
 " Plug 'jceb/vim-orgmode'
@@ -61,7 +62,6 @@ Plug 'the-lambda-church/coquille'
 Plug 'neovimhaskell/haskell-vim'
 Plug 'rust-lang/rust.vim'
 Plug 'google/vim-ft-bzl'
-Plug 'fatih/vim-go'
 Plug 'LnL7/vim-nix'
 Plug 'cespare/vim-toml'
 
@@ -101,7 +101,7 @@ set smartindent
 
 " Appearance.
 set relativenumber
-" set number
+set number
 set showcmd
 set novisualbell
 set noerrorbells
@@ -112,6 +112,7 @@ set colorcolumn=+1
 set hlsearch
 set incsearch
 set hidden
+set mouse=
 autocmd VimResized * :wincmd =
 
 "set background=dark
@@ -129,31 +130,6 @@ endif
 "   endif
 " endif
 
-let s:uname = system("uname -s")
-if has('gui_running')
-	set guiheadroom=0
-	set guioptions=aceit
-	if s:uname == "Darwin\n"
-		set guifont=Inconsolata:h15,Menlo:h14
-	else
-		" set guifont=Anonymous\ Pro\ 10
-		set guifont=Envy\ Code\ R\ 10
-	endif
-	set clipboard=unnamedplus
-else
-	set mouse=
-endif
-
-" Go
-let g:go_fmt_command = "gofmt"
-let g:go_fmt_options = {
-			\ 'gofmt': '-s',
-			\ 'goimports': '-local github.com/coreos',
-			\ }
-
-" Rust
-let g:rustfmt_autosave = 1
-
 " Coquille
 nnoremap <silent> <leader>cn :CoqNext<CR>
 nnoremap <silent> <leader>cu :CoqUndo<CR>
@@ -164,16 +140,8 @@ hi link CheckedByCoq Folded
 hi link SentToCoq Folded
 
 " Splits.
-" nnoremap <C-J> <C-W><C-J>
-" nnoremap <C-K> <C-W><C-K>
-" nnoremap <C-L> <C-W><C-L>
-" nnoremap <C-H> <C-W><C-H>
 set splitbelow
 set splitright
-" if has('nvim')
-"   " Fix for C-h in nvim.
-"   nmap <silent> <bs> :<c-u>TmuxNavigateLeft<cr>
-" endif
 
 " CtrlP.
 " nunmap <C-b>
@@ -185,22 +153,6 @@ set wildignore+=*/.git/*,*.swp
 if executable('rg')
 	set grepprg=rg\ --color=never
 	let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
-	" else
-	"   let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
-	"         \ --ignore .git
-	"         \ --ignore .svn
-	"         \ --ignore .hg
-	"         \ --ignore .cache
-	"         \ --ignore .config
-	"         \ --ignore .local
-	"         \ --ignore .gnome
-	"         \ --ignore .gradle
-	"         \ --ignore .stack-work
-	"         \ --ignore .vagrant
-	"         \ --ignore dist
-	"         \ --ignore out
-	"         \ --ignore vendor
-	"         \ -g ""'
 endif
 let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
 
@@ -305,3 +257,11 @@ autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 nnoremap <silent> <leader>gd :LspDefinition<CR>
 nnoremap <silent> <leader>gh :LspHover<CR>
 nnoremap <silent> <leader>gr :LspReferences<CR>
+
+" ALE
+let g:ale_fix_on_save = 1
+let g:ale_go_gofmt_options = "-s"
+let g:ale_fixers = {
+\   'go': ['goimports', 'gofmt'],
+\}
+let g:airline#extensions#ale#enabled = 1
