@@ -34,7 +34,6 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-surround'
 Plug 'godlygeek/tabular'
-Plug 'rking/ag.vim'
 Plug 'roxma/vim-paste-easy'
 Plug 'kana/vim-textobj-user'
 Plug 'Julian/vim-textobj-variable-segment'
@@ -101,7 +100,7 @@ set smartindent
 
 " Appearance.
 set relativenumber
-set number
+" set number
 set showcmd
 set novisualbell
 set noerrorbells
@@ -145,16 +144,17 @@ set splitright
 
 " CtrlP.
 " nunmap <C-b>
-let g:ctrlp_use_caching = 0
 nnoremap <silent> <C-b> :CtrlPBuffer<CR>
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_switch_buffer = ''
-set wildignore+=*/.git/*,*.swp
+let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
 if executable('rg')
 	set grepprg=rg\ --color=never
 	let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
+	let g:ctrlp_use_caching = 0
+else
+  let g:ctrlp_clear_cache_on_exit = 0
 endif
-let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
 
 " Tabularize.
 if exists(":Tabularize")
