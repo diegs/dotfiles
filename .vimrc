@@ -42,7 +42,8 @@ Plug 'Julian/vim-textobj-variable-segment'
 Plug 'tomtom/tcomment_vim'
 Plug 'ConradIrwin/vim-comment-object'
 Plug 'b4winckler/vim-angry'
-Plug 'w0rp/ale'
+" Plug 'w0rp/ale'
+Plug 'diegs/ale', { 'branch': 'buildifier' }
 
 " Organization.
 " Plug 'jceb/vim-orgmode'
@@ -260,8 +261,10 @@ nnoremap <silent> <leader>gr :LspReferences<CR>
 
 " ALE
 let g:ale_fix_on_save = 1
+let g:ale_lint_on_text_changed = 'never'
 let g:ale_go_gofmt_options = "-s"
 let g:ale_fixers = {
+\   'bzl': ['buildifier'],
 \   'go': ['goimports', 'gofmt'],
 \}
 let g:airline#extensions#ale#enabled = 1
