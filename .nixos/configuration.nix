@@ -1,164 +1,141 @@
 { config, pkgs, ... }:
 
-{
+let
+  unstable = import <unstable> {};
+in {
   imports = [ ./hardware-configuration.nix ];
+
   boot = {
+    kernelPackages = pkgs.linuxPackages_latest;
     loader = {
       efi.canTouchEfiVariables = true;
       systemd-boot.enable = true;
     };
   };
-  environment.interactiveShellInit = ". ${pkgs.gnome3.vte}/etc/profile.d/vte.sh";
+
   environment.systemPackages = with pkgs; [
-    asciinema
-    autorandr
-    awscli
-    cryptsetup
-    dunst
-    i3lock-color
-    jsoncpp
+    # Dev.
+    unstable.awscli
+    unstable.bazel
+    binutils
+    unstable.cargo
+    unstable.dep
     git
-    glide
-    gnupg
+    unstable.glide
+    glibc
     gnumake
-    go
-    google-chrome
-    google-cloud-sdk
-    gotools
-    htop
+    unstable.go
+    unstable.gocode
+    unstable.gotools
     jq
-    keybase
-    kubernetes
-    lemonbar-xft
-    libu2f-host
-    lxappearance
-    pass
-    pinentry
-    polybar
-    powertop
+    unstable.kubernetes
     python
-    python27Packages.bugwarrior
-    ripgrep
-    rofi
-    rofi-pass
-    rustStable.rustc
-    rustStable.cargo
-    screenfetch
-    sutils
-    sxhkd
-    slack
-    spotify
-    taskwarrior
-    timewarrior
-    termite
-    tree
-    vanilla-dmz
-    vimHugeX
-    xclip
-    xorg.xbacklight
-    xss-lock
+    unstable.protobuf
+    unstable.rustc
+    terraform_0_10
     universal-ctags
-    unzip
-    usbutils
+    python36Packages.yamllint
+
+    # Haskell.
+    unstable.cabal2nix
+    unstable.cabal-install
+    unstable.nix-prefetch-git
+    unstable.stack
+
+    # System tools.
+    file
+    gnupg
+    gzip
+    openssl
+    unstable.patchelf
     vagrant
-    weechat
-    wpa_supplicant_gui
-    xdo
-    xtitle
-    yarn
-    yubikey-neo-manager
+    virtmanager
+
+    # Interface.
+    unstable.ripgrep
+    vimHugeX
+    tmux
+
+    # Utilities.
+    htop
+    pass
+    screenfetch
+    tree
+    unzip
   ];
-  fonts = {
-    fonts = with pkgs; [ corefonts font-awesome-ttf siji unifont ];
-  };
-  hardware = {
-    opengl.driSupport32Bit = true;
-    pulseaudio = {
-      enable = true;
-      support32Bit = true;
-    };
-  };
+
   i18n = {
     consoleFont = "Lat2-Terminus16";
     consoleKeyMap = "us";
     defaultLocale = "en_US.UTF-8";
   };
+
   nix.gc = {
     automatic = true;
     options = "-d";
   };
+
+  networking = {
+    hostName = "dev";
+    extraHosts = ''
+      172.17.0.2 matchbox.example.com 
+      172.17.0.21 cluster.example.com 
+      172.17.0.22 tectonic.example.com 
+      172.17.0.21 node1.example.com 
+      172.17.0.22 node2.example.com 
+      172.17.0.23 node3.example.com
+    '';
+    nameservers = [ "8.8.8.8" "4.4.4.4" ];
+  };
+
   nixpkgs.config = {
     allowUnfree = true;
   };
+
   programs = {
-    bash = {
+     bash = {
       enableCompletion = true;
-      promptInit = "PS1=\"\\u@\\h \\w% \"";
+      promptInit = ''PS1="\[\033[1;32m\][\u@\h:\W]\$\[\033[0m\] "'';
     };
-    ssh = {
-      extraConfig = "AddKeysToAgent yes";
-    };
+    mtr.enable = true;
+    gnupg.agent = { enable = true; enableSSHSupport = true; };
   };
+
   security.sudo = {
     enable = true;
     wheelNeedsPassword = false;
   };
+
   services = {
-    acpid.enable = true;
-    avahi = {
+    ddclient = {
+      domain = "dev.diegs.ca";
       enable = true;
-      nssmdns = true;
+      username = "changeme";
+      password = "changeme";
+      protocol = "googledomains";
     };
-    journald.extraConfig = "SystemMaxUse=50M";
-    pcscd.enable = true;
-    printing = {
-      enable = true;
-      drivers = [ pkgs.hplip ];
-    };
-    redshift = {
-      enable = true;
-      latitude = "37.758750";
-      longitude = "-122.416155";
-    };
-    unclutter-xfixes.enable = true;
-    thermald.enable = true;
-    udev.packages = with pkgs; [ libu2f-host ];
-    xserver = {
-      desktopManager.xterm.enable = false;
-      displayManager.slim = {
-        defaultUser = "diegs";
-        enable = true;
-        theme = pkgs.fetchurl {
-          url = "https://github.com/edwtjo/nixos-black-theme/archive/v1.0.tar.gz";
-          sha256 = "13bm7k3p6k7yq47nba08bn48cfv536k4ipnwwp1q1l2ydlp85r9d";
-        };
-      };
-      enable = true;
-      layout = "us";
-      windowManager = {
-        bspwm.enable = true;
-      };
-    };
+    openssh.enable = true;
   };
+
   system = {
     autoUpgrade = {
       enable = true;
     };
-    stateVersion = "17.03";
+    stateVersion = "17.09";
   };
-  time = {
-    timeZone = "America/Los_Angeles";
-    hardwareClockInLocalTime = true;
-  };
+
+  time.timeZone = "America/Los_Angeles";
+
   users.extraUsers.diegs = {
     isNormalUser = true;
-    extraGroups = [ "docker" "rkt" "vboxusers" "wheel" ];
+    extraGroups = [ "docker" "libvirtd" "vboxusers" "wheel" ];
     password = "changeme";
     uid = 1000;
   };
+
   virtualisation = {
     docker.enable = true;
-    rkt.enable = true;
+    libvirtd.enable = true;
     virtualbox.host.enable = true;
   };
 }
