@@ -247,6 +247,16 @@ if executable('rls')
 				\ })
 endif
 
+if executable('stack')
+	au User lsp_setup call lsp#register_server({
+				\ 'name': 'hie',
+	      \ 'cmd': {server_info->[&shell, &shellcmdflag, '~/.stack/compiler-tools/x86_64-linux-nix/ghc-8.2.2/bin/hie --lsp']},
+				\ 'whitelist': ['haskell'],
+				\ })
+endif
+
+"				\ 'cmd': {server_info->['stack', 'exec', 'hie', '--lsp']},
+
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"

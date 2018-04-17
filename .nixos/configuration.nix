@@ -6,7 +6,7 @@ in {
   imports = [ ./hardware-configuration.nix ];
 
   boot = {
-    kernelPackages = pkgs.linuxPackages_latest;
+    #kernelPackages = pkgs.linuxPackages_latest;
     loader = {
       efi.canTouchEfiVariables = true;
       systemd-boot.enable = true;
@@ -15,26 +15,30 @@ in {
 
   environment.systemPackages = with pkgs; [
     # Dev.
-    unstable.awscli
-    unstable.bazel
     binutils
-    unstable.cargo
-    unstable.dep
     git
-    unstable.glide
     glibc
     gnumake
+    jq
+    universal-ctags
+    python36Packages.yamllint
+
+    # Cloud.
+    unstable.awscli
+    unstable.kubernetes
+    unstable.google-cloud-sdk
+
+    # Interface.
+    unstable.ripgrep
+    vimHugeX
+    tmux
+
+    # Go.
+    unstable.dep
+    unstable.glide
     unstable.go
     unstable.gocode
     unstable.gotools
-    jq
-    unstable.kubernetes
-    python
-    unstable.protobuf
-    unstable.rustc
-    terraform_0_10
-    universal-ctags
-    python36Packages.yamllint
 
     # Haskell.
     unstable.cabal2nix
@@ -42,27 +46,33 @@ in {
     unstable.nix-prefetch-git
     unstable.stack
 
-    # System tools.
+    # Other languages.
+    python
+    unstable.protobuf
+
+    # Rust.
+    unstable.cargo
+    unstable.rustc
+
+    # Utilities.
     file
     gnupg
     gzip
-    openssl
-    unstable.patchelf
-    vagrant
-    virtmanager
-
-    # Interface.
-    unstable.ripgrep
-    vimHugeX
-    tmux
-
-    # Utilities.
     htop
+    openssl
     pass
     screenfetch
     tree
     unzip
+
+    # Virutalization.
+    vagrant
+    virtmanager
   ];
+
+  hardware = {
+    cpu.intel.updateMicrocode = true;
+  };
 
   i18n = {
     consoleFont = "Lat2-Terminus16";
@@ -110,18 +120,22 @@ in {
     ddclient = {
       domain = "dev.diegs.ca";
       enable = true;
-      username = "changeme";
-      password = "changeme";
+      username = "";
+      password = "";
       protocol = "googledomains";
     };
-    openssh.enable = true;
+    fail2ban.enable = true;
+    openssh = {
+      enable = true;
+      permitRootLogin = "no";
+    };
   };
 
   system = {
     autoUpgrade = {
       enable = true;
     };
-    stateVersion = "17.09";
+    stateVersion = "18.03";
   };
 
   time.timeZone = "America/Los_Angeles";
@@ -134,8 +148,11 @@ in {
   };
 
   virtualisation = {
-    docker.enable = true;
-    libvirtd.enable = true;
+    docker = {
+      enable = true;
+      extraOptions = "--exec-opt native.cgroupdriver=systemd";
+    };
+    libvirtd.enable = false;
     virtualbox.host.enable = true;
   };
 }
