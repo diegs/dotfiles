@@ -1,10 +1,19 @@
 [core]
-  excludesfile = ~/.gitignore
+	excludesfile = ~/.gitignore
 [fetch]
-  prune = true
+	prune = true
 [user]
-  name = Diego Pontoriero
-  email = dpontor@gmail.com
-  signingkey = 503D20E1A024E97A!
+	name = Diego Pontoriero
+	email = dpontor@gmail.com
+	signingkey = 503D20E1A024E97A!
 [commit]
-  gpgsign = true
+	gpgsign = false
+[url "git@github.com:"]
+	insteadOf = https://github.com/
+[alias]
+	co = checkout
+	st = status
+	br = branch
+	ci = commit
+[push]
+	default = current
