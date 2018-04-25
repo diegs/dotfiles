@@ -104,6 +104,7 @@ let g:go_auto_sameids = 0
 
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
+set completeopt-=preview
 
 if executable('pyls')
 	au User lsp_setup call lsp#register_server({
@@ -130,7 +131,9 @@ endif
 nnoremap <silent> gh :LspHover<CR>
 nnoremap <silent> gd :LspDefinition<CR>
 nnoremap <silent> gr :LspReferences<CR>
+au FileType go nnoremap <C-g> :GoDeclsDir<CR>
 
 let g:lsp_signs_enabled = 1
 let g:lsp_diagnostics_echo_cursor = 1
-set completeopt-=preview
+
+let g:airline#extensions#ale#enabled = 1
