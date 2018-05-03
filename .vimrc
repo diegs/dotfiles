@@ -1,79 +1,89 @@
-" For plugin loading.
-set nocompatible
-filetype off
-syntax off
+if &compatible
+ set nocompatible
+endif
 
-" First things first I'm the lead-est.
-let mapleader=','
+set runtimepath+=~/.local/share/dein/repos/github.com/Shougo/dein.vim
 
-" vim-plug.
-call plug#begin('~/.vim/plugged')
+if dein#load_state('~/.local/share/dein')
+  call dein#begin('~/.local/share/dein')
 
-" Navigation.
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'FelikZ/ctrlp-py-matcher'
-Plug 'jremmen/vim-ripgrep'
-Plug 'justinmk/vim-dirvish'
-Plug 'christoomey/vim-tmux-navigator'
+  call dein#add('~/.local/share/dein')
 
-" Visual.
-Plug 'chriskempson/base16-vim'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+  " Navigation.
+  call dein#add('ctrlpvim/ctrlp.vim')
+  call dein#add('FelikZ/ctrlp-py-matcher')
+  call dein#add('jremmen/vim-ripgrep')
+  call dein#add('justinmk/vim-dirvish')
+  call dein#add('christoomey/vim-tmux-navigator')
 
-" Completion.
-Plug 'prabirshrestha/async.vim'
-" Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/vim-lsp'
-" Plug 'prabirshrestha/asyncomplete-lsp.vim'
-" Plug 'prabirshrestha/asyncomplete-gocode.vim'
+  " Visual.
+  call dein#add('chriskempson/base16-vim')
+  call dein#add('vim-airline/vim-airline')
+  call dein#add('vim-airline/vim-airline-themes')
 
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'zchee/deoplete-go', { 'do': 'make'}
-Plug 'fatih/vim-go'
-Plug 'saltstack/salt-vim'
+  " Completion.
+  call dein#add('Shougo/deoplete.nvim')
+  if !has('nvim')
+    call dein#add('roxma/nvim-yarp')
+    call dein#add('roxma/vim-hug-neovim-rpc')
+  endif
+  call dein#add('autozimu/LanguageClient-neovim', {
+    \ 'rev': 'next',
+    \ 'build': 'bash install.sh',
+    \ })
 
-" Formatting.
-" Plug 'w0rp/ale'
-Plug 'tpope/vim-abolish'
-Plug 'tpope/vim-unimpaired'
-Plug 'tpope/vim-repeat'
+  " Languages.
+  call dein#add('saltstack/salt-vim')
 
-" General text manipulation.
-Plug 'tpope/vim-commentary'
+  " Formatting.
+  call dein#add('w0rp/ale')
+  call dein#add('tpope/vim-repeat')
+  call dein#add('tpope/vim-abolish')
+  call dein#add('tpope/vim-commentary')
+  call dein#add('tpope/vim-repeat')
+  call dein#add('tpope/vim-unimpaired')
+  call dein#add('kana/vim-textobj-user')
+  call dein#add('glts/vim-textobj-comment')
 
-call plug#end()
+ call dein#end()
+ call dein#save_state()
+endif
 
-" End of plugins.
 filetype plugin indent on
-syntax on
+syntax enable
 
-" Vim behavior.
+" Settings.
+set hidden
+set showmatch
+set ignorecase
+set smartcase
 set nobackup
 set nowb
 set noswapfile
-set splitbelow
-set splitright
 
-" Appearance.
-set ruler
-set relativenumber
-set number
-set novisualbell
-set noerrorbells
-set cursorline
-set colorcolumn=+1
-set hlsearch
-set incsearch
-set hidden
-
-" Text behavior.
+" Editing.
+set tabstop=2
+set softtabstop=2
+set expandtab
+set shiftwidth=2
+set autoindent
+set wildmode=longest,list
 set nojoinspaces
 set matchpairs+=<:>
 
+" UI.
+set hlsearch
+set number
+set relativenumber
+set splitbelow
+set splitright
+if filereadable(expand("~/.vimrc_background"))
+  let base16colorspace=256
+  source ~/.vimrc_background
+endif
+
 " Spelling.
 set spell
-autocmd FileType dirvish setlocal nospell
 
 " Navigation.
 nnoremap <silent> <C-b> :CtrlPBuffer<CR>
@@ -81,59 +91,51 @@ let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_switch_buffer = ''
 let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
 if executable('rg')
-  "set grepprg=rg\ --color=never
   let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
   let g:ctrlp_use_caching = 0
 else
   let g:ctrlp_clear_cache_on_exit = 0
 endif
+let g:rg_highlight = 1
 
-" Visual.
-colorscheme base16-materia
+" LSP.
+let g:LanguageClient_serverCommands = {
+\  'go': ['go-langserver', '-gocodecompletion'],
+\  'python': ['pyls'],
+\ }
+nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 
-let g:go_def_mapping_enabled = 0
-let g:go_fmt_command = 'goimports'
-let g:go_fmt_fail_silently = 0
-let g:go_term_enabled = 1
-let g:go_auto_sameids = 0
-
-" inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-" inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<cr>"
-" imap <c-space> <Plug>(asyncomplete_force_refresh)
-
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
-set completeopt-=preview
-
-if executable('pyls')
-	au User lsp_setup call lsp#register_server({
-				\ 'name': 'pyls',
-				\ 'cmd': {server_info->['pyls']},
-				\ 'whitelist': ['python'],
-				\ })
-endif
-
-if executable('go-langserver')
-	au User lsp_setup call lsp#register_server({
-				\ 'name': 'go-langserver',
-				\ 'cmd': {server_info->['go-langserver', '-mode', 'stdio']},
-				\ 'whitelist': ['go'],
-				\ })
-endif
-
-" call asyncomplete#register_source(asyncomplete#sources#gocode#get_source_options({
-"     \ 'name': 'gocode',
-"     \ 'whitelist': ['go'],
-"     \ 'completor': function('asyncomplete#sources#gocode#completor'),
-"     \ }))
-
-nnoremap <silent> gh :LspHover<CR>
-nnoremap <silent> gd :LspDefinition<CR>
-nnoremap <silent> gr :LspReferences<CR>
-au FileType go nnoremap <C-g> :GoDeclsDir<CR>
-
-let g:lsp_signs_enabled = 1
-let g:lsp_diagnostics_echo_cursor = 1
-
+" ALE.
+let g:ale_fixers = {
+\  'go': ['goimports'],
+\}
+let g:ale_fix_on_save = 1
 let g:airline#extensions#ale#enabled = 1
+
+" Go.
+" let g:go_fmt_command = 'goimports'
+
+" deoplete options
+let g:deoplete#enable_at_startup = 1
+inoremap <expr><C-h> deoplete#smart_close_popup()."\<C-h>"
+inoremap <expr><BS>  deoplete#smart_close_popup()."\<C-h>"
+set completeopt-=preview
+call deoplete#custom#option({
+\ 'camel_case': v:true,
+\ 'sources': {
+\   'go': ['LanguageClient'],
+\   'python': ['LanguageClient'],
+\ },
+\ })
+call deoplete#custom#source('_', 'matchers', ['matcher_fuzzy', 'matcher_length'])
+call deoplete#custom#source('_', 'disabled_syntaxes', ['Comment', 'String'])
+
+" Go.
+au FileType go set noexpandtab
+au FileType go set tw=100
+
+" Python
+au FileType python set tabstop=4
+au FileType python set tw=120
