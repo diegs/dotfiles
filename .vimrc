@@ -6,15 +6,17 @@ set runtimepath+=~/.local/share/dein/repos/github.com/Shougo/dein.vim
 
 if dein#load_state('~/.local/share/dein')
   call dein#begin('~/.local/share/dein')
-
   call dein#add('~/.local/share/dein')
 
   " Navigation.
   call dein#add('ctrlpvim/ctrlp.vim')
   call dein#add('FelikZ/ctrlp-py-matcher')
   call dein#add('jremmen/vim-ripgrep')
-  call dein#add('justinmk/vim-dirvish')
   call dein#add('christoomey/vim-tmux-navigator')
+
+  " Overrides.
+  call dein#add('justinmk/vim-dirvish')
+  call dein#add('svermeulen/vim-easyclip')
 
   " Visual.
   call dein#add('chriskempson/base16-vim')
@@ -82,6 +84,10 @@ if filereadable(expand("~/.vimrc_background"))
   source ~/.vimrc_background
 endif
 
+" Clipboard.
+set clipboard=unnamed
+let g:EasyClipUseSubstituteDefaults = 1
+
 " Spelling.
 set spell
 
@@ -138,4 +144,5 @@ au FileType go set tw=100
 
 " Python
 au FileType python set tabstop=4
+au FileType python set shiftwidth=4
 au FileType python set tw=120
