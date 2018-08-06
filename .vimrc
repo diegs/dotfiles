@@ -44,7 +44,7 @@ Plug 'glts/vim-textobj-comment'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'janko-m/vim-test'
-Plug 'whiteinge/diffconflicts'
+Plug 'tpope/vim-fugitive'
 
 call plug#end()
 
@@ -93,6 +93,7 @@ highlight SpellBad cterm=undercurl ctermbg=18 gui=undercurl guisp=#F07178
 highlight clear SpellCap
 
 " FZF.
+let g:fzf_buffers_jump = 1
 nnoremap <silent> <C-p> :Files<CR>
 nnoremap <silent> <C-b> :Buffers<CR>
 command! -bang -nargs=* Rg
@@ -101,6 +102,7 @@ command! -bang -nargs=* Rg
       \   <bang>0 ? fzf#vim#with_preview('up:60%')
       \           : fzf#vim#with_preview('right:50%:hidden', '?'),
       \   <bang>0)
+nnoremap <silent> <leader>r :Rg<CR>
 
 " LSP.
 nnoremap <silent> <leader>h :LspHover<CR>
