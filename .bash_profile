@@ -77,6 +77,8 @@ local_username="dpontoriero"
 export EDITOR=vim
 export GOPATH=/home/dpontoriero
 
+export FZF_DEFAULT_COMMAND='rg --files --hidden'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 source /usr/share/fzf/shell/key-bindings.bash
 
 source '/home/dpontoriero/src/github.com/lyft/blessclient/lyftprofile' # bless ssh alias

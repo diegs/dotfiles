@@ -93,9 +93,10 @@ highlight SpellBad cterm=undercurl ctermbg=18 gui=undercurl guisp=#F07178
 highlight clear SpellCap
 
 " FZF.
+let g:fzf_command_prefix = 'Fzf'
 let g:fzf_buffers_jump = 1
-nnoremap <silent> <C-p> :Files<CR>
-nnoremap <silent> <C-b> :Buffers<CR>
+nnoremap <silent> <C-p> :FzfFiles<CR>
+nnoremap <silent> <C-b> :FzfBuffers<CR>
 command! -bang -nargs=* Rg
       \ call fzf#vim#grep(
       \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
