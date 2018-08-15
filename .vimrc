@@ -24,6 +24,7 @@ Plug 'prabirshrestha/asyncomplete-lsp.vim'
 
 " Overrides.
 Plug 'tpope/vim-vinegar'
+Plug 'roxma/vim-paste-easy'
 
 " Languages.
 Plug 'sheerun/vim-polyglot'

@@ -72,8 +72,7 @@ alias ll="ls -lah"
 
 eval $(dircolors ~/.dircolors)
 local_username="dpontoriero"
-. ~/.bash_prompt
-#export PS1="\n\[\033[1;32m\][\u@\h:\W]\$\[\033[0m\] "
+. ~/.prompt
 export EDITOR=vim
 export GOPATH=/home/dpontoriero
 
@@ -81,6 +80,9 @@ export FZF_DEFAULT_COMMAND='rg --files --hidden'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 source /usr/share/fzf/shell/key-bindings.bash
 
+# Lyft.
+export LYFT_CODE_ROOT=/home/dpontoriero/src/github.com/lyft
 source '/home/dpontoriero/src/github.com/lyft/blessclient/lyftprofile' # bless ssh alias
 source '/home/dpontoriero/src/github.com/lyft/awsaccess/awsaccess2.sh' # awsaccess
 export PS1="\$(ps1_mfa_context)$PS1" # awsaccess
+source ~/.kube-cache/bin/lyftlearn_profile
