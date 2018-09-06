@@ -30,6 +30,7 @@ function _prepend_path() {
   fi
 }
 
+[ -d /usr/local/go/bin ] && _prepend_path "/usr/local/go/bin"
 [ -d $HOME/.local/bin ] && _prepend_path "$HOME/.local/bin"
 [ -d $HOME/bin ] && _prepend_path "$HOME/bin"
 
@@ -40,7 +41,6 @@ BASE16_SHELL="$HOME/.config/base16-shell/"
   eval "$("$BASE16_SHELL/profile_helper.sh")"
 
 #alias compile_vbox="/usr/lib/virtualbox/vboxdrv.sh setup"
-
 
 if [ -e /home/dpontoriero/.nix-profile/etc/profile.d/nix.sh ]; then
   . /home/dpontoriero/.nix-profile/etc/profile.d/nix.sh
@@ -73,16 +73,26 @@ alias ll="ls -lah"
 eval $(dircolors ~/.dircolors)
 local_username="dpontoriero"
 . ~/.prompt
-export EDITOR=vim
+alias vim=vimx
+export EDITOR=vimx
+alias drive=drive-google
 export GOPATH=/home/dpontoriero
 
+if [ -f ~/src/github.com/sinclairtarget/um/um-completion.sh ]; then
+  . ~/src/github.com/sinclairtarget/um/um-completion.sh
+fi
+
+bind -r "\C-j"
+bind -r "\C-k"
+export FZF_DEFAULT_OPTS="--bind=ctrl-y:accept,ctrl-k:up,ctrl-j:down"
 export FZF_DEFAULT_COMMAND='rg --files --hidden'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 source /usr/share/fzf/shell/key-bindings.bash
 
 # Lyft.
 export LYFT_CODE_ROOT=/home/dpontoriero/src/github.com/lyft
-source '/home/dpontoriero/src/github.com/lyft/blessclient/lyftprofile' # bless ssh alias
+export WORKSPACE=$LYFT_CODE_ROOT
 source '/home/dpontoriero/src/github.com/lyft/awsaccess/awsaccess2.sh' # awsaccess
 export PS1="\$(ps1_mfa_context)$PS1" # awsaccess
 source ~/.kube-cache/bin/lyftlearn_profile
+source '/home/dpontoriero/src/github.com/lyft/blessclient/lyftprofile' # bless ssh alias

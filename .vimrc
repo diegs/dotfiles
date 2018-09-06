@@ -10,17 +10,12 @@ call plug#begin('~/.vim/plugged')
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'majutsushi/tagbar'
+Plug 'https://github.com/qpkorr/vim-bufkill'
 
 " Visual.
 Plug 'chriskempson/base16-vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-
-" Completion.
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/vim-lsp'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
 
 " Overrides.
 Plug 'tpope/vim-vinegar'
@@ -91,6 +86,7 @@ set clipboard=unnamed
 " Spelling.
 set spell
 highlight SpellBad cterm=undercurl ctermbg=18 gui=undercurl guisp=#F07178
+highlight Comment ctermfg=gray
 highlight clear SpellCap
 
 " FZF.
@@ -98,46 +94,24 @@ let g:fzf_command_prefix = 'Fzf'
 let g:fzf_buffers_jump = 1
 nnoremap <silent> <C-p> :FzfFiles<CR>
 nnoremap <silent> <C-b> :FzfBuffers<CR>
-command! -bang -nargs=* Rg
-      \ call fzf#vim#grep(
-      \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
-      \   <bang>0 ? fzf#vim#with_preview('up:60%')
-      \           : fzf#vim#with_preview('right:50%:hidden', '?'),
-      \   <bang>0)
-nnoremap <silent> <leader>r :Rg<CR>
-
-" LSP.
-nnoremap <silent> <leader>h :LspHover<CR>
-nnoremap <silent> <leader>g :LspDefinition<CR>
-set completeopt-=preview
-
-if executable('go-langserver')
-  au User lsp_setup call lsp#register_server({
-        \ 'name': 'go-langserver',
-        \ 'cmd': {server_info->['go-langserver', '-mode', 'stdio', '-gocodecompletion']},
-        \ 'whitelist': ['go'],
-        \ })
-endif
-
-if executable('pyls')
-  au User lsp_setup call lsp#register_server({
-        \ 'name': 'pyls',
-        \ 'cmd': {server_info->['pyls']},
-        \ 'whitelist': ['python'],
-        \ })
-endif
+nnoremap <silent> <leader>r :FzfRg<CR>
 
 " ALE.
-let g:ale_fixers = {
-\  'go': ['goimports'],
+let g:ale_linters = {
+\  'go': ['gofmt', 'golint', 'govet', 'golangserver'],
+\  'python': ['flake8', 'mypy', 'pylint', 'pyls'],
 \}
+let g:ale_fixers = {
+\  'go': ['goimports', 'gofmt'],
+\}
+let g:ale_go_gofmt_options = '-s'
 let g:ale_fix_on_save = 1
 let g:airline#extensions#ale#enabled = 1
 let g:ale_set_highlights = 0
 let g:ale_sign_column_always = 1
-let g:ale_lint_on_text_changed = 'never'
-let g:ale_lint_on_insert_leave = 1
-let g:ale_completion_enabled = 0
+let g:ale_completion_enabled = 1
+nnoremap <silent> <leader>h :ALEHover<CR>
+nnoremap <silent> <leader>g :ALEGoToDefinition<CR>
 
 " Go.
 au FileType go set noexpandtab
@@ -152,7 +126,8 @@ au FileType python set tw=120
 au FileType gitcommit au! BufEnter COMMIT_EDITMSG call setpos('.', [0, 1, 1, 0])
 
 " Tagbar.
-nnoremap <leader>t :TagbarToggle<CR>
+nnoremap <leader>to :TagbarToggle<CR>
+nnoremap <leader>tp :TagbarTogglePause<CR>
 let g:tagbar_left = 1
 let g:tagbar_type_go = {
   \ 'ctagstype' : 'go',
@@ -181,3 +156,11 @@ let g:tagbar_type_go = {
   \ 'ctagsbin'  : 'gotags',
   \ 'ctagsargs' : '-sort -silent'
   \ }
+
+" BufferDelete.
+function! CommandCabbr(abbreviation, expansion)
+  execute 'cabbr ' . a:abbreviation . ' <c-r>=getcmdpos() == 1 && getcmdtype() == ":" ? "' . a:expansion . '" : "' . a:abbreviation . '"<CR>'
+endfunction
+command! -nargs=+ CommandCabbr call CommandCabbr(<f-args>)
+
+CommandCabbr bd BD
