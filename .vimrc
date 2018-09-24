@@ -69,11 +69,12 @@ set matchpairs+=<:>
 
 " UI.
 set hlsearch
+set incsearch
 set number
 set relativenumber
 set splitbelow
 set splitright
-set lazyredraw
+" set lazyredraw
 if filereadable(expand("~/.vimrc_background"))
   let base16colorspace=256
   source ~/.vimrc_background
@@ -100,11 +101,14 @@ nnoremap <silent> <leader>r :FzfRg<CR>
 let g:ale_linters = {
 \  'go': ['gofmt', 'golint', 'govet', 'golangserver'],
 \  'python': ['flake8', 'mypy', 'pylint', 'pyls'],
+\  'rust': ['rls'],
 \}
 let g:ale_fixers = {
 \  'go': ['goimports', 'gofmt'],
+\  'rust': ['rustfmt'],
 \}
 let g:ale_go_gofmt_options = '-s'
+let g:ale_rust_rls_toolchain = 'stable'
 let g:ale_fix_on_save = 1
 let g:airline#extensions#ale#enabled = 1
 let g:ale_set_highlights = 0
