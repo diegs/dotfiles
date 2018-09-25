@@ -33,6 +33,7 @@ function _prepend_path() {
 [ -d /usr/local/go/bin ] && _prepend_path "/usr/local/go/bin"
 [ -d $HOME/.local/bin ] && _prepend_path "$HOME/.local/bin"
 [ -d $HOME/bin ] && _prepend_path "$HOME/bin"
+[ -d $HOME/.cargo/bin ] && _prepend_path "$HOME/.cargo/bin"
 
 # Base16 Shell
 BASE16_SHELL="$HOME/.config/base16-shell/"
@@ -96,3 +97,4 @@ source '/home/dpontoriero/src/github.com/lyft/awsaccess/awsaccess2.sh' # awsacce
 export PS1="\$(ps1_mfa_context)$PS1" # awsaccess
 source ~/.kube-cache/bin/lyftlearn_profile
 source '/home/dpontoriero/src/github.com/lyft/blessclient/lyftprofile' # bless ssh alias
+
