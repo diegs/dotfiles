@@ -99,16 +99,24 @@ nnoremap <silent> <leader>r :FzfRg<CR>
 
 " ALE.
 let g:ale_linters = {
-\  'go': ['gofmt', 'golint', 'govet', 'golangserver'],
+\  'go': ['gobuild', 'golangserver'],
+\  'markdown': ['prettier'],
 \  'python': ['flake8', 'mypy', 'pylint', 'pyls'],
 \  'rust': ['rls'],
 \}
 let g:ale_fixers = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
 \  'go': ['goimports', 'gofmt'],
+\  'markdown': ['prettier'],
 \  'rust': ['rustfmt'],
 \}
+
+autocmd BufNewFile,BufRead ~/src/github.com/lyft/dispatch/* let b:ale_fixers = {'python': ['black']}
+
 let g:ale_go_gofmt_options = '-s'
+let g:ale_go_langserver_options = ''
+let g:ale_go_golangci_lint_options = '--fast'
+let g:ale_go_golangci_lint_package = 0
 let g:ale_rust_rls_toolchain = 'stable'
 let g:ale_fix_on_save = 1
 let g:airline#extensions#ale#enabled = 1
@@ -169,3 +177,4 @@ endfunction
 command! -nargs=+ CommandCabbr call CommandCabbr(<f-args>)
 
 CommandCabbr bd BD
+nnoremap <silent> <leader>d :BD<CR>
