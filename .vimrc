@@ -99,7 +99,7 @@ nnoremap <silent> <leader>r :FzfRg<CR>
 
 " ALE.
 let g:ale_linters = {
-\  'go': ['gobuild', 'golangserver'],
+\  'go': ['gobuild', 'golangci-lint', 'golangserver'],
 \  'markdown': ['prettier'],
 \  'python': ['flake8', 'mypy', 'pylint', 'pyls'],
 \  'rust': ['rls'],
@@ -111,12 +111,14 @@ let g:ale_fixers = {
 \  'rust': ['rustfmt'],
 \}
 
-autocmd BufNewFile,BufRead ~/src/github.com/lyft/dispatch/* let b:ale_fixers = {'python': ['black']}
+" autocmd BufNewFile,BufRead ~/src/github.com/lyft/dispatch/* let b:ale_fixers = {'python': ['black']}
 
 let g:ale_go_gofmt_options = '-s'
+let g:ale_go_gobuild_options = '-tags integration'
 let g:ale_go_langserver_options = ''
 let g:ale_go_golangci_lint_options = '--fast'
-let g:ale_go_golangci_lint_package = 0
+let g:ale_go_golangci_lint_package = 1
+let g:ale_javascript_prettier_options = '--no-bracket-spacing'
 let g:ale_rust_rls_toolchain = 'stable'
 let g:ale_fix_on_save = 1
 let g:airline#extensions#ale#enabled = 1
