@@ -5,9 +5,6 @@
 [user]
 	name = Diego Pontoriero
 	email = dpontor@gmail.com
-	signingkey = 503D20E1A024E97A!
-[commit]
-	gpgsign = false
 [url "git@github.com:"]
 	insteadOf = https://github.com/
 [alias]
@@ -17,3 +14,10 @@
 	ci = commit
 [push]
 	default = current
+[merge]
+	tool = diffconflicts
+[mergetool "diffconflicts"]
+	cmd = vim -c DiffConflicts \"$MERGED\" \"$BASE\" \"$LOCAL\" \"$REMOTE\"
+	trustExitCode = true
+[mergetool]
+	keepBackup = false
