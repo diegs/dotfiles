@@ -6,8 +6,7 @@ if [ -f /etc/bashrc ]; then
 fi
 
 HISTCONTROL=ignoreboth:erasedups
-HISTIGNORE='ls:bg:fg:history'
-PROMPT_COMMAND='history -a'
+HISTIGNORE='?:??'
 HISTFILESIZE=1000000000
 HISTSIZE=1000000
 
@@ -41,12 +40,6 @@ BASE16_SHELL="$HOME/.config/base16-shell/"
   [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
   eval "$("$BASE16_SHELL/profile_helper.sh")"
 
-#alias compile_vbox="/usr/lib/virtualbox/vboxdrv.sh setup"
-
-if [ -e /home/dpontoriero/.nix-profile/etc/profile.d/nix.sh ]; then
-  . /home/dpontoriero/.nix-profile/etc/profile.d/nix.sh
-fi
-
 # Colors
 RED="$(tput setaf 1)"
 GREEN="$(tput setaf 2)"
@@ -72,17 +65,14 @@ alias l="ls -lh"
 alias ll="ls -lah"
 
 eval $(dircolors ~/.dircolors)
-local_username="dpontoriero"
+local_username="diegs"
 . ~/.prompt
 alias vim=vimx
 export EDITOR=vimx
-alias drive=drive-google
-export GOPATH=/home/dpontoriero
+export GOPATH=/home/diegs
 
-if [ -f ~/src/github.com/sinclairtarget/um/um-completion.sh ]; then
-  . ~/src/github.com/sinclairtarget/um/um-completion.sh
-fi
 
+# FZF.
 bind -r "\C-j"
 bind -r "\C-k"
 export FZF_DEFAULT_OPTS="--bind=ctrl-y:accept,ctrl-k:up,ctrl-j:down"
@@ -91,9 +81,22 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 source /usr/share/fzf/shell/key-bindings.bash
 
 # Lyft.
-export LYFT_CODE_ROOT=/home/dpontoriero/src/github.com/lyft
+export LYFT_CODE_ROOT=/home/diegs/src/github.com/lyft
 export WORKSPACE=$LYFT_CODE_ROOT
-source '/home/dpontoriero/src/github.com/lyft/awsaccess/awsaccess2.sh' # awsaccess
-export PS1="\$(ps1_mfa_context)$PS1" # awsaccess
-source ~/.kube-cache/bin/lyftlearn_profile
-source '/home/dpontoriero/src/github.com/lyft/blessclient/lyftprofile' # bless ssh alias
+source '/home/diegs/src/github.com/lyft/blessclient/lyftprofile' # bless ssh alias
+
+function safeterm {
+  # Term nodes by AWS ID or IP
+
+  for arg in "$@"
+  do
+    if [[ "$arg" =~ ^([0-9]+\.){3}[0-9]+$ ]]
+    then
+      addr="$arg"
+    else
+      addr="i-$arg.ln"
+    fi
+
+    ssh -o StrictHostKeyChecking=no "$addr" 'sudo shutdown -h now'
+  done
+}
