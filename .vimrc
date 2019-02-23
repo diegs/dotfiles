@@ -16,6 +16,7 @@ Plug 'https://github.com/qpkorr/vim-bufkill'
 Plug 'chriskempson/base16-vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'haya14busa/vim-asterisk'
 
 " Overrides.
 Plug 'tpope/vim-vinegar'
@@ -33,13 +34,14 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
+Plug 'junegunn/vim-easy-align'
 Plug 'kana/vim-textobj-user'
 Plug 'glts/vim-textobj-comment'
 
 " Integrations.
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'tmux-plugins/vim-tmux-focus-events'
-Plug 'janko-m/vim-test'
+Plug 'roxma/vim-tmux-clipboard'
 Plug 'tpope/vim-fugitive'
 
 call plug#end()
@@ -74,7 +76,7 @@ set number
 set relativenumber
 set splitbelow
 set splitright
-" set lazyredraw
+set lazyredraw
 if filereadable(expand("~/.vimrc_background"))
   let base16colorspace=256
   source ~/.vimrc_background
@@ -97,9 +99,16 @@ nnoremap <silent> <C-p> :FzfFiles<CR>
 nnoremap <silent> <C-b> :FzfBuffers<CR>
 nnoremap <silent> <leader>r :FzfRg<CR>
 
+" Asterisk.
+map * <Plug>(asterisk-z*)
+map # <Plug>(asterisk-z#)
+map g* <Plug>(asterisk-gz*)
+map g# <Plug>(asterisk-gz#)
+let g:asterisk#keeppos = 1
+
 " ALE.
 let g:ale_linters = {
-\  'go': ['gobuild', 'golangci-lint', 'golangserver'],
+\  'go': ['golangserver', 'golangci-lint'],
 \  'markdown': ['prettier'],
 \  'python': ['flake8', 'mypy', 'pylint', 'pyls'],
 \  'rust': ['rls'],
@@ -107,16 +116,18 @@ let g:ale_linters = {
 let g:ale_fixers = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
 \  'go': ['goimports', 'gofmt'],
-\  'markdown': ['prettier'],
 \  'rust': ['rustfmt'],
 \}
+" \  'markdown': ['prettier'],
 
-" autocmd BufNewFile,BufRead ~/src/github.com/lyft/dispatch/* let b:ale_fixers = {'python': ['black']}
+autocmd BufNewFile,BufRead ~/src/github.com/lyft/dispatch/* let b:ale_fixers = {'python': ['black']}
+autocmd BufNewFile,BufRead ~/src/github.com/lyft/marketstate/* let b:ale_fixers = {'python': ['black']}
 
 let g:ale_go_gofmt_options = '-s'
 let g:ale_go_gobuild_options = '-tags integration'
-let g:ale_go_langserver_options = ''
-let g:ale_go_golangci_lint_options = '--fast'
+" let g:ale_go_langserver_executable = 'bingo'
+" let g:ale_go_langserver_options = '--format-style goimports'
+let g:ale_go_golangci_lint_options = '--fast -c ~/.golangci.yml '
 let g:ale_go_golangci_lint_package = 1
 let g:ale_javascript_prettier_options = '--no-bracket-spacing'
 let g:ale_rust_rls_toolchain = 'stable'
@@ -171,6 +182,10 @@ let g:tagbar_type_go = {
   \ 'ctagsbin'  : 'gotags',
   \ 'ctagsargs' : '-sort -silent'
   \ }
+
+" Easy-align.
+xmap ga <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
 
 " BufferDelete.
 function! CommandCabbr(abbreviation, expansion)
