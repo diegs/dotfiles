@@ -13,7 +13,7 @@ Plug 'majutsushi/tagbar'
 Plug 'https://github.com/qpkorr/vim-bufkill'
 
 " Visual.
-Plug 'chriskempson/base16-vim'
+Plug 'danielwe/base16-vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'haya14busa/vim-asterisk'
@@ -108,7 +108,7 @@ let g:asterisk#keeppos = 1
 
 " ALE.
 let g:ale_linters = {
-\  'go': ['golangserver', 'golangci-lint'],
+\  'go': ['bingo', 'golangci-lint'],
 \  'markdown': ['prettier'],
 \  'python': ['flake8', 'mypy', 'pylint', 'pyls'],
 \  'rust': ['rls'],
@@ -125,13 +125,14 @@ autocmd BufNewFile,BufRead ~/src/github.com/lyft/marketstate/* let b:ale_fixers 
 
 let g:ale_go_gofmt_options = '-s'
 let g:ale_go_gobuild_options = '-tags integration'
-" let g:ale_go_langserver_executable = 'bingo'
-" let g:ale_go_langserver_options = '--format-style goimports'
+let g:ale_go_bingo_executable = 'gopls'
+" let g:ale_go_bingo_options = '--format-style goimports --diagnostics-style instant'
 let g:ale_go_golangci_lint_options = '--fast -c ~/.golangci.yml '
 let g:ale_go_golangci_lint_package = 1
 let g:ale_javascript_prettier_options = '--no-bracket-spacing'
 let g:ale_rust_rls_toolchain = 'stable'
 let g:ale_fix_on_save = 1
+let g:ale_set_balloons = 1
 let g:airline#extensions#ale#enabled = 1
 let g:ale_set_highlights = 0
 let g:ale_sign_column_always = 1
