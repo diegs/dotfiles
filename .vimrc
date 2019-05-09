@@ -14,6 +14,7 @@ Plug 'https://github.com/qpkorr/vim-bufkill'
 
 " Visual.
 Plug 'danielwe/base16-vim'
+Plug 'joshdick/onedark.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'haya14busa/vim-asterisk'
@@ -50,6 +51,8 @@ filetype plugin indent on
 syntax enable
 
 " Settings.
+set noshowcmd
+set noruler
 set hidden
 set showmatch
 set ignorecase
@@ -76,7 +79,6 @@ set number
 set relativenumber
 set splitbelow
 set splitright
-set lazyredraw
 if filereadable(expand("~/.vimrc_background"))
   let base16colorspace=256
   source ~/.vimrc_background
@@ -139,6 +141,8 @@ let g:ale_sign_column_always = 1
 let g:ale_completion_enabled = 1
 nnoremap <silent> <leader>h :ALEHover<CR>
 nnoremap <silent> <leader>g :ALEGoToDefinition<CR>
+inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <silent><expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-TAB>"
 
 " Go.
 au FileType go set noexpandtab

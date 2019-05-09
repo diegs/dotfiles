@@ -76,8 +76,6 @@ function prompt_command() {
   second_line="\`if [ \$? = 0 ]; then echo \[\$CYAN\]; else echo \[\$RED\]; fi\`\$prompt_symbol\[\$NOCOLOR\] "
   PS1="\n$first_line\n$second_line"
 
-  PS1="\$(ps1_mfa_context)$PS1" # awsaccess
-
   # Multiline command
   PS2="\[$CYAN\]$prompt_symbol\[$NOCOLOR\] "
 

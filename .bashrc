@@ -15,18 +15,22 @@ function _prepend_path() {
   fi
 }
 
-_prepend_path "/usr/local/go/bin"
 _prepend_path "$HOME/.local/bin"
 _prepend_path "$HOME/bin"
 _prepend_path "$HOME/.cargo/bin"
 _prepend_path "$HOME/.yarn/bin"
 
+if [ -f ~/.nix-profile/etc/profile.d/nix.sh ]; then
+  source ~/.nix-profile/etc/profile.d/nix.sh
+fi
+
+alias ls="ls --color=auto"
 alias l="ls -lh"
 alias ll="ls -lah"
 
-alias at="nohup env WINIT_HIDPI_FACTOR=1.5 WAYLAND_DISPLAY= alacritty &>/dev/null &"
-
-export EDITOR=vim
+alias vi=nvim
+export EDITOR=nvim
+export VISUAL=nvim
 export GOPATH="$HOME"
 
 # Base16 Shell
@@ -60,7 +64,8 @@ bind -r "\C-k"
 export FZF_DEFAULT_OPTS="--bind=ctrl-y:accept,ctrl-k:up,ctrl-j:down"
 export FZF_DEFAULT_COMMAND='rg --files --hidden'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-source /usr/share/fzf/shell/key-bindings.bash
+source ~/.nix-profile/share/fzf/completion.bash
+source ~/.nix-profile/share/fzf/key-bindings.bash
 
 # Local
 if [ -f ~/.bash_local ]; then

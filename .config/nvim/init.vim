@@ -1,54 +1,53 @@
-if &compatible
- set nocompatible
-endif
+let mapleader = ','
 
-set runtimepath+=~/.local/share/dein/repos/github.com/Shougo/dein.vim
+call plug#begin('~/.local/share/nvim/plugged')
 
-if dein#load_state('~/.local/share/dein')
-  call dein#begin('~/.local/share/dein')
+" Navigation.
+Plug '/home/diegs/.nix-profile/share/vim-plugins/fzf-vim'
+Plug '/home/diegs/.nix-profile/share/vim-plugins/fzf'
+Plug 'junegunn/fzf.vim'
+Plug 'majutsushi/tagbar'
+Plug 'https://github.com/qpkorr/vim-bufkill'
 
-  call dein#add('~/.local/share/dein')
+" Visual.
+Plug 'danielwe/base16-vim'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'haya14busa/vim-asterisk'
 
-  " Navigation.
-  call dein#add('ctrlpvim/ctrlp.vim')
-  call dein#add('FelikZ/ctrlp-py-matcher')
-  call dein#add('jremmen/vim-ripgrep')
-  call dein#add('justinmk/vim-dirvish')
-  call dein#add('christoomey/vim-tmux-navigator')
+" Overrides.
+Plug 'tpope/vim-vinegar'
 
-  " Visual.
-  call dein#add('chriskempson/base16-vim')
-  call dein#add('vim-airline/vim-airline')
-  call dein#add('vim-airline/vim-airline-themes')
+" Languages.
+Plug 'sheerun/vim-polyglot'
+Plug 'saltstack/salt-vim'
 
-  " Completion.
-  call dein#add('Shougo/deoplete.nvim')
-  call dein#add('autozimu/LanguageClient-neovim', {
-    \ 'rev': 'next',
-    \ 'build': 'bash install.sh',
-    \ })
+" Formatting.
+Plug 'w0rp/ale'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-abolish'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-unimpaired'
+Plug 'junegunn/vim-easy-align'
+Plug 'kana/vim-textobj-user'
+Plug 'glts/vim-textobj-comment'
 
-  " Languages.
-  call dein#add('saltstack/salt-vim')
+" Integrations.
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'tmux-plugins/vim-tmux-focus-events'
+Plug 'roxma/vim-tmux-clipboard'
+Plug 'tpope/vim-fugitive'
 
-  " Formatting.
-  call dein#add('w0rp/ale')
-  call dein#add('tpope/vim-repeat')
-  call dein#add('tpope/vim-abolish')
-  call dein#add('tpope/vim-commentary')
-  call dein#add('tpope/vim-repeat')
-  call dein#add('tpope/vim-unimpaired')
-  call dein#add('kana/vim-textobj-user')
-  call dein#add('glts/vim-textobj-comment')
-
- call dein#end()
- call dein#save_state()
-endif
+call plug#end()
 
 filetype plugin indent on
 syntax enable
 
 " Settings.
+set noshowcmd
+set noruler
 set hidden
 set showmatch
 set ignorecase
@@ -56,6 +55,7 @@ set smartcase
 set nobackup
 set nowb
 set noswapfile
+set autoread
 
 " Editing.
 set tabstop=2
@@ -63,75 +63,134 @@ set softtabstop=2
 set expandtab
 set shiftwidth=2
 set autoindent
-set wildmode=longest,list
+set wildmode=longest:list
 set nojoinspaces
 set matchpairs+=<:>
 
 " UI.
 set hlsearch
+set incsearch
 set number
 set relativenumber
 set splitbelow
 set splitright
+
 if filereadable(expand("~/.vimrc_background"))
   let base16colorspace=256
   source ~/.vimrc_background
+  let g:airline_theme='base16_shell'
 endif
+
+" Clipboard.
+" set clipboard=unnamed
 
 " Spelling.
 set spell
+highlight SpellBad cterm=undercurl ctermbg=238 gui=undercurl guisp=#F07178
+highlight Comment ctermfg=gray
+" highlight clear SpellCap
 
-" Navigation.
-nnoremap <silent> <C-b> :CtrlPBuffer<CR>
-let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_switch_buffer = ''
-let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
-if executable('rg')
-  let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
-  let g:ctrlp_use_caching = 0
-else
-  let g:ctrlp_clear_cache_on_exit = 0
-endif
-let g:rg_highlight = 1
+" FZF.
+let g:fzf_command_prefix = 'Fzf'
+let g:fzf_buffers_jump = 1
+nnoremap <silent> <C-p> :FzfFiles<CR>
+nnoremap <silent> <C-b> :FzfBuffers<CR>
+nnoremap <silent> <leader>r :FzfRg<CR>
 
-" LSP.
-let g:LanguageClient_serverCommands = {
-\  'go': ['go-langserver', '-gocodecompletion'],
-\  'python': ['pyls'],
-\ }
-nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
-nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
-nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+" Asterisk.
+map * <Plug>(asterisk-z*)
+map # <Plug>(asterisk-z#)
+map g* <Plug>(asterisk-gz*)
+map g# <Plug>(asterisk-gz#)
+let g:asterisk#keeppos = 1
 
 " ALE.
-let g:ale_fixers = {
-\  'go': ['goimports'],
+let g:ale_linters = {
+\  'go': ['gopls'],
+\  'markdown': ['prettier'],
+\  'python': ['flake8', 'mypy', 'pylint', 'pyls'],
+\  'rust': ['rls'],
 \}
+let g:ale_fixers = {
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\  'go': ['goimports', 'gofmt'],
+\  'rust': ['rustfmt'],
+\}
+" \  'markdown': ['prettier'],
+
+autocmd BufNewFile,BufRead ~/src/github.com/lyft/dispatch/* let b:ale_fixers = {'python': ['black']}
+autocmd BufNewFile,BufRead ~/src/github.com/lyft/marketstate/* let b:ale_fixers = {'python': ['black']}
+
+let g:ale_go_gofmt_options = '-s'
+let g:ale_go_gobuild_options = '-tags integration'
+"let g:ale_go_golangci_lint_options = '--fast -c ~/.golangci.yml '
+let g:ale_go_golangci_lint_package = 1
+let g:ale_javascript_prettier_options = '--no-bracket-spacing'
+let g:ale_rust_rls_toolchain = 'stable'
 let g:ale_fix_on_save = 1
+let g:ale_set_balloons = 1
 let g:airline#extensions#ale#enabled = 1
-
-" Go.
-" let g:go_fmt_command = 'goimports'
-
-" deoplete options
-let g:deoplete#enable_at_startup = 1
-inoremap <expr><C-h> deoplete#smart_close_popup()."\<C-h>"
-inoremap <expr><BS>  deoplete#smart_close_popup()."\<C-h>"
-set completeopt-=preview
-call deoplete#custom#option({
-\ 'camel_case': v:true,
-\ 'sources': {
-\   'go': ['LanguageClient'],
-\   'python': ['LanguageClient'],
-\ },
-\ })
-call deoplete#custom#source('_', 'matchers', ['matcher_fuzzy', 'matcher_length'])
-call deoplete#custom#source('_', 'disabled_syntaxes', ['Comment', 'String'])
+let g:ale_set_highlights = 0
+let g:ale_sign_column_always = 1
+let g:ale_completion_enabled = 1
+nnoremap <silent> <leader>h :ALEHover<CR>
+nnoremap <silent> <leader>g :ALEGoToDefinition<CR>
+inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <silent><expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-TAB>"
 
 " Go.
 au FileType go set noexpandtab
-au FileType go set tw=100
+au FileType go set tw=120
 
 " Python
 au FileType python set tabstop=4
+au FileType python set shiftwidth=4
 au FileType python set tw=120
+
+" Git
+au FileType gitcommit au! BufEnter COMMIT_EDITMSG call setpos('.', [0, 1, 1, 0])
+
+" Tagbar.
+nnoremap <leader>to :TagbarToggle<CR>
+nnoremap <leader>tp :TagbarTogglePause<CR>
+let g:tagbar_left = 1
+let g:tagbar_type_go = {
+  \ 'ctagstype' : 'go',
+  \ 'kinds'     : [
+    \ 'p:package',
+    \ 'i:imports:1',
+    \ 'c:constants',
+    \ 'v:variables',
+    \ 't:types',
+    \ 'n:interfaces',
+    \ 'w:fields',
+    \ 'e:embedded',
+    \ 'm:methods',
+    \ 'r:constructor',
+    \ 'f:functions'
+  \ ],
+  \ 'sro' : '.',
+  \ 'kind2scope' : {
+    \ 't' : 'ctype',
+    \ 'n' : 'ntype'
+  \ },
+  \ 'scope2kind' : {
+    \ 'ctype' : 't',
+    \ 'ntype' : 'n'
+  \ },
+  \ 'ctagsbin'  : 'gotags',
+  \ 'ctagsargs' : '-sort -silent'
+  \ }
+
+" Easy-align.
+xmap ga <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
+
+" BufferDelete.
+function! CommandCabbr(abbreviation, expansion)
+  execute 'cabbr ' . a:abbreviation . ' <c-r>=getcmdpos() == 1 && getcmdtype() == ":" ? "' . a:expansion . '" : "' . a:abbreviation . '"<CR>'
+endfunction
+command! -nargs=+ CommandCabbr call CommandCabbr(<f-args>)
+
+CommandCabbr bd BD
+nnoremap <silent> <leader>d :BD<CR>
