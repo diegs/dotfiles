@@ -1,2 +1,0 @@
-build --keep_going
-test --test_output=errors
