@@ -1,23 +1,18 @@
 [core]
-	excludesfile = ~/.gitignore
+  excludesfile = ~/.gitignore
 [fetch]
-	prune = true
-[user]
-	name = Diego Pontoriero
-	email = dpontor@gmail.com
-[url "git@github.com:"]
-	insteadOf = https://github.com/
-[alias]
-	co = checkout
-	st = status
-	br = branch
-	ci = commit
+  prune = true
+[pull]
+	rebase = true
 [push]
 	default = current
-[merge]
-	tool = diffconflicts
-[mergetool "diffconflicts"]
-	cmd = vim -c DiffConflicts \"$MERGED\" \"$BASE\" \"$LOCAL\" \"$REMOTE\"
-	trustExitCode = true
-[mergetool]
-	keepBackup = false
+[user]
+  name = Diego Pontoriero
+  email = dpontor@gmail.com
+[url "git@github.com:"]
+  insteadOf = https://github.com/
+[alias]
+	co = checkout
+	br = branch
+	ci = commit
+	st = status
