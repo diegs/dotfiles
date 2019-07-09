@@ -7,10 +7,6 @@
     pkgs.fzf
     pkgs.jq
     pkgs.git
-    pkgs.glide
-    pkgs.go
-    pkgs.goimports
-    pkgs.gotags
     pkgs.htop
     pkgs.ripgrep
     pkgs.tmux
@@ -18,10 +14,22 @@
 
     # pkgs.gitAndTools.pre-commit
 
+    # go
+    pkgs.glide
+    pkgs.go
+    pkgs.goimports
+    pkgs.gotags
+
     # haskell
     pkgs.cabal-install
     pkgs.cabal2nix
     pkgs.nix-prefetch-git
+
+    # python
+    pkgs.python37Packages.black
+    pkgs.python37Packages.pyls-black
+    pkgs.python37Packages.pyls-mypy
+    pkgs.python37Packages.python-language-server
   ];
 
   programs.home-manager.enable = true;
@@ -87,12 +95,14 @@
         let g:ale_linters = {
         \  'go': ['gopls'],
         \  'markdown': ['prettier'],
-        \  'python': ['flake8', 'mypy', 'pylint', 'pyls'],
+        \  'python': ['pyls'],
         \  'rust': ['rls'],
         \}
+        " \  'python': ['flake8', 'mypy', 'pylint', 'pyls'],
         let g:ale_fixers = {
         \   '*': ['remove_trailing_lines', 'trim_whitespace'],
         \  'go': ['goimports', 'gofmt'],
+        \  'python': ['black'],
         \  'rust': ['rustfmt'],
         \}
         let g:ale_fix_on_save = 1
@@ -103,6 +113,18 @@
         let g:ale_go_gofmt_options = '-s'
         let g:ale_go_golangci_lint_options = '--fast -c ~/.golangci.yml '
         let g:ale_go_golangci_lint_package = 1
+        let g:ale_python_pyls_config = {
+        \   'pyls': {
+        \     'plugins': {
+        \       'pycodestyle': {
+        \         'enabled': v:false
+        \       },
+        \       'mccabe': {
+        \         'enabled': v:false
+        \       }
+        \     }
+        \   },
+        \ }
         nnoremap <silent> <leader>h :ALEHover<CR>
         nnoremap <silent> <leader>g :ALEGoToDefinition<CR>
         inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : "\<TAB>"
@@ -135,57 +157,57 @@
         nnoremap <leader>tp :TagbarTogglePause<CR>
         let g:tagbar_left = 1
         let g:tagbar_type_go = {
-          \ 'ctagstype' : 'go',
-          \ 'kinds'     : [
-            \ 'p:package',
-            \ 'i:imports:1',
-            \ 'c:constants',
-            \ 'v:variables',
-            \ 't:types',
-            \ 'n:interfaces',
-            \ 'w:fields',
-            \ 'e:embedded',
-            \ 'm:methods',
-            \ 'r:constructor',
-            \ 'f:functions'
-          \ ],
-          \ 'sro' : '.',
-          \ 'kind2scope' : {
-            \ 't' : 'ctype',
-            \ 'n' : 'ntype'
-          \ },
-          \ 'scope2kind' : {
-            \ 'ctype' : 't',
-            \ 'ntype' : 'n'
-          \ },
-          \ 'ctagsbin'  : 'gotags',
-          \ 'ctagsargs' : '-sort -silent'
-          \ }
+        \   'ctagstype' : 'go',
+        \   'kinds'     : [
+        \     'p:package',
+        \     'i:imports:1',
+        \     'c:constants',
+        \     'v:variables',
+        \     't:types',
+        \     'n:interfaces',
+        \     'w:fields',
+        \     'e:embedded',
+        \     'm:methods',
+        \     'r:constructor',
+        \     'f:functions'
+        \   ],
+        \   'sro' : '.',
+        \   'kind2scope' : {
+        \     't' : 'ctype',
+        \     'n' : 'ntype'
+        \   },
+        \   'scope2kind' : {
+        \     'ctype' : 't',
+        \     'ntype' : 'n'
+        \   },
+        \   'ctagsbin'  : 'gotags',
+        \   'ctagsargs' : '-sort -silent'
+        \ }
 
-          " " Asterisk.
-          " map * <Plug>(asterisk-z*)
-          " map # <Plug>(asterisk-z#)
-          " map g* <Plug>(asterisk-gz*)
-          " map g# <Plug>(asterisk-gz#)
-          " let g:asterisk#keeppos = 1
-          "
-          " autocmd BufNewFile,BufRead ~/src/github.com/lyft/dispatch/* let b:ale_fixers = {'python': ['black']}
-          " autocmd BufNewFile,BufRead ~/src/github.com/lyft/marketstate/* let b:ale_fixers = {'python': ['black']}
-          "
-          " let g:ale_javascript_prettier_options = '--no-bracket-spacing'
-          " let g:ale_rust_rls_toolchain = 'stable'
-          " let g:ale_fix_on_save = 1
-          " let g:ale_set_balloons = 1
-          " let g:ale_set_highlights = 0
-          " let g:ale_sign_column_always = 1
-          "
-          " " Git
-          " au FileType gitcommit au! BufEnter COMMIT_EDITMSG call setpos('.', [0, 1, 1, 0])
-          "
-          "
-          " " Easy-align.
-          " xmap ga <Plug>(EasyAlign)
-          " nmap ga <Plug>(EasyAlign)
+        " " Asterisk.
+        " map * <Plug>(asterisk-z*)
+        " map # <Plug>(asterisk-z#)
+        " map g* <Plug>(asterisk-gz*)
+        " map g# <Plug>(asterisk-gz#)
+        " let g:asterisk#keeppos = 1
+        "
+        " autocmd BufNewFile,BufRead ~/src/github.com/lyft/dispatch/* let b:ale_fixers = {'python': ['black']}
+        " autocmd BufNewFile,BufRead ~/src/github.com/lyft/marketstate/* let b:ale_fixers = {'python': ['black']}
+        "
+        " let g:ale_javascript_prettier_options = '--no-bracket-spacing'
+        " let g:ale_rust_rls_toolchain = 'stable'
+        " let g:ale_fix_on_save = 1
+        " let g:ale_set_balloons = 1
+        " let g:ale_set_highlights = 0
+        " let g:ale_sign_column_always = 1
+        "
+        " " Git
+        " au FileType gitcommit au! BufEnter COMMIT_EDITMSG call setpos('.', [0, 1, 1, 0])
+        "
+        "
+        " " Easy-align.
+        " xmap ga <Plug>(EasyAlign)
+        " nmap ga <Plug>(EasyAlign)
       '';
       plug.plugins = with pkgs.vimPlugins; [
         ale
