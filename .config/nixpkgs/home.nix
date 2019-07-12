@@ -72,6 +72,7 @@ in {
     pkgs.nix-prefetch-git
 
     # python
+    pkgs.python37
     pkgs.python37Packages.black
     pkgs.python37Packages.mypy
     pkgs.python37Packages.pyls-black
