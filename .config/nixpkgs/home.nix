@@ -1,13 +1,59 @@
 { config, pkgs, ... }:
 
-{
+let
+  customPlugins.vim-asterisk = pkgs.vimUtils.buildVimPlugin {
+    name = "vim-asterisk";
+    src = pkgs.fetchFromGitHub {
+      owner = "haya14busa";
+      repo = "vim-asterisk";
+      rev = "1a805e320aea9d671be129b4162ea905a8bc095e";
+      sha256 = "1dl4lsrvz7n476ajry4bmmby8f09qa66nnasxv5jypgajn5w73zh";
+    };
+  };
+  customPlugins.vim-bufkill = pkgs.vimUtils.buildVimPlugin {
+    name = "vim-bufkill";
+    src = pkgs.fetchFromGitHub {
+      owner = "qpkorr";
+      repo = "vim-bufkill";
+      rev = "795dd38f3cff69d0d8fe9e71847907e200860959";
+      sha256 = "1nji86vjjbfjw4xy52yazq53hrlsr7v30xkx2awgiakz7ih0bdxa";
+    };
+  };
+  customPlugins.vim-textobj-user = pkgs.vimUtils.buildVimPlugin {
+    name = "vim-textobj-user";
+    src = pkgs.fetchFromGitHub {
+      owner = "kana";
+      repo = "vim-textobj-user";
+      rev = "074ce2575543f790290b189860597a3dcac1f79d";
+      sha256 = "15wnqkxjjksgn8a7d3lkbf8d97r4w159bajrcf1adpxw8hhli1vc";
+    };
+  };
+  customPlugins.vim-textobj-comment = pkgs.vimUtils.buildVimPlugin {
+    name = "vim-textobj-comment";
+    configurePhase = ''
+      rm Makefile
+    '';
+    src = pkgs.fetchFromGitHub {
+      owner = "glts";
+      repo = "vim-textobj-comment";
+      rev = "58ae4571b76a5bf74850698f23d235eef991dd4b";
+      sha256 = "00wc14chwjfx95gl3yzbxm1ajx88zpzqz0ckl7xvd7gvkrf0mx04";
+    };
+  };
+  # tmux clipboardy things to maybe try to get working someday.
+  # 'tmux-plugins/vim-tmux-focus-events'
+  # 'roxma/vim-tmux-clipboard'
+
+in {
   home.packages = [
     pkgs.awscli
     pkgs.ctags
     pkgs.fzf
     pkgs.jq
     pkgs.git
+    pkgs.exa
     pkgs.htop
+    pkgs.inotify-tools
     pkgs.ripgrep
     pkgs.tmux
     pkgs.tree
@@ -27,12 +73,15 @@
 
     # python
     pkgs.python37Packages.black
+    pkgs.python37Packages.mypy
     pkgs.python37Packages.pyls-black
     pkgs.python37Packages.pyls-mypy
     pkgs.python37Packages.python-language-server
   ];
 
   programs.home-manager.enable = true;
+  programs.man.enable = false;
+  home.extraOutputsToInstall = [ "man" ];
 
   programs.neovim = {
     enable = true;
@@ -67,6 +116,7 @@
         set nojoinspaces
         set matchpairs+=<:>
         set spell
+        set clipboard=unnamed
 
         " UI.
         set hlsearch
@@ -82,7 +132,7 @@
         endif
         highlight SpellBad cterm=undercurl ctermbg=238 gui=undercurl guisp=#F07178
         highlight Comment ctermfg=gray
-        " highlight clear SpellCap
+        highlight clear SpellCap
 
         " FZF.
         let g:fzf_command_prefix = 'Fzf'
@@ -105,6 +155,7 @@
         \  'python': ['black'],
         \  'rust': ['rustfmt'],
         \}
+        " autocmd BufNewFile,BufRead ~/src/github.com/something/* let b:ale_fixers = {'python': []}
         let g:ale_fix_on_save = 1
         let g:ale_lint_on_text_changed = 'normal'
         let g:ale_lint_on_insert_leave = 1
@@ -116,10 +167,13 @@
         let g:ale_python_pyls_config = {
         \   'pyls': {
         \     'plugins': {
+        \       'mccabe': {
+        \         'enabled': v:false
+        \       },
         \       'pycodestyle': {
         \         'enabled': v:false
         \       },
-        \       'mccabe': {
+        \       'pylint': {
         \         'enabled': v:false
         \       }
         \     }
@@ -184,58 +238,44 @@
         \   'ctagsargs' : '-sort -silent'
         \ }
 
-        " " Asterisk.
-        " map * <Plug>(asterisk-z*)
-        " map # <Plug>(asterisk-z#)
-        " map g* <Plug>(asterisk-gz*)
-        " map g# <Plug>(asterisk-gz#)
-        " let g:asterisk#keeppos = 1
-        "
-        " autocmd BufNewFile,BufRead ~/src/github.com/lyft/dispatch/* let b:ale_fixers = {'python': ['black']}
-        " autocmd BufNewFile,BufRead ~/src/github.com/lyft/marketstate/* let b:ale_fixers = {'python': ['black']}
-        "
-        " let g:ale_javascript_prettier_options = '--no-bracket-spacing'
-        " let g:ale_rust_rls_toolchain = 'stable'
-        " let g:ale_fix_on_save = 1
-        " let g:ale_set_balloons = 1
-        " let g:ale_set_highlights = 0
-        " let g:ale_sign_column_always = 1
-        "
-        " " Git
-        " au FileType gitcommit au! BufEnter COMMIT_EDITMSG call setpos('.', [0, 1, 1, 0])
-        "
-        "
-        " " Easy-align.
-        " xmap ga <Plug>(EasyAlign)
-        " nmap ga <Plug>(EasyAlign)
-      '';
-      plug.plugins = with pkgs.vimPlugins; [
-        ale
-        vim-airline
-        vim-airline-themes
-        base16-vim
-        fzfWrapper
-        fzf-vim
-        polyglot
-        tagbar
-        vim-commentary
-        vim-fugitive
-        vim-sensible
-        vim-tmux-navigator
-        vim-vinegar
+        " Asterisk.
+        map * <Plug>(asterisk-z*)
+        map # <Plug>(asterisk-z#)
+        map g* <Plug>(asterisk-gz*)
+        map g# <Plug>(asterisk-gz#)
+        let g:asterisk#keeppos = 1
 
-        # 'vim-bufkill'
-        # 'haya14busa/vim-asterisk'
-        # 'tpope/vim-repeat'
-        # 'tpope/vim-abolish'
-        # 'tpope/vim-surround'
-        # 'tpope/vim-unimpaired'
-        # 'junegunn/vim-easy-align'
-        # 'kana/vim-textobj-user'
-        # 'glts/vim-textobj-comment'
-        # 'tmux-plugins/vim-tmux-focus-events'
-        # 'roxma/vim-tmux-clipboard'
-      ];
+        " Easy-align.
+        xmap ga <Plug>(EasyAlign)
+        nmap ga <Plug>(EasyAlign)
+      '';
+      packages.myVimPackage = with pkgs.vimPlugins // customPlugins; {
+        start = [
+          ale
+          base16-vim
+          fzf-vim
+          fzfWrapper
+          tagbar
+          vim-abolish
+          vim-airline
+          vim-airline-themes
+          vim-asterisk
+          vim-bufkill
+          vim-commentary
+          vim-easy-align
+          vim-fugitive
+          vim-polyglot
+          vim-repeat
+          vim-sensible
+          vim-surround
+          vim-textobj-comment
+          vim-textobj-user
+          vim-tmux-navigator
+          vim-unimpaired
+          vim-vinegar
+        ];
+        opt = [];
+      };
     };
   };
 }
