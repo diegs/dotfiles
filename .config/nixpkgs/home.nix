@@ -48,9 +48,7 @@ in {
   home.packages = [
     pkgs.awscli
     pkgs.ctags
-    pkgs.fzf
     pkgs.jq
-    pkgs.git
     pkgs.exa
     pkgs.htop
     pkgs.inotify-tools
@@ -62,7 +60,6 @@ in {
 
     # go
     pkgs.glide
-    pkgs.go
     pkgs.goimports
     pkgs.gotags
 
@@ -83,6 +80,41 @@ in {
   programs.home-manager.enable = true;
   programs.man.enable = false;
   home.extraOutputsToInstall = [ "man" ];
+
+  # programs.bash = {
+  #   enable = true;
+  # };
+
+  programs.fzf = {
+    enable = true;
+    defaultCommand = "rg --files --hidden";
+    # defaultOptions = "--bind=ctrl-y:accept,ctrl-k:up,ctrl-j:down";
+    fileWidgetCommand = "rg --files --hidden";
+    enableBashIntegration = true;
+  };
+
+  programs.git = {
+    enable = true;
+    userName = "Diego Pontoriero";
+    userEmail = "dpontor@gmail.com";
+    aliases = {
+      co = "checkout";
+      br = "branch";
+      ci = "commit";
+      st = "status";
+    };
+    extraConfig = {
+      fetch = { prune = true; };
+      pull = { rebase = true; };
+      push = { default = "current"; };
+      url."git@github.com:".insteadOf = "https://github.com/";
+    };
+  };
+
+  programs.go = {
+    enable = true;
+    goPath = ".";
+  };
 
   programs.neovim = {
     enable = true;
@@ -279,4 +311,8 @@ in {
       };
     };
   };
+
+  # programs.tmux = {
+  #   enable = true;
+  # };
 }
