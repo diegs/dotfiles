@@ -46,41 +46,48 @@ let
   # 'roxma/vim-tmux-clipboard'
 
 in {
-  home.packages = [
-    pkgs.awscli
-    pkgs.ctags
-    pkgs.fd
-    pkgs.exa
-    pkgs.hexyl
-    pkgs.inotify-tools
-    pkgs.ripgrep
-    pkgs.tree
+  home = {
+    extraOutputsToInstall = [ "man" ];
+    packages = [
+      pkgs.awscli
+      pkgs.ctags
+      pkgs.fd
+      pkgs.exa
+      pkgs.hexyl
+      pkgs.inotify-tools
+      pkgs.ripgrep
+      pkgs.tree
 
-    # pkgs.gitAndTools.pre-commit # no module named virtualenv
+      # pkgs.gitAndTools.pre-commit # no module named virtualenv
 
-    # go
-    pkgs.glide
-    pkgs.goimports
-    pkgs.gotags
+      # go
+      pkgs.glide
+      pkgs.goimports
+      pkgs.gotags
 
-    # haskell
-    pkgs.cabal-install
-    pkgs.cabal2nix
-    pkgs.nix-prefetch-git
+      # haskell
+      pkgs.cabal-install
+      pkgs.cabal2nix
+      pkgs.nix-prefetch-git
 
-    # python
-    (pkgs.python37.withPackages (python-packages: with python-packages; [
-      black
-      mypy
-      pip
-      pyls-black
-      pyls-mypy
-      python-language-server
-      setuptools
-      # virtualenv
-      virtualenvwrapper
-    ]))
-  ];
+      # python
+      (pkgs.python37.withPackages (python-packages: with python-packages; [
+        black
+        mypy
+        pip
+        pyls-black
+        pyls-mypy
+        python-language-server
+        setuptools
+        # virtualenv
+        virtualenvwrapper
+      ]))
+    ];
+    sessionVariables = {
+      EDITOR = "vim";
+      VISUAL = "vim";
+    };
+  };
 
   programs.home-manager = {
     enable = true;
@@ -89,8 +96,6 @@ in {
   programs.man = {
     enable = false;
   };
-
-  home.extraOutputsToInstall = [ "man" ];
 
   programs.jq = {
     enable = true;
@@ -122,11 +127,9 @@ in {
       ll = "ls -alF";
       la = "ls -aa";
       l = "ls -F";
+      tmux = "tmux a";
+      cat = "bat";
       gopls_update = "pushd ~/tmp; GO111MODULE=on go get -u golang.org/x/tools/cmd/gopls; popd";
-    };
-    sessionVariables = {
-      EDITOR = "vim";
-      VISUAL = "vim";
     };
     profileExtra = ''
       if [ -f ~/.bash_local ]; then
@@ -164,8 +167,11 @@ in {
       export CLICOLOR=1
       local_username="diegs"
       . ~/.prompt
-      # eval $(dircolors ~/.dircolors)
     '';
+  };
+
+  programs.bat = {
+    enable = true;
   };
 
   programs.git = {

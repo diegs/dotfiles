@@ -1,6 +1,0 @@
-# .bash_local
-
-alias spotify_fix="sudo nano /var/lib/flatpak/exports/share/applications/com.spotify.Client.desktop"
-# --force-device-scale-factor=1.5
-
-alias gopls_update="pushd ~/tmp; GO111MODULE=on go get -u golang.org/x/tools/cmd/gopls; popd"
