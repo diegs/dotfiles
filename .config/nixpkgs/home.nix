@@ -40,6 +40,7 @@ let
       sha256 = "00wc14chwjfx95gl3yzbxm1ajx88zpzqz0ckl7xvd7gvkrf0mx04";
     };
   };
+
   # tmux clipboardy things to maybe try to get working someday.
   # 'tmux-plugins/vim-tmux-focus-events'
   # 'roxma/vim-tmux-clipboard'
@@ -48,15 +49,14 @@ in {
   home.packages = [
     pkgs.awscli
     pkgs.ctags
-    pkgs.jq
+    pkgs.fd
     pkgs.exa
-    pkgs.htop
+    pkgs.hexyl
     pkgs.inotify-tools
     pkgs.ripgrep
-    pkgs.tmux
     pkgs.tree
 
-    # pkgs.gitAndTools.pre-commit
+    # pkgs.gitAndTools.pre-commit # no module named virtualenv
 
     # go
     pkgs.glide
@@ -69,28 +69,103 @@ in {
     pkgs.nix-prefetch-git
 
     # python
-    pkgs.python37
-    pkgs.python37Packages.black
-    pkgs.python37Packages.mypy
-    pkgs.python37Packages.pyls-black
-    pkgs.python37Packages.pyls-mypy
-    pkgs.python37Packages.python-language-server
+    (pkgs.python37.withPackages (python-packages: with python-packages; [
+      black
+      mypy
+      pip
+      pyls-black
+      pyls-mypy
+      python-language-server
+      setuptools
+      # virtualenv
+      virtualenvwrapper
+    ]))
   ];
 
-  programs.home-manager.enable = true;
-  programs.man.enable = false;
+  programs.home-manager = {
+    enable = true;
+  };
+
+  programs.man = {
+    enable = false;
+  };
+
   home.extraOutputsToInstall = [ "man" ];
 
-  # programs.bash = {
-  #   enable = true;
-  # };
+  programs.jq = {
+    enable = true;
+  };
+
+  programs.htop = {
+    enable = true;
+  };
+
+  programs.lesspipe = {
+    enable = true;
+  };
 
   programs.fzf = {
     enable = true;
-    defaultCommand = "rg --files --hidden";
+    defaultCommand = "fd --type f";
     # defaultOptions = "--bind=ctrl-y:accept,ctrl-k:up,ctrl-j:down";
-    fileWidgetCommand = "rg --files --hidden";
-    enableBashIntegration = true;
+    fileWidgetCommand = "fd --type f";
+    changeDirWidgetCommand = "fd --type d";
+    enableBashIntegration = false;
+  };
+
+  programs.command-not-found.enable = true;
+
+  programs.bash = {
+    enable = true;
+    shellAliases = {
+      ls = "exa";
+      ll = "ls -alF";
+      la = "ls -aa";
+      l = "ls -F";
+      gopls_update = "pushd ~/tmp; GO111MODULE=on go get -u golang.org/x/tools/cmd/gopls; popd";
+    };
+    sessionVariables = {
+      EDITOR = "vim";
+      VISUAL = "vim";
+    };
+    profileExtra = ''
+      if [ -f ~/.bash_local ]; then
+        . ~/.bash_local
+      fi
+    '';
+    initExtra = ''
+      set -o vi
+
+      # FZF hack.
+      if [[ :$SHELLOPTS: =~ :(vi|emacs): ]]; then
+        . ${pkgs.fzf}/share/fzf/completion.bash
+        . ${pkgs.fzf}/share/fzf/key-bindings.bash
+      fi
+
+      # Base16 Shell
+      BASE16_SHELL="$HOME/.config/base16-shell/"
+      [ -n "$PS1" ] && \
+      [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
+        eval "$("$BASE16_SHELL/profile_helper.sh")"
+
+      # Colors
+      RED="$(tput setaf 1)"
+      GREEN="$(tput setaf 2)"
+      YELLOW="$(tput setaf 3)"
+      BLUE="$(tput setaf 4)"
+      MAGENTA="$(tput setaf 5)"
+      CYAN="$(tput setaf 6)"
+      WHITE="$(tput setaf 7)"
+      GRAY="$(tput setaf 8)"
+      BOLD="$(tput bold)"
+      UNDERLINE="$(tput sgr 0 1)"
+      INVERT="$(tput sgr 1 0)"
+      NOCOLOR="$(tput sgr0)"
+      export CLICOLOR=1
+      local_username="diegs"
+      . ~/.prompt
+      # eval $(dircolors ~/.dircolors)
+    '';
   };
 
   programs.git = {
@@ -185,7 +260,7 @@ in {
         let g:ale_fixers = {
         \   '*': ['remove_trailing_lines', 'trim_whitespace'],
         \  'go': ['goimports', 'gofmt'],
-        \  'python': ['black'],
+        \  'python': ['black', 'reorder-python-imports'],
         \  'rust': ['rustfmt'],
         \}
         " autocmd BufNewFile,BufRead ~/src/github.com/something/* let b:ale_fixers = {'python': []}
@@ -219,12 +294,12 @@ in {
 
         " Go.
         au FileType go set noexpandtab
-        au FileType go set tw=120
+        " au FileType go set tw=120
 
         " Python
         au FileType python set tabstop=4
         au FileType python set shiftwidth=4
-        au FileType python set tw=120
+        " au FileType python set tw=120
 
         " BufferDelete.
         function! CommandCabbr(abbreviation, expansion)
@@ -312,7 +387,32 @@ in {
     };
   };
 
-  # programs.tmux = {
-  #   enable = true;
-  # };
+  programs.tmux = {
+    enable = true;
+    baseIndex = 1;
+    clock24 = true;
+    keyMode = "vi";
+    newSession = true;
+    terminal = "screen-256color";
+    plugins = [
+      pkgs.tmuxPlugins.sidebar
+      pkgs.tmuxPlugins.vim-tmux-navigator
+    ];
+    extraConfig = ''
+      unbind C-b
+      set -g prefix `
+      bind ` send-prefix
+
+      bind c new-window -c "#{pane_current_path}"
+      bind '"' split-window -c "#{pane_current_path}"
+      bind % split-window -h -c "#{pane_current_path}"
+
+      # set -g focus-events on
+      # set -g set-clipboard on
+      # set-option -g set-titles on
+      # set-option -g set-titles-string '#I #W'
+      bind m previous-window
+      # set-option -ga terminal-overrides ",xterm-256color:Tc"
+    '';
+  };
 }
