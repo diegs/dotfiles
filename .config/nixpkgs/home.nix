@@ -53,12 +53,14 @@ in {
       pkgs.ctags
       pkgs.fd
       pkgs.exa
+      pkgs.fira-code
+      pkgs.fira-code-symbols
       pkgs.hexyl
       pkgs.inotify-tools
       pkgs.ripgrep
       pkgs.tree
 
-      # pkgs.gitAndTools.pre-commit # no module named virtualenv
+      pkgs.gitAndTools.pre-commit # no module named virtualenv
 
       # go
       pkgs.glide
@@ -74,13 +76,13 @@ in {
       (pkgs.python37.withPackages (python-packages: with python-packages; [
         black
         mypy
-        pip
         pyls-black
         pyls-mypy
         python-language-server
-        setuptools
+        # pip
+        # setuptools
         # virtualenv
-        virtualenvwrapper
+        # virtualenvwrapper
       ]))
     ];
     sessionVariables = {
@@ -397,6 +399,7 @@ in {
     enable = true;
     baseIndex = 1;
     clock24 = true;
+    escapeTime = 20;
     keyMode = "vi";
     newSession = true;
     terminal = "screen-256color";
