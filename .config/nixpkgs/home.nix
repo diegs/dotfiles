@@ -129,11 +129,18 @@ in {
       ll = "ls -alF";
       la = "ls -aa";
       l = "ls -F";
-      tmux = "tmux a";
+      tm = "tmux a";
       cat = "bat";
       gopls_update = "pushd ~/tmp; GO111MODULE=on go get -u golang.org/x/tools/cmd/gopls; popd";
     };
     profileExtra = ''
+      if [ -f ~/.nix-profile/etc/profile.d/nix.sh ]; then
+        . ~/.nix-profile/etc/profile.d/nix.sh
+      fi
+
+      export NIX_PATH="$HOME/.nix-defexpr/channels$''\{NIX_PATH:+:}$NIX_PATH";
+      export PATH=~/bin:$PATH
+
       if [ -f ~/.bash_local ]; then
         . ~/.bash_local
       fi
@@ -404,8 +411,9 @@ in {
     newSession = true;
     terminal = "screen-256color";
     plugins = [
-      pkgs.tmuxPlugins.sidebar
+      pkgs.tmuxPlugins.copycat
       pkgs.tmuxPlugins.vim-tmux-navigator
+      pkgs.tmuxPlugins.yank
     ];
     extraConfig = ''
       unbind C-b
@@ -416,11 +424,11 @@ in {
       bind '"' split-window -c "#{pane_current_path}"
       bind % split-window -h -c "#{pane_current_path}"
 
-      # set -g focus-events on
+      bind m previous-window
+
       # set -g set-clipboard on
       # set-option -g set-titles on
       # set-option -g set-titles-string '#I #W'
-      bind m previous-window
       # set-option -ga terminal-overrides ",xterm-256color:Tc"
     '';
   };
