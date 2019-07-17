@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 let
   customPlugins.vim-asterisk = pkgs.vimUtils.buildVimPlugin {
@@ -113,11 +113,9 @@ in {
 
   programs.fzf = {
     enable = true;
-    defaultCommand = "fd --type f";
-    # defaultOptions = "--bind=ctrl-y:accept,ctrl-k:up,ctrl-j:down";
-    fileWidgetCommand = "fd --type f";
     changeDirWidgetCommand = "fd --type d";
-    enableBashIntegration = false;
+    defaultCommand = "fd --type f";
+    fileWidgetCommand = "fd --type f";
   };
 
   programs.command-not-found.enable = true;
@@ -145,14 +143,8 @@ in {
         . ~/.bash_local
       fi
     '';
-    initExtra = ''
+    initExtra = lib.mkBefore ''
       set -o vi
-
-      # FZF hack.
-      if [[ :$SHELLOPTS: =~ :(vi|emacs): ]]; then
-        . ${pkgs.fzf}/share/fzf/completion.bash
-        . ${pkgs.fzf}/share/fzf/key-bindings.bash
-      fi
 
       # Base16 Shell
       BASE16_SHELL="$HOME/.config/base16-shell/"
