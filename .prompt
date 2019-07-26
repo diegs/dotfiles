@@ -52,10 +52,16 @@ function prompt_command() {
   fi
 
   # Virtualenv
-  # local venv_prompt=
-  # if [ -n "$VIRTUAL_ENV" ]; then
-  #     venv_prompt=" $BLUE$prompt_venv_symbol$(basename $VIRTUAL_ENV)$NOCOLOR"
-  # fi
+  local venv_prompt=
+  if [ -n "$VIRTUAL_ENV" ]; then
+      venv_prompt=" $BLUE$prompt_venv_symbol$(basename $VIRTUAL_ENV)$NOCOLOR"
+  fi
+
+  # aws okta
+  local aws_okta_prompt=
+  if [ -n "$AWS_OKTA_PROFILE=zimride-sudo-developer" ]; then
+      aws_okta_prompt=" $YELLOW$AWS_OKTA_PROFILE$NOCOLOR"
+  fi
 
   # Only show username if not default
   local user_prompt=
@@ -70,7 +76,7 @@ function prompt_command() {
   [ -n "$user_prompt" ] || [ -n "$host_prompt" ] && login_delimiter=":"
 
   # Format prompt
-  first_line="$user_prompt$host_prompt$login_delimiter$BLUE\w$NOCOLOR$git_prompt$venv_prompt"
+  first_line="$user_prompt$host_prompt$login_delimiter$BLUE\w$NOCOLOR$git_prompt$venv_prompt$aws_okta_prompt"
   # Text (commands) inside \[...\] does not impact line length calculation which fixes stange bug when looking through the history
   # $? is a status of last command, should be processed every time prompt prints
   second_line="\`if [ \$? = 0 ]; then echo \[\$CYAN\]; else echo \[\$RED\]; fi\`\$prompt_symbol\[\$NOCOLOR\] "
@@ -83,11 +89,6 @@ function prompt_command() {
   local title="$(basename "$PWD")"
   # [ -n "$remote" ] && title="$title \xE2\x80\x94 $HOSTNAME"
   echo -ne "\033]0;$title"; echo -ne "\007"
-
-  # History.
-  # history -a
-  # history -c
-  # history -r
 }
 
 # Show awesome prompt only if Git is installed

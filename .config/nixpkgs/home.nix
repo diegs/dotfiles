@@ -1,6 +1,15 @@
 { config, pkgs, lib, ... }:
 
 let
+  customPlugins.salt-vim = pkgs.vimUtils.buildVimPlugin {
+    name = "salt-vim";
+    src = pkgs.fetchFromGitHub {
+      owner = "saltstack";
+      repo = "salt-vim";
+      rev = "6ca9e3500cc39dd417b411435d58a1b720b331cc";
+      sha256 = "0r79bpl98xcsmkw6dg83cf1ghn89rzsr011zirk3v1wfxclri2c4";
+    };
+  };
   customPlugins.vim-asterisk = pkgs.vimUtils.buildVimPlugin {
     name = "vim-asterisk";
     src = pkgs.fetchFromGitHub {
@@ -40,6 +49,22 @@ let
       sha256 = "00wc14chwjfx95gl3yzbxm1ajx88zpzqz0ckl7xvd7gvkrf0mx04";
     };
   };
+  # reorder-python-imports = buildPythonPackage rec {
+  #   pname = "reorder-python-imports";
+  #   version = "1.6.0";
+
+  #   src = fetchPypi {
+  #     inherit pname version;
+  #     sha256 = "43c2c9e5e7a16b6c88ba3088a9bfc82f7db8e13378be7c78d6c14a5f8ed05afd";
+  #   };
+
+  #   doCheck = false;
+
+  #   meta = {
+  #     homepage = "https://github.com/asottile/reorder_python_imports";
+  #     description = "Rewrites source to reorder python imports";
+  #   };
+  # };
 
   # tmux clipboardy things to maybe try to get working someday.
   # 'tmux-plugins/vim-tmux-focus-events'
@@ -60,7 +85,7 @@ in {
       pkgs.ripgrep
       pkgs.tree
 
-      pkgs.gitAndTools.pre-commit # no module named virtualenv
+      # pkgs.gitAndTools.pre-commit # no module named virtualenv
 
       # go
       pkgs.glide
@@ -73,16 +98,19 @@ in {
       pkgs.nix-prefetch-git
 
       # python
-      (pkgs.python37.withPackages (python-packages: with python-packages; [
+      (
+        pkgs.python37.withPackages (python-packages: with python-packages; [
         black
         mypy
         pyls-black
         pyls-mypy
         python-language-server
+        # reorder-python-imports
+        virtualenvwrapper
+
         # pip
         # setuptools
         # virtualenv
-        # virtualenvwrapper
       ]))
     ];
     sessionVariables = {
@@ -118,7 +146,13 @@ in {
     fileWidgetCommand = "fd --type f";
   };
 
-  programs.command-not-found.enable = true;
+  programs.command-not-found = {
+    enable = true;
+  };
+
+  programs.alacritty = {
+    enable = true;
+  };
 
   programs.bash = {
     enable = true;
@@ -178,7 +212,7 @@ in {
   programs.git = {
     enable = true;
     userName = "Diego Pontoriero";
-    userEmail = "dpontor@gmail.com";
+    userEmail = "74719+diegs@users.noreply.github.com";
     aliases = {
       co = "checkout";
       br = "branch";
@@ -191,6 +225,9 @@ in {
       push = { default = "current"; };
       url."git@github.com:".insteadOf = "https://github.com/";
     };
+    ignores = [
+      ".mypy_cache/"
+    ];
   };
 
   programs.go = {
@@ -240,14 +277,45 @@ in {
         set relativenumber
         set splitbelow
         set splitright
+        set noshowmode
         if filereadable(expand("~/.vimrc_background"))
           let base16colorspace=256
           source ~/.vimrc_background
-          let g:airline_theme='base16_shell'
         endif
         highlight SpellBad cterm=undercurl ctermbg=238 gui=undercurl guisp=#F07178
         highlight Comment ctermfg=gray
         highlight clear SpellCap
+
+        " Lightline
+        let g:lightline = {
+        \  'colorscheme': 'wombat',
+        \  'active': {
+        \    'left': [ [ 'mode', 'paste' ],
+        \              [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
+        \    'right': [ [ 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_ok' ],
+        \               [ 'lineinfo' ],
+		    \               [ 'percent' ],
+        \               [ 'fileformat', 'fileencoding', 'filetype' ] ],
+        \  },
+        \  'component': {
+        \    'filename': '%f',
+        \  },
+        \  'component_function': {
+        \    'gitbranch': 'fugitive#head',
+        \  },
+        \  'component_expand': {
+        \    'linter_checking': 'lightline#ale#checking',
+        \    'linter_warnings': 'lightline#ale#warnings',
+        \    'linter_errors': 'lightline#ale#errors',
+        \    'linter_ok': 'lightline#ale#ok',
+        \  },
+        \  'component_type': {
+        \   'linter_checking': 'left',
+        \   'linter_warnings': 'warning',
+        \   'linter_errors': 'error',
+        \   'linter_ok': 'left',
+        \ },
+        \}
 
         " FZF.
         let g:fzf_command_prefix = 'Fzf'
@@ -270,11 +338,10 @@ in {
         \  'python': ['black', 'reorder-python-imports'],
         \  'rust': ['rustfmt'],
         \}
-        " autocmd BufNewFile,BufRead ~/src/github.com/something/* let b:ale_fixers = {'python': []}
+        autocmd BufNewFile,BufRead ~/src/github.com/lyft/dispatch-models/* let b:ale_fixers = {'python': []}
         let g:ale_fix_on_save = 1
         let g:ale_lint_on_text_changed = 'normal'
         let g:ale_lint_on_insert_leave = 1
-        let g:airline#extensions#ale#enabled = 1
         let g:ale_completion_enabled = 1
         let g:ale_go_gofmt_options = '-s'
         let g:ale_go_golangci_lint_options = '--fast -c ~/.golangci.yml '
@@ -301,12 +368,12 @@ in {
 
         " Go.
         au FileType go set noexpandtab
-        " au FileType go set tw=120
+        au FileType go set tw=120
 
         " Python
         au FileType python set tabstop=4
         au FileType python set shiftwidth=4
-        " au FileType python set tw=120
+        au FileType python set tw=120
 
         " BufferDelete.
         function! CommandCabbr(abbreviation, expansion)
@@ -370,10 +437,11 @@ in {
           base16-vim
           fzf-vim
           fzfWrapper
+          lightline-ale
+          lightline-vim
+          salt-vim
           tagbar
           vim-abolish
-          vim-airline
-          vim-airline-themes
           vim-asterisk
           vim-bufkill
           vim-commentary
