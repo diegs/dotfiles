@@ -49,22 +49,78 @@ let
       sha256 = "00wc14chwjfx95gl3yzbxm1ajx88zpzqz0ckl7xvd7gvkrf0mx04";
     };
   };
-  # reorder-python-imports = buildPythonPackage rec {
-  #   pname = "reorder-python-imports";
-  #   version = "1.6.0";
+  aspy-refactor-imports = pkgs.python37.pkgs.buildPythonPackage rec {
+    pname = "aspy.refactor-imports";
+    version = "1.1.0";
 
-  #   src = fetchPypi {
-  #     inherit pname version;
-  #     sha256 = "43c2c9e5e7a16b6c88ba3088a9bfc82f7db8e13378be7c78d6c14a5f8ed05afd";
-  #   };
+    src = pkgs.python37.pkgs.fetchPypi {
+      inherit version;
+      pname = "aspy.refactor_imports";
+      sha256 = "0m8x725xswsxh25xb2ypnbl6xwp6vill8l1n72fhpmd0s6dqshc8";
+    };
 
-  #   doCheck = false;
+    buildInputs = [
+      pkgs.python37.pkgs.cached-property
+    ];
 
-  #   meta = {
-  #     homepage = "https://github.com/asottile/reorder_python_imports";
-  #     description = "Rewrites source to reorder python imports";
-  #   };
-  # };
+    doCheck = false;
+
+    meta = {
+      homepage = "https://github.com/asottile/reorder_python_imports";
+      description = "Rewrites source to reorder python imports";
+    };
+  };
+  reorder-python-imports = pkgs.python37.pkgs.buildPythonPackage rec {
+    pname = "reorder-python-imports";
+    version = "1.6.1";
+
+    src = pkgs.python37.pkgs.fetchPypi {
+      inherit version;
+      pname = "reorder_python_imports";
+      sha256 = "1c04d11c07d4c48d75b9a7f0ab5db4b61be42d294fd902c1efd2b1e0bc146d22";
+    };
+
+    propagatedBuildInputs = [
+      aspy-refactor-imports
+      pkgs.python37.pkgs.cached-property
+    ];
+
+    doCheck = false;
+
+    meta = {
+      homepage = "https://github.com/asottile/reorder_python_imports";
+      description = "Rewrites source to reorder python imports";
+    };
+  };
+  pre-commit = pkgs.python37.pkgs.buildPythonPackage rec {
+    pname = "pre-commit";
+    version = "1.18.1";
+
+    src = pkgs.python37.pkgs.fetchPypi {
+      pname = "pre_commit";
+      inherit version;
+      sha256 = "1762f2a551732e250d0e16131d3bf9e653adb6ec262e58dfe033906750503235";
+    };
+
+    propagatedBuildInputs = [
+      pkgs.python37.pkgs.aspy-yaml
+      pkgs.python37.pkgs.cached-property
+      pkgs.python37.pkgs.cfgv
+      pkgs.python37.pkgs.identify
+      pkgs.python37.pkgs.nodeenv
+      pkgs.python37.pkgs.six
+      pkgs.python37.pkgs.toml
+      pkgs.python37.pkgs.virtualenvwrapper
+      pkgs.python37.pkgs.importlib-metadata
+    ];
+
+    doCheck = false;
+
+    meta = {
+      homepage = "https://pre-commit.com";
+      description = "A framework for managing and maintaining multi-language pre-commit hooks.";
+    };
+  };
 
   # tmux clipboardy things to maybe try to get working someday.
   # 'tmux-plugins/vim-tmux-focus-events'
@@ -82,10 +138,9 @@ in {
       pkgs.fira-code-symbols
       pkgs.hexyl
       pkgs.inotify-tools
+      pkgs.graphviz
       pkgs.ripgrep
       pkgs.tree
-
-      # pkgs.gitAndTools.pre-commit # no module named virtualenv
 
       # go
       pkgs.glide
@@ -102,21 +157,22 @@ in {
         pkgs.python37.withPackages (python-packages: with python-packages; [
         black
         mypy
+        # pre-commit
         pyls-black
         pyls-mypy
         python-language-server
-        # reorder-python-imports
+        reorder-python-imports
         virtualenvwrapper
-
-        # pip
-        # setuptools
-        # virtualenv
       ]))
     ];
     sessionVariables = {
       EDITOR = "vim";
       VISUAL = "vim";
     };
+  };
+
+  programs.direnv = {
+    enable = true;
   };
 
   programs.home-manager = {
@@ -150,13 +206,10 @@ in {
     enable = true;
   };
 
-  programs.alacritty = {
-    enable = true;
-  };
-
   programs.bash = {
     enable = true;
     shellAliases = {
+      cdl = "cd ~/src/github.com/lyft";
       ls = "exa";
       ll = "ls -alF";
       la = "ls -aa";
@@ -164,6 +217,7 @@ in {
       tm = "tmux a";
       cat = "bat";
       gopls_update = "pushd ~/tmp; GO111MODULE=on go get -u golang.org/x/tools/cmd/gopls; popd";
+      colors = ''for i in {0..255}; do printf "\x1b[38;5;$''\{i}mcolor%-5i\x1b[0m" $i ; if ! (( ($i + 1 ) % 8 )); then echo ; fi ; done'';
     };
     profileExtra = ''
       if [ -f ~/.nix-profile/etc/profile.d/nix.sh ]; then
@@ -319,10 +373,13 @@ in {
 
         " FZF.
         let g:fzf_command_prefix = 'Fzf'
-        let g:fzf_buffers_jump = 1
+        " let g:fzf_buffers_jump = 1
         nnoremap <silent> <C-p> :FzfFiles<CR>
         nnoremap <silent> <C-b> :FzfBuffers<CR>
         nnoremap <silent> <leader>r :FzfRg<CR>
+        autocmd! FileType fzf
+        autocmd  FileType fzf set laststatus=0 noshowmode noruler
+          \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
 
         " ALE.
         let g:ale_linters = {
@@ -339,6 +396,7 @@ in {
         \  'rust': ['rustfmt'],
         \}
         autocmd BufNewFile,BufRead ~/src/github.com/lyft/dispatch-models/* let b:ale_fixers = {'python': []}
+        autocmd BufNewFile,BufRead ~/src/github.com/lyft/ridesapi/* let b:ale_fixers = {'python': []}
         let g:ale_fix_on_save = 1
         let g:ale_lint_on_text_changed = 'normal'
         let g:ale_lint_on_insert_leave = 1
@@ -488,8 +546,39 @@ in {
 
       # set -g set-clipboard on
       # set-option -g set-titles on
-      # set-option -g set-titles-string '#I #W'
+      # set-option -g set-titles-string "#I #W"
       # set-option -ga terminal-overrides ",xterm-256color:Tc"
+
+      set -g visual-activity off
+      set -g visual-bell off
+      set -g visual-silence off
+      setw -g monitor-activity off
+      set -g bell-action none
+
+      setw -g clock-mode-colour colour5
+      setw -g mode-style "fg=colour1 bg=colour18 bold"
+
+      set -g pane-border-style "fg=colour19 bg=colour0"
+      set -g pane-active-border-style "bg=colour0 fg=colour9"
+
+      set -g status-position bottom
+      set -g status-justify left
+      set -g status-style "bg=colour240 fg=colour15"
+
+      set -g status-left ""
+      set -g status-right "#[fg=colour233,bg=colour19] %d/%m #[fg=colour233,bg=colour8] %H:%M "
+      set -g status-right-length 50
+      set -g status-left-length 20
+
+      setw -g window-status-current-style "fg=colour1 bg=colour4"
+      setw -g window-status-current-format " #I#[fg=colour249]:#[fg=colour255]#W#[fg=colour249]#F "
+
+      setw -g window-status-style "fg=colour9 bg=colour240"
+      setw -g window-status-format " #I#[fg=colour237]:#[fg=colour250]#W#[fg=colour244]#F "
+
+      setw -g window-status-bell-style "fg=colour255 bg=colour1 bold"
+
+      set -g message-style "fg=colour232 bg=colour16 bold"
     '';
   };
 }
