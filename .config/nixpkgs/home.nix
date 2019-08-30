@@ -293,231 +293,226 @@ in {
     enable = true;
     viAlias = true;
     vimAlias = true;
-    configure = {
-      customRC = ''
-        let mapleader = ','
+    extraConfig = ''
+      let mapleader = ','
 
-        filetype plugin indent on
-        syntax enable
+      filetype plugin indent on
+      syntax enable
 
-        " Settings.
-        set noshowcmd
-        set noruler
-        set hidden
-        set showmatch
-        set ignorecase
-        set smartcase
-        set nobackup
-        set nowb
-        set noswapfile
-        set autoread
+      " Settings.
+      set noshowcmd
+      set noruler
+      set hidden
+      set showmatch
+      set ignorecase
+      set smartcase
+      set nobackup
+      set nowb
+      set noswapfile
+      set autoread
 
-        " Editing.
-        set tabstop=2
-        set softtabstop=2
-        set expandtab
-        set shiftwidth=2
-        set autoindent
-        set wildmode=longest:list
-        set nojoinspaces
-        set matchpairs+=<:>
-        set spell
-        set clipboard=unnamed
+      " Editing.
+      set tabstop=2
+      set softtabstop=2
+      set expandtab
+      set shiftwidth=2
+      set autoindent
+      set wildmode=longest:list
+      set nojoinspaces
+      set matchpairs+=<:>
+      set spell
+      set clipboard=unnamed
 
-        " UI.
-        set hlsearch
-        set incsearch
-        set number
-        set relativenumber
-        set splitbelow
-        set splitright
-        set noshowmode
-        if filereadable(expand("~/.vimrc_background"))
-          let base16colorspace=256
-          source ~/.vimrc_background
-        endif
-        highlight SpellBad cterm=undercurl ctermbg=238 gui=undercurl guisp=#F07178
-        highlight Comment ctermfg=gray
-        highlight clear SpellCap
+      " UI.
+      set hlsearch
+      set incsearch
+      set number
+      set relativenumber
+      set splitbelow
+      set splitright
+      set noshowmode
+      if filereadable(expand("~/.vimrc_background"))
+        let base16colorspace=256
+        source ~/.vimrc_background
+      endif
+      highlight SpellBad cterm=undercurl ctermbg=238 gui=undercurl guisp=#F07178
+      highlight Comment ctermfg=gray
+      highlight clear SpellCap
 
-        " Lightline
-        let g:lightline = {
-        \  'colorscheme': 'wombat',
-        \  'active': {
-        \    'left': [ [ 'mode', 'paste' ],
-        \              [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
-        \    'right': [ [ 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_ok' ],
-        \               [ 'lineinfo' ],
-		    \               [ 'percent' ],
-        \               [ 'fileformat', 'fileencoding', 'filetype' ] ],
-        \  },
-        \  'component': {
-        \    'filename': '%f',
-        \  },
-        \  'component_function': {
-        \    'gitbranch': 'fugitive#head',
-        \  },
-        \  'component_expand': {
-        \    'linter_checking': 'lightline#ale#checking',
-        \    'linter_warnings': 'lightline#ale#warnings',
-        \    'linter_errors': 'lightline#ale#errors',
-        \    'linter_ok': 'lightline#ale#ok',
-        \  },
-        \  'component_type': {
-        \   'linter_checking': 'left',
-        \   'linter_warnings': 'warning',
-        \   'linter_errors': 'error',
-        \   'linter_ok': 'left',
-        \ },
-        \}
+      " Lightline
+      let g:lightline = {
+      \  'colorscheme': 'wombat',
+      \  'active': {
+      \    'left': [ [ 'mode', 'paste' ],
+      \              [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
+      \    'right': [ [ 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_ok' ],
+      \               [ 'lineinfo' ],
+      \               [ 'percent' ],
+      \               [ 'fileformat', 'fileencoding', 'filetype' ] ],
+      \  },
+      \  'component': {
+      \    'filename': '%f',
+      \  },
+      \  'component_function': {
+      \    'gitbranch': 'fugitive#head',
+      \  },
+      \  'component_expand': {
+      \    'linter_checking': 'lightline#ale#checking',
+      \    'linter_warnings': 'lightline#ale#warnings',
+      \    'linter_errors': 'lightline#ale#errors',
+      \    'linter_ok': 'lightline#ale#ok',
+      \  },
+      \  'component_type': {
+      \   'linter_checking': 'left',
+      \   'linter_warnings': 'warning',
+      \   'linter_errors': 'error',
+      \   'linter_ok': 'left',
+      \ },
+      \}
 
-        " FZF.
-        let g:fzf_command_prefix = 'Fzf'
-        " let g:fzf_buffers_jump = 1
-        nnoremap <silent> <C-p> :FzfFiles<CR>
-        nnoremap <silent> <C-b> :FzfBuffers<CR>
-        nnoremap <silent> <leader>r :FzfRg<CR>
-        autocmd! FileType fzf
-        autocmd  FileType fzf set laststatus=0 noshowmode noruler
-          \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+      " FZF.
+      let g:fzf_command_prefix = 'Fzf'
+      " let g:fzf_buffers_jump = 1
+      nnoremap <silent> <C-p> :FzfFiles<CR>
+      nnoremap <silent> <C-b> :FzfBuffers<CR>
+      nnoremap <silent> <leader>r :FzfRg<CR>
+      autocmd! FileType fzf
+      autocmd  FileType fzf set laststatus=0 noshowmode noruler
+        \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
 
-        " ALE.
-        let g:ale_linters = {
-        \  'go': ['gopls'],
-        \  'markdown': ['prettier'],
-        \  'python': ['pyls'],
-        \  'rust': ['rls'],
-        \}
-        " \  'python': ['flake8', 'mypy', 'pylint', 'pyls'],
-        let g:ale_fixers = {
-        \   '*': ['remove_trailing_lines', 'trim_whitespace'],
-        \  'go': ['goimports', 'gofmt'],
-        \  'python': ['black', 'reorder-python-imports'],
-        \  'rust': ['rustfmt'],
-        \}
-        autocmd BufNewFile,BufRead ~/src/github.com/lyft/dispatch-models/* let b:ale_fixers = {'python': []}
-        autocmd BufNewFile,BufRead ~/src/github.com/lyft/ridesapi/* let b:ale_fixers = {'python': []}
-        let g:ale_fix_on_save = 1
-        let g:ale_lint_on_text_changed = 'normal'
-        let g:ale_lint_on_insert_leave = 1
-        let g:ale_completion_enabled = 1
-        let g:ale_go_gofmt_options = '-s'
-        let g:ale_go_golangci_lint_options = '--fast -c ~/.golangci.yml '
-        let g:ale_go_golangci_lint_package = 1
-        let g:ale_python_pyls_config = {
-        \   'pyls': {
-        \     'plugins': {
-        \       'mccabe': {
-        \         'enabled': v:false
-        \       },
-        \       'pycodestyle': {
-        \         'enabled': v:false
-        \       },
-        \       'pylint': {
-        \         'enabled': v:false
-        \       }
-        \     }
-        \   },
-        \ }
-        nnoremap <silent> <leader>h :ALEHover<CR>
-        nnoremap <silent> <leader>g :ALEGoToDefinition<CR>
-        inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : "\<TAB>"
-        inoremap <silent><expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-TAB>"
+      " ALE.
+      let g:ale_linters = {
+      \  'go': ['gopls'],
+      \  'markdown': ['prettier'],
+      \  'python': ['pyls'],
+      \  'rust': ['rls'],
+      \}
+      " \  'python': ['flake8', 'mypy', 'pylint', 'pyls'],
+      let g:ale_fixers = {
+      \   '*': ['remove_trailing_lines', 'trim_whitespace'],
+      \  'go': ['goimports', 'gofmt'],
+      \  'python': ['black', 'reorder-python-imports'],
+      \  'rust': ['rustfmt'],
+      \}
+      autocmd BufNewFile,BufRead ~/src/github.com/lyft/dispatch-models/* let b:ale_fixers = {'python': []}
+      autocmd BufNewFile,BufRead ~/src/github.com/lyft/ridesapi/* let b:ale_fixers = {'python': []}
+      let g:ale_fix_on_save = 1
+      let g:ale_lint_on_text_changed = 'normal'
+      let g:ale_lint_on_insert_leave = 1
+      let g:ale_completion_enabled = 1
+      let g:ale_go_gofmt_options = '-s'
+      let g:ale_go_golangci_lint_options = '--fast -c ~/.golangci.yml '
+      let g:ale_go_golangci_lint_package = 1
+      let g:ale_python_pyls_config = {
+      \   'pyls': {
+      \     'plugins': {
+      \       'mccabe': {
+      \         'enabled': v:false
+      \       },
+      \       'pycodestyle': {
+      \         'enabled': v:false
+      \       },
+      \       'pylint': {
+      \         'enabled': v:false
+      \       }
+      \     }
+      \   },
+      \ }
+      nnoremap <silent> <leader>h :ALEHover<CR>
+      nnoremap <silent> <leader>g :ALEGoToDefinition<CR>
+      inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : "\<TAB>"
+      inoremap <silent><expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-TAB>"
 
-        " Go.
-        au FileType go set noexpandtab
-        au FileType go set tw=120
+      " Go.
+      au FileType go set noexpandtab
+      au FileType go set tw=120
 
-        " Python
-        au FileType python set tabstop=4
-        au FileType python set shiftwidth=4
-        au FileType python set tw=120
+      " Python
+      au FileType python set tabstop=4
+      au FileType python set shiftwidth=4
+      au FileType python set tw=120
 
-        " BufferDelete.
-        function! CommandCabbr(abbreviation, expansion)
-          execute 'cabbr ' . a:abbreviation . ' <c-r>=getcmdpos() == 1 && getcmdtype() == ":" ? "' . a:expansion . '" : "' . a:abbreviation . '"<CR>'
-        endfunction
-        command! -nargs=+ CommandCabbr call CommandCabbr(<f-args>)
+      " BufferDelete.
+      function! CommandCabbr(abbreviation, expansion)
+        execute 'cabbr ' . a:abbreviation . ' <c-r>=getcmdpos() == 1 && getcmdtype() == ":" ? "' . a:expansion . '" : "' . a:abbreviation . '"<CR>'
+      endfunction
+      command! -nargs=+ CommandCabbr call CommandCabbr(<f-args>)
 
-        CommandCabbr bd BD
-        nnoremap <silent> <leader>d :BD<CR>
+      CommandCabbr bd BD
+      nnoremap <silent> <leader>d :BD<CR>
 
-        " Grep
-        set grepprg=rg\ --smart-case\ --vimgrep
-        autocmd QuickFixCmdPost *grep* cwindow
+      " Grep
+      set grepprg=rg\ --smart-case\ --vimgrep
+      autocmd QuickFixCmdPost *grep* cwindow
 
-        " Tagbar.
-        nnoremap <leader>to :TagbarToggle<CR>
-        nnoremap <leader>tp :TagbarTogglePause<CR>
-        let g:tagbar_left = 1
-        let g:tagbar_type_go = {
-        \   'ctagstype' : 'go',
-        \   'kinds'     : [
-        \     'p:package',
-        \     'i:imports:1',
-        \     'c:constants',
-        \     'v:variables',
-        \     't:types',
-        \     'n:interfaces',
-        \     'w:fields',
-        \     'e:embedded',
-        \     'm:methods',
-        \     'r:constructor',
-        \     'f:functions'
-        \   ],
-        \   'sro' : '.',
-        \   'kind2scope' : {
-        \     't' : 'ctype',
-        \     'n' : 'ntype'
-        \   },
-        \   'scope2kind' : {
-        \     'ctype' : 't',
-        \     'ntype' : 'n'
-        \   },
-        \   'ctagsbin'  : 'gotags',
-        \   'ctagsargs' : '-sort -silent'
-        \ }
+      " Tagbar.
+      nnoremap <leader>to :TagbarToggle<CR>
+      nnoremap <leader>tp :TagbarTogglePause<CR>
+      let g:tagbar_left = 1
+      let g:tagbar_type_go = {
+      \   'ctagstype' : 'go',
+      \   'kinds'     : [
+      \     'p:package',
+      \     'i:imports:1',
+      \     'c:constants',
+      \     'v:variables',
+      \     't:types',
+      \     'n:interfaces',
+      \     'w:fields',
+      \     'e:embedded',
+      \     'm:methods',
+      \     'r:constructor',
+      \     'f:functions'
+      \   ],
+      \   'sro' : '.',
+      \   'kind2scope' : {
+      \     't' : 'ctype',
+      \     'n' : 'ntype'
+      \   },
+      \   'scope2kind' : {
+      \     'ctype' : 't',
+      \     'ntype' : 'n'
+      \   },
+      \   'ctagsbin'  : 'gotags',
+      \   'ctagsargs' : '-sort -silent'
+      \ }
 
-        " Asterisk.
-        map * <Plug>(asterisk-z*)
-        map # <Plug>(asterisk-z#)
-        map g* <Plug>(asterisk-gz*)
-        map g# <Plug>(asterisk-gz#)
-        let g:asterisk#keeppos = 1
+      " Asterisk.
+      map * <Plug>(asterisk-z*)
+      map # <Plug>(asterisk-z#)
+      map g* <Plug>(asterisk-gz*)
+      map g# <Plug>(asterisk-gz#)
+      let g:asterisk#keeppos = 1
 
-        " Easy-align.
-        xmap ga <Plug>(EasyAlign)
-        nmap ga <Plug>(EasyAlign)
-      '';
-      packages.myVimPackage = with pkgs.vimPlugins // customPlugins; {
-        start = [
-          ale
-          base16-vim
-          fzf-vim
-          fzfWrapper
-          lightline-ale
-          lightline-vim
-          salt-vim
-          tagbar
-          vim-abolish
-          vim-asterisk
-          vim-bufkill
-          vim-commentary
-          vim-easy-align
-          vim-fugitive
-          vim-polyglot
-          vim-repeat
-          vim-sensible
-          vim-surround
-          vim-textobj-comment
-          vim-textobj-user
-          vim-tmux-navigator
-          vim-unimpaired
-          vim-vinegar
-        ];
-        opt = [];
-      };
-    };
+      " Easy-align.
+      xmap ga <Plug>(EasyAlign)
+      nmap ga <Plug>(EasyAlign)
+    '';
+    plugins = [
+      pkgs.vimPlugins.ale
+      pkgs.vimPlugins.base16-vim
+      pkgs.vimPlugins.fzf-vim
+      pkgs.vimPlugins.fzfWrapper
+      pkgs.vimPlugins.lightline-ale
+      pkgs.vimPlugins.lightline-vim
+      customPlugins.salt-vim
+      pkgs.vimPlugins.tagbar
+      pkgs.vimPlugins.vim-abolish
+      customPlugins.vim-asterisk
+      customPlugins.vim-bufkill
+      pkgs.vimPlugins.vim-commentary
+      pkgs.vimPlugins.vim-easy-align
+      pkgs.vimPlugins.vim-fugitive
+      pkgs.vimPlugins.vim-polyglot
+      pkgs.vimPlugins.vim-repeat
+      pkgs.vimPlugins.vim-sensible
+      pkgs.vimPlugins.vim-surround
+      customPlugins.vim-textobj-comment
+      customPlugins.vim-textobj-user
+      pkgs.vimPlugins.vim-tmux-navigator
+      pkgs.vimPlugins.vim-unimpaired
+      pkgs.vimPlugins.vim-vinegar
+    ];
   };
 
   programs.tmux = {
