@@ -418,11 +418,11 @@ in {
       let g:ale_fixers = {
       \   '*': ['remove_trailing_lines', 'trim_whitespace'],
       \  'go': ['goimports', 'gofmt'],
-      \  'python': ['black', 'reorder-python-imports'],
+      \  'python': [],
       \  'rust': ['rustfmt'],
       \}
-      autocmd BufNewFile,BufRead ~/src/github.com/lyft/dispatch-models/* let b:ale_fixers = {'python': []}
-      autocmd BufNewFile,BufRead ~/src/github.com/lyft/ridesapi/* let b:ale_fixers = {'python': []}
+      autocmd BufNewFile,BufRead ~/src/github.com/lyft/dispatch/* let b:ale_fixers = {'python': ['black', 'reorder-python-imports']}
+      autocmd BufNewFile,BufRead ~/src/github.com/lyft/ridescheduler/* let b:ale_fixers = {'python': ['black', 'reorder-python-imports']}
       let g:ale_fix_on_save = 1
       let g:ale_lint_on_text_changed = 'normal'
       let g:ale_lint_on_insert_leave = 1
@@ -545,8 +545,24 @@ in {
   programs.starship = {
     enable = true;
     settings = {
+      cmd_duration = {
+        disabled = true;
+      };
+      directory = {
+        truncate_to_repo = false;
+        truncation_length = 20;
+      };
+      env_var = {
+        variable = "AWS_OKTA_PROFILE";
+      };
       git_branch = {
         symbol = "";
+      };
+      golang = {
+        disabled = true;
+      };
+      python = {
+        disabled = true;
       };
     };
   };
