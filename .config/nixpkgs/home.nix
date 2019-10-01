@@ -92,6 +92,48 @@ let
       description = "Rewrites source to reorder python imports";
     };
   };
+  tokenize-rt = pkgs.python37.pkgs.buildPythonPackage rec {
+    pname = "tokenize-rt";
+    version = "3.2.0";
+
+    src = pkgs.python37.pkgs.fetchPypi {
+      inherit version;
+      pname = "tokenize_rt";
+      sha256 = "1krkx6xlfw3sxab8h80d09pgiyi1a5wl40f50f52y410yvlfwi1g";
+    };
+
+    # buildInputs = [
+    #   pkgs.python37.pkgs.tokenize-rt
+    # ];
+
+    doCheck = false;
+
+    meta = {
+      homepage = "https://github.com/asottile/tokenize-rt";
+      description = "A wrapper around the stdlib `tokenize` which roundtrips.";
+    };
+  };
+  pyupgrade = pkgs.python37.pkgs.buildPythonApplication rec {
+    pname = "pyupgrade";
+    version = "1.23.0";
+
+    src = pkgs.python37.pkgs.fetchPypi {
+      inherit version;
+      pname = "pyupgrade";
+      sha256 = "1vqpm63fnc35zdvfck6yr4ss9vvqzxkxqsyk31l2fgyb0k1a3xyd";
+    };
+
+    propagatedBuildInputs = [
+      tokenize-rt
+    ];
+
+    doCheck = false;
+
+    meta = {
+      homepage = "https://github.com/asottile/pyupgrade";
+      description = "A tool (and pre-commit hook) to automatically upgrade syntax for newer versions of the language.";
+    };
+  };
   pre-commit = pkgs.python37.pkgs.buildPythonPackage rec {
     pname = "pre-commit";
     version = "1.18.1";
@@ -152,18 +194,20 @@ in {
       pkgs.cabal2nix
       pkgs.nix-prefetch-git
 
-      # python
-      (
-        pkgs.python37.withPackages (python-packages: with python-packages; [
-        black
-        mypy
-        # pre-commit
-        pyls-black
-        pyls-mypy
-        python-language-server
-        reorder-python-imports
-        virtualenvwrapper
-      ]))
+      # pyupgrade
+
+      # # python
+      # (
+      #   pkgs.python37.withPackages (python-packages: with python-packages; [
+      #   black
+      #   mypy
+      #   # pre-commit
+      #   pyls-black
+      #   pyls-mypy
+      #   python-language-server
+      #   reorder-python-imports
+      #   virtualenvwrapper
+      # ]))
     ];
     sessionVariables = {
       EDITOR = "vim";
@@ -239,23 +283,6 @@ in {
       [ -n "$PS1" ] && \
       [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
         eval "$("$BASE16_SHELL/profile_helper.sh")"
-
-      # Colors
-      RED="$(tput setaf 1)"
-      GREEN="$(tput setaf 2)"
-      YELLOW="$(tput setaf 3)"
-      BLUE="$(tput setaf 4)"
-      MAGENTA="$(tput setaf 5)"
-      CYAN="$(tput setaf 6)"
-      WHITE="$(tput setaf 7)"
-      GRAY="$(tput setaf 8)"
-      BOLD="$(tput bold)"
-      UNDERLINE="$(tput sgr 0 1)"
-      INVERT="$(tput sgr 1 0)"
-      NOCOLOR="$(tput sgr0)"
-      export CLICOLOR=1
-      local_username="diegs"
-      . ~/.prompt
     '';
   };
 
@@ -515,6 +542,15 @@ in {
     ];
   };
 
+  programs.starship = {
+    enable = true;
+    settings = {
+      git_branch = {
+        symbol = "";
+      };
+    };
+  };
+
   programs.tmux = {
     enable = true;
     baseIndex = 1;
@@ -561,7 +597,7 @@ in {
       set -g status-style "bg=colour240 fg=colour15"
 
       set -g status-left ""
-      set -g status-right "#[fg=colour233,bg=colour19] %d/%m #[fg=colour233,bg=colour8] %H:%M "
+      set -g status-right "#[fg=colour233,bg=colour19] %m/%d #[fg=colour233,bg=colour8] %H:%M "
       set -g status-right-length 50
       set -g status-left-length 20
 
