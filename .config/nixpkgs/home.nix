@@ -260,7 +260,7 @@ in {
       l = "ls -F";
       tm = "tmux a";
       cat = "bat";
-      gopls_update = "pushd ~/tmp; GO111MODULE=on go get -u golang.org/x/tools/cmd/gopls; popd";
+      gopls_update = "pushd ~/tmp; GO111MODULE=on go get golang.org/x/tools/gopls@latest; popd";
       colors = ''for i in {0..255}; do printf "\x1b[38;5;$''\{i}mcolor%-5i\x1b[0m" $i ; if ! (( ($i + 1 ) % 8 )); then echo ; fi ; done'';
     };
     profileExtra = ''
@@ -545,10 +545,14 @@ in {
   programs.starship = {
     enable = true;
     settings = {
+      battery = {
+        disabled = true;
+      };
       cmd_duration = {
         disabled = true;
       };
       directory = {
+        style = "bold blue";
         truncate_to_repo = false;
         truncation_length = 20;
       };
