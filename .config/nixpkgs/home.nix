@@ -187,6 +187,7 @@ in {
       # go
       pkgs.glide
       pkgs.goimports
+      pkgs.golangci-lint
       pkgs.gotags
 
       # haskell
@@ -213,6 +214,10 @@ in {
       EDITOR = "vim";
       VISUAL = "vim";
     };
+  };
+
+  programs.command-not-found = {
+    enable = true;
   };
 
   programs.direnv = {
@@ -246,7 +251,7 @@ in {
     fileWidgetCommand = "fd --type f";
   };
 
-  programs.command-not-found = {
+  programs.pazi = {
     enable = true;
   };
 
@@ -260,7 +265,6 @@ in {
       l = "ls -F";
       tm = "tmux a";
       cat = "bat";
-      gopls_update = "pushd ~/tmp; GO111MODULE=on go get golang.org/x/tools/gopls@latest; popd";
       colors = ''for i in {0..255}; do printf "\x1b[38;5;$''\{i}mcolor%-5i\x1b[0m" $i ; if ! (( ($i + 1 ) % 8 )); then echo ; fi ; done'';
     };
     profileExtra = ''
@@ -301,7 +305,7 @@ in {
       st = "status";
     };
     extraConfig = {
-      fetch = { prune = true; };
+      fetch = { prune = true; tags = true; };
       pull = { rebase = true; };
       push = { default = "current"; };
       url."git@github.com:".insteadOf = "https://github.com/";
@@ -520,6 +524,7 @@ in {
       pkgs.vimPlugins.base16-vim
       pkgs.vimPlugins.fzf-vim
       pkgs.vimPlugins.fzfWrapper
+      pkgs.vimPlugins.goyo-vim
       pkgs.vimPlugins.lightline-ale
       pkgs.vimPlugins.lightline-vim
       customPlugins.salt-vim
@@ -557,9 +562,12 @@ in {
         truncation_length = 20;
       };
       env_var = {
+        prefix = "";
+        style = "yellow";
         variable = "AWS_OKTA_PROFILE";
       };
       git_branch = {
+        prefix = "";
         symbol = "";
       };
       golang = {
@@ -628,7 +636,6 @@ in {
       setw -g window-status-format " #I#[fg=colour237]:#[fg=colour250]#W#[fg=colour244]#F "
 
       setw -g window-status-bell-style "fg=colour255 bg=colour1 bold"
-
       set -g message-style "fg=colour232 bg=colour16 bold"
     '';
   };
