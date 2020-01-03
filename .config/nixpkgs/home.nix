@@ -255,6 +255,13 @@ in {
     enable = true;
   };
 
+  programs.readline = {
+    enable = true;
+    variables = {
+      editing-mode = "vi";
+    };
+  };
+
   programs.bash = {
     enable = true;
     shellAliases = {
@@ -280,8 +287,6 @@ in {
       fi
     '';
     initExtra = lib.mkBefore ''
-      set -o vi
-
       # Base16 Shell
       BASE16_SHELL="$HOME/.config/base16-shell/"
       [ -n "$PS1" ] && \
