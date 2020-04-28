@@ -269,7 +269,6 @@ in {
   programs.bash = {
     enable = true;
     shellAliases = {
-      cdl = "cd ~/src/github.com/lyft";
       ls = "exa";
       ll = "ls -alF";
       la = "ls -aa";
@@ -382,7 +381,7 @@ in {
 
       " Lightline
       let g:lightline = {
-      \  'colorscheme': 'wombat',
+      \  'colorscheme': '16color',
       \  'active': {
       \    'left': [ [ 'mode', 'paste' ],
       \              [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
