@@ -169,6 +169,7 @@ let
   # 'roxma/vim-tmux-clipboard'
 
 in {
+  targets.genericLinux.enable = true;
   home = {
     extraOutputsToInstall = [ "man" ];
     packages = [
@@ -278,13 +279,6 @@ in {
       colors = ''for i in {0..255}; do printf "\x1b[38;5;$''\{i}mcolor%-5i\x1b[0m" $i ; if ! (( ($i + 1 ) % 8 )); then echo ; fi ; done'';
     };
     profileExtra = ''
-      if [ -f ~/.nix-profile/etc/profile.d/nix.sh ]; then
-        . ~/.nix-profile/etc/profile.d/nix.sh
-      fi
-
-      export NIX_PATH="$HOME/.nix-defexpr/channels$''\{NIX_PATH:+:}$NIX_PATH";
-      export PATH=~/bin:$PATH
-
       if [ -f ~/.bash_local ]; then
         . ~/.bash_local
       fi
