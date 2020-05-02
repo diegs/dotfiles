@@ -177,6 +177,7 @@ in {
       pkgs.ctags
       pkgs.fd
       pkgs.exa
+      pkgs.cascadia-code
       pkgs.fira-code
       pkgs.fira-code-symbols
       pkgs.hexyl
@@ -321,6 +322,22 @@ in {
   programs.go = {
     enable = true;
     goPath = ".";
+  };
+
+  # home.file.".config" = {
+  #   source = ../user-dirs.dirs;
+  # };
+
+  xdg.userDirs = {
+    enable = true;
+    desktop = "$HOME/";
+    documents = "$HOME/";
+    download = "$HOME/downloads";
+    music = "$HOME/";
+    pictures = "$HOME/";
+    publicShare = "$HOME/";
+    templates = "$HOME/";
+    videos = "$HOME/";
   };
 
   programs.neovim = {
