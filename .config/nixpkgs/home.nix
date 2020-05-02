@@ -173,6 +173,7 @@ in {
   home = {
     extraOutputsToInstall = [ "man" ];
     packages = [
+      # util
       pkgs.awscli
       pkgs.ctags
       pkgs.fd
@@ -216,10 +217,6 @@ in {
       EDITOR = "vim";
       VISUAL = "vim";
     };
-  };
-
-  programs.broot = {
-    enable = true;
   };
 
   programs.command-not-found = {
@@ -545,6 +542,7 @@ in {
       pkgs.vimPlugins.fzf-vim
       pkgs.vimPlugins.fzfWrapper
       pkgs.vimPlugins.goyo-vim
+      pkgs.vimPlugins.haskell-vim
       pkgs.vimPlugins.lightline-ale
       pkgs.vimPlugins.lightline-vim
       customPlugins.salt-vim
