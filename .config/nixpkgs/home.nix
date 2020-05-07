@@ -49,127 +49,9 @@ let
       sha256 = "00wc14chwjfx95gl3yzbxm1ajx88zpzqz0ckl7xvd7gvkrf0mx04";
     };
   };
-  aspy-refactor-imports = pkgs.python37.pkgs.buildPythonPackage rec {
-    pname = "aspy.refactor-imports";
-    version = "1.1.0";
-
-    src = pkgs.python37.pkgs.fetchPypi {
-      inherit version;
-      pname = "aspy.refactor_imports";
-      sha256 = "0m8x725xswsxh25xb2ypnbl6xwp6vill8l1n72fhpmd0s6dqshc8";
-    };
-
-    buildInputs = [
-      pkgs.python37.pkgs.cached-property
-    ];
-
-    doCheck = false;
-
-    meta = {
-      homepage = "https://github.com/asottile/reorder_python_imports";
-      description = "Rewrites source to reorder python imports";
-    };
-  };
-  reorder-python-imports = pkgs.python37.pkgs.buildPythonPackage rec {
-    pname = "reorder-python-imports";
-    version = "1.6.1";
-
-    src = pkgs.python37.pkgs.fetchPypi {
-      inherit version;
-      pname = "reorder_python_imports";
-      sha256 = "1c04d11c07d4c48d75b9a7f0ab5db4b61be42d294fd902c1efd2b1e0bc146d22";
-    };
-
-    propagatedBuildInputs = [
-      aspy-refactor-imports
-      pkgs.python37.pkgs.cached-property
-    ];
-
-    doCheck = false;
-
-    meta = {
-      homepage = "https://github.com/asottile/reorder_python_imports";
-      description = "Rewrites source to reorder python imports";
-    };
-  };
-  tokenize-rt = pkgs.python37.pkgs.buildPythonPackage rec {
-    pname = "tokenize-rt";
-    version = "3.2.0";
-
-    src = pkgs.python37.pkgs.fetchPypi {
-      inherit version;
-      pname = "tokenize_rt";
-      sha256 = "1krkx6xlfw3sxab8h80d09pgiyi1a5wl40f50f52y410yvlfwi1g";
-    };
-
-    # buildInputs = [
-    #   pkgs.python37.pkgs.tokenize-rt
-    # ];
-
-    doCheck = false;
-
-    meta = {
-      homepage = "https://github.com/asottile/tokenize-rt";
-      description = "A wrapper around the stdlib `tokenize` which roundtrips.";
-    };
-  };
-  pyupgrade = pkgs.python37.pkgs.buildPythonApplication rec {
-    pname = "pyupgrade";
-    version = "1.23.0";
-
-    src = pkgs.python37.pkgs.fetchPypi {
-      inherit version;
-      pname = "pyupgrade";
-      sha256 = "1vqpm63fnc35zdvfck6yr4ss9vvqzxkxqsyk31l2fgyb0k1a3xyd";
-    };
-
-    propagatedBuildInputs = [
-      tokenize-rt
-    ];
-
-    doCheck = false;
-
-    meta = {
-      homepage = "https://github.com/asottile/pyupgrade";
-      description = "A tool (and pre-commit hook) to automatically upgrade syntax for newer versions of the language.";
-    };
-  };
-  pre-commit = pkgs.python37.pkgs.buildPythonPackage rec {
-    pname = "pre-commit";
-    version = "1.18.1";
-
-    src = pkgs.python37.pkgs.fetchPypi {
-      pname = "pre_commit";
-      inherit version;
-      sha256 = "1762f2a551732e250d0e16131d3bf9e653adb6ec262e58dfe033906750503235";
-    };
-
-    propagatedBuildInputs = [
-      pkgs.python37.pkgs.aspy-yaml
-      pkgs.python37.pkgs.cached-property
-      pkgs.python37.pkgs.cfgv
-      pkgs.python37.pkgs.identify
-      pkgs.python37.pkgs.nodeenv
-      pkgs.python37.pkgs.six
-      pkgs.python37.pkgs.toml
-      pkgs.python37.pkgs.virtualenvwrapper
-      pkgs.python37.pkgs.importlib-metadata
-    ];
-
-    doCheck = false;
-
-    meta = {
-      homepage = "https://pre-commit.com";
-      description = "A framework for managing and maintaining multi-language pre-commit hooks.";
-    };
-  };
-
-  # tmux clipboardy things to maybe try to get working someday.
-  # 'tmux-plugins/vim-tmux-focus-events'
-  # 'roxma/vim-tmux-clipboard'
-
 in {
   targets.genericLinux.enable = true;
+
   home = {
     extraOutputsToInstall = [ "man" ];
     packages = [
@@ -197,71 +79,10 @@ in {
       pkgs.cabal-install
       pkgs.cabal2nix
       pkgs.nix-prefetch-git
-
-      # pyupgrade
-
-      # # python
-      # (
-      #   pkgs.python37.withPackages (python-packages: with python-packages; [
-      #   black
-      #   mypy
-      #   # pre-commit
-      #   pyls-black
-      #   pyls-mypy
-      #   python-language-server
-      #   reorder-python-imports
-      #   virtualenvwrapper
-      # ]))
     ];
     sessionVariables = {
       EDITOR = "vim";
       VISUAL = "vim";
-    };
-  };
-
-  programs.command-not-found = {
-    enable = true;
-  };
-
-  programs.direnv = {
-    enable = true;
-  };
-
-  programs.home-manager = {
-    enable = true;
-  };
-
-  programs.man = {
-    enable = false;
-  };
-
-  programs.jq = {
-    enable = true;
-  };
-
-  programs.htop = {
-    enable = true;
-  };
-
-  programs.lesspipe = {
-    enable = true;
-  };
-
-  programs.fzf = {
-    enable = true;
-    changeDirWidgetCommand = "fd --type d";
-    defaultCommand = "fd --type f";
-    fileWidgetCommand = "fd --type f";
-  };
-
-  programs.pazi = {
-    enable = true;
-  };
-
-  programs.readline = {
-    enable = true;
-    variables = {
-      editing-mode = "vi";
     };
   };
 
@@ -294,6 +115,25 @@ in {
     enable = true;
   };
 
+  programs.command-not-found = {
+    enable = true;
+  };
+
+  programs.direnv = {
+    enable = true;
+  };
+
+  programs.emacs = {
+    enable = true;
+  };
+
+  programs.fzf = {
+    enable = true;
+    changeDirWidgetCommand = "fd --type d";
+    defaultCommand = "fd --type f";
+    fileWidgetCommand = "fd --type f";
+  };
+
   programs.git = {
     enable = true;
     userName = "Diego Pontoriero";
@@ -321,21 +161,25 @@ in {
     goPath = ".";
   };
 
-  xdg.userDirs = {
+  programs.home-manager = {
     enable = true;
-    desktop = "$HOME/";
-    documents = "$HOME/";
-    download = "$HOME/downloads";
-    music = "$HOME/";
-    pictures = "$HOME/";
-    publicShare = "$HOME/";
-    templates = "$HOME/";
-    videos = "$HOME/";
   };
 
-  # home.file.".config/nvim" = {
-  #   source = ../nvim;
-  # };
+  programs.htop = {
+    enable = true;
+  };
+
+  programs.jq = {
+    enable = true;
+  };
+
+  programs.lesspipe = {
+    enable = true;
+  };
+
+  programs.man = {
+    enable = true;
+  };
 
   programs.neovim = {
     enable = true;
@@ -343,6 +187,11 @@ in {
     vimAlias = true;
     extraConfig = lib.strings.fileContents ../nvim/init.vim;
     plugins = [
+      customPlugins.salt-vim
+      customPlugins.vim-asterisk
+      customPlugins.vim-bufkill
+      customPlugins.vim-textobj-comment
+      customPlugins.vim-textobj-user
       pkgs.vimPlugins.ale
       pkgs.vimPlugins.base16-vim
       pkgs.vimPlugins.fzf-vim
@@ -351,11 +200,8 @@ in {
       pkgs.vimPlugins.haskell-vim
       pkgs.vimPlugins.lightline-ale
       pkgs.vimPlugins.lightline-vim
-      customPlugins.salt-vim
       pkgs.vimPlugins.tagbar
       pkgs.vimPlugins.vim-abolish
-      customPlugins.vim-asterisk
-      customPlugins.vim-bufkill
       pkgs.vimPlugins.vim-commentary
       pkgs.vimPlugins.vim-easy-align
       pkgs.vimPlugins.vim-fugitive
@@ -363,12 +209,21 @@ in {
       pkgs.vimPlugins.vim-repeat
       pkgs.vimPlugins.vim-sensible
       pkgs.vimPlugins.vim-surround
-      customPlugins.vim-textobj-comment
-      customPlugins.vim-textobj-user
       pkgs.vimPlugins.vim-tmux-navigator
       pkgs.vimPlugins.vim-unimpaired
       pkgs.vimPlugins.vim-vinegar
     ];
+  };
+
+  programs.pazi = {
+    enable = true;
+  };
+
+  programs.readline = {
+    enable = true;
+    variables = {
+      editing-mode = "vi";
+    };
   };
 
   programs.starship = {
@@ -417,5 +272,20 @@ in {
       pkgs.tmuxPlugins.yank
     ];
     extraConfig = lib.strings.fileContents ../../.tmux.conf;
+  };
+  # tmux clipboardy things to maybe try to get working someday.
+  # 'tmux-plugins/vim-tmux-focus-events'
+  # 'roxma/vim-tmux-clipboard'
+
+  xdg.userDirs = {
+    enable = true;
+    desktop = "$HOME/";
+    documents = "$HOME/";
+    download = "$HOME/downloads";
+    music = "$HOME/";
+    pictures = "$HOME/";
+    publicShare = "$HOME/";
+    templates = "$HOME/";
+    videos = "$HOME/";
   };
 }
