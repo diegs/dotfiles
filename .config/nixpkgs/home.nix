@@ -125,6 +125,16 @@ in {
 
   programs.emacs = {
     enable = true;
+    package = pkgs.emacs-nox;
+    extraPackages = epkgs: [
+      epkgs.evil
+      epkgs.evil-terminal-cursor-changer
+      epkgs.goto-chg
+      epkgs.undo-tree
+    ];
+  };
+  home.file.".emacs.d" = {
+    source = ../../.emacs.d;
   };
 
   programs.fzf = {
