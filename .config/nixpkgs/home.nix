@@ -71,9 +71,10 @@ in {
 
       # go
       pkgs.glide
-      pkgs.goimports
       pkgs.golangci-lint
+      pkgs.gopls
       pkgs.gotags
+      pkgs.gotools
 
       # haskell
       pkgs.cabal-install
@@ -124,17 +125,33 @@ in {
   };
 
   programs.emacs = {
-    enable = true;
+    enable = false;
     package = pkgs.emacs-nox;
     extraPackages = epkgs: [
+      # epkgs.better-defaults
+      epkgs.base16-theme
+      epkgs.company
+      epkgs.counsel
       epkgs.evil
-      epkgs.evil-terminal-cursor-changer
+      epkgs.flycheck
+      epkgs.go-mode
       epkgs.goto-chg
+      epkgs.ivy
+      epkgs.ivy-hydra
+      epkgs.lsp-mode
+      epkgs.magit
+      epkgs.nix-mode
+      epkgs.projectile
       epkgs.undo-tree
+      epkgs.yaml-mode
     ];
   };
   home.file.".emacs.d" = {
     source = ../../.emacs.d;
+  };
+
+  programs.feh = {
+    enable = true;
   };
 
   programs.fzf = {
@@ -215,6 +232,7 @@ in {
       pkgs.vimPlugins.vim-commentary
       pkgs.vimPlugins.vim-easy-align
       pkgs.vimPlugins.vim-fugitive
+      pkgs.vimPlugins.vim-orgmode
       pkgs.vimPlugins.vim-polyglot
       pkgs.vimPlugins.vim-repeat
       pkgs.vimPlugins.vim-sensible
@@ -289,13 +307,13 @@ in {
 
   xdg.userDirs = {
     enable = true;
-    desktop = "$HOME/";
-    documents = "$HOME/";
-    download = "$HOME/downloads";
-    music = "$HOME/";
-    pictures = "$HOME/";
-    publicShare = "$HOME/";
-    templates = "$HOME/";
-    videos = "$HOME/";
+    desktop = "\"$HOME/.desktop\"";
+    documents = "\"$HOME\"";
+    download = "\"$HOME/downloads\"";
+    music = "\"$HOME/music\"";
+    pictures = "\"$HOME\"";
+    publicShare = "\"$HOME\"";
+    templates = "\"$HOME\"";
+    videos = "\"$HOME\"";
   };
 }
