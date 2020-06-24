@@ -1,5 +1,15 @@
 ;; https://gitlab.com/rycee/configurations/blob/master/user/emacs.nix
 
+;; base16.
+(require 'base16-theme)
+(setq base16-theme-256-color-source "base16-shell")
+(load-theme 'base16-brewer t)
+
+;; Evil-mode.
+(setq evil-want-C-u-scroll t)
+(require 'evil)
+(evil-mode 1)
+
 ;; Disable startup message.
 (setq inhibit-startup-message t
       inhibit-startup-echo-area-message (user-login-name))
@@ -36,11 +46,32 @@
               tab-width 4
               c-basic-offset 4)
 
-;; Trailing white space are banned!
+;; No trailing whitespace.
 (setq-default show-trailing-whitespace t)
 
-(require 'evil)
-(evil-mode 1)
+;; Line numbers.
+(global-display-line-numbers-mode)
 
-(require 'evil-terminal-cursor-changer)
-(evil-terminal-cursor-changer-activate)
+(require 'ivy)
+(setq ivy-use-virtual-buffers t
+      ivy-count-format "%d/%d ")
+(ivy-mode 1)
+(global-set-key (kbd "C-p") 'counsel-fzf)
+
+(with-eval-after-load 'evil-maps
+  (define-key evil-normal-state-map "\C-p" 'counsel-fzf)
+  (define-key evil-normal-state-map "\C-b" 'counsel-switch-buffer))
+;;(require 'projectile)
+;;(projectile-mode +1)
+;; eglot
+;;(add-hook 'go-mode-hook 'eglot-ensure)
+;;(add-hook 'python-mode-hook 'eglot-ensure)
+
+;; Color theme.
+;;(defvar my/base16-colors base16-brewer)
+;;(setq evil-emacs-state-cursor   `(,(plist-get my/base16-colors :base0D) box)
+      ;;evil-insert-state-cursor  `(,(plist-get my/base16-colors :base0D) bar)
+      ;;evil-motion-state-cursor  `(,(plist-get my/base16-colors :base0E) box)
+      ;;evil-normal-state-cursor  `(,(plist-get my/base16-colors :base0B) box)
+      ;;evil-replace-state-cursor `(,(plist-get my/base16-colors :base08) bar)
+      ;;evil-visual-state-cursor  `(,(plist-get my/base16-colors :base09) box))
