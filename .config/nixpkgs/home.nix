@@ -63,14 +63,16 @@ in {
       pkgs.cascadia-code
       pkgs.fira-code
       pkgs.fira-code-symbols
+      # pkgs.glibcLocales
       pkgs.hexyl
       pkgs.inotify-tools
       pkgs.graphviz
       pkgs.ripgrep
+      # pkgs.s-tui
+      pkgs.xclip
       pkgs.tree
 
       # go
-      pkgs.glide
       pkgs.golangci-lint
       pkgs.gopls
       pkgs.gotags
@@ -83,6 +85,7 @@ in {
     ];
     sessionVariables = {
       EDITOR = "vim";
+      # LOCALES_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
       VISUAL = "vim";
     };
   };
