@@ -100,13 +100,14 @@ let g:ale_fixers = {
 \}
 autocmd BufNewFile,BufRead ~/src/github.com/lyft/dispatch/* let b:ale_fixers = {'python': ['black', 'reorder-python-imports']}
 autocmd BufNewFile,BufRead ~/src/github.com/lyft/ridescheduler/* let b:ale_fixers = {'python': ['black', 'reorder-python-imports']}
-let g:ale_fix_on_save = 1
-let g:ale_lint_on_text_changed = 'normal'
-let g:ale_lint_on_insert_leave = 1
 let g:ale_completion_enabled = 1
+let g:ale_fix_on_save = 1
 let g:ale_go_gofmt_options = '-s'
 let g:ale_go_golangci_lint_options = '--fast -c ~/.golangci.yml '
 let g:ale_go_golangci_lint_package = 1
+let g:ale_lint_on_insert_leave = 1
+let g:ale_lint_on_text_changed = 'normal'
+let g:ale_list_window_size = 10
 let g:ale_python_pyls_config = {
 \   'pyls': {
 \     'plugins': {

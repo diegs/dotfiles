@@ -15,8 +15,8 @@ let
     src = pkgs.fetchFromGitHub {
       owner = "haya14busa";
       repo = "vim-asterisk";
-      rev = "1a805e320aea9d671be129b4162ea905a8bc095e";
-      sha256 = "1dl4lsrvz7n476ajry4bmmby8f09qa66nnasxv5jypgajn5w73zh";
+      rev = "77e97061d6691637a034258cc415d98670698459";
+      sha256 = "1bm99j4vskbgzfn09567qi0462dvjrpdkifc4hg24bi02bx9hjrj";
     };
   };
   customPlugins.vim-bufkill = pkgs.vimUtils.buildVimPlugin {
@@ -24,8 +24,8 @@ let
     src = pkgs.fetchFromGitHub {
       owner = "qpkorr";
       repo = "vim-bufkill";
-      rev = "795dd38f3cff69d0d8fe9e71847907e200860959";
-      sha256 = "1nji86vjjbfjw4xy52yazq53hrlsr7v30xkx2awgiakz7ih0bdxa";
+      rev = "2bd6d7e791668ea52bb26be2639406fcf617271f";
+      sha256 = "1cvma03bg9psil67kg1x90lny7a31ljz5shybcl1jrfpzsybcqvg";
     };
   };
   customPlugins.vim-textobj-user = pkgs.vimUtils.buildVimPlugin {
@@ -33,8 +33,8 @@ let
     src = pkgs.fetchFromGitHub {
       owner = "kana";
       repo = "vim-textobj-user";
-      rev = "074ce2575543f790290b189860597a3dcac1f79d";
-      sha256 = "15wnqkxjjksgn8a7d3lkbf8d97r4w159bajrcf1adpxw8hhli1vc";
+      rev = "41a675ddbeefd6a93664a4dc52f302fe3086a933";
+      sha256 = "1y1g3vcm97fqjyigiajbvbck4nlc04vxl3535x4sl40s5jbm5vz3";
     };
   };
   customPlugins.vim-textobj-comment = pkgs.vimUtils.buildVimPlugin {
@@ -54,6 +54,9 @@ in {
 
   home = {
     extraOutputsToInstall = [ "man" ];
+    language = {
+      base = "en_US.UTF-8";
+    };
     packages = [
       # util
       pkgs.awscli
@@ -63,7 +66,7 @@ in {
       pkgs.cascadia-code
       pkgs.fira-code
       pkgs.fira-code-symbols
-      # pkgs.glibcLocales
+      pkgs.glibcLocales
       pkgs.hexyl
       pkgs.inotify-tools
       pkgs.graphviz
@@ -85,13 +88,28 @@ in {
     ];
     sessionVariables = {
       EDITOR = "vim";
-      # LOCALES_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
+      LOCALES_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
       VISUAL = "vim";
+      XDG_DATA_DIRS = "$HOME/.nix-profile/share:$XDG_DATA_DIRS";
     };
   };
 
   programs.bash = {
     enable = true;
+    enableVteIntegration = true;
+    historyControl = ["ignoredups" "erasedups"];
+    initExtra = lib.mkBefore ''
+      # Base16 Shell
+      BASE16_SHELL="$HOME/.config/base16-shell/"
+      [ -n "$PS1" ] && \
+      [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
+        eval "$("$BASE16_SHELL/profile_helper.sh")"
+    '';
+    profileExtra = ''
+      if [ -f ~/.bash_local ]; then
+        . ~/.bash_local
+      fi
+    '';
     shellAliases = {
       ls = "exa";
       ll = "ls -alF";
@@ -101,18 +119,6 @@ in {
       cat = "bat";
       colors = ''for i in {0..255}; do printf "\x1b[38;5;$''\{i}mcolor%-5i\x1b[0m" $i ; if ! (( ($i + 1 ) % 8 )); then echo ; fi ; done'';
     };
-    profileExtra = ''
-      if [ -f ~/.bash_local ]; then
-        . ~/.bash_local
-      fi
-    '';
-    initExtra = lib.mkBefore ''
-      # Base16 Shell
-      BASE16_SHELL="$HOME/.config/base16-shell/"
-      [ -n "$PS1" ] && \
-      [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
-        eval "$("$BASE16_SHELL/profile_helper.sh")"
-    '';
   };
 
   programs.bat = {
