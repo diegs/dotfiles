@@ -88,7 +88,7 @@ in {
     ];
     sessionVariables = {
       EDITOR = "vim";
-      LOCALES_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
+      LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
       VISUAL = "vim";
       XDG_DATA_DIRS = "$HOME/.nix-profile/share:$XDG_DATA_DIRS";
     };
