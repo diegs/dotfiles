@@ -60,6 +60,7 @@ in {
     packages = [
       # util
       pkgs.awscli
+      pkgs.bash-completion
       pkgs.ctags
       pkgs.fd
       pkgs.exa
@@ -104,6 +105,9 @@ in {
       [ -n "$PS1" ] && \
       [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
         eval "$("$BASE16_SHELL/profile_helper.sh")"
+
+      # Completions
+      source $HOME/.nix-profile/etc/profile.d/bash_completion.sh
     '';
     profileExtra = ''
       if [ -f ~/.bash_local ]; then
