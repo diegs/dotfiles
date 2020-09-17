@@ -43,36 +43,8 @@ highlight SpellBad cterm=undercurl ctermbg=238 gui=undercurl guisp=#F07178
 highlight Comment ctermfg=gray
 highlight clear SpellCap
 
-" Lightline
-let g:lightline = {
-\  'colorscheme': '16color',
-\  'active': {
-\    'left': [ [ 'mode', 'paste' ],
-\              [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
-\    'right': [ [ 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_ok' ],
-\               [ 'lineinfo' ],
-\               [ 'percent' ],
-\               [ 'fileformat', 'fileencoding', 'filetype' ] ],
-\  },
-\  'component': {
-\    'filename': '%f',
-\  },
-\  'component_function': {
-\    'gitbranch': 'fugitive#head',
-\  },
-\  'component_expand': {
-\    'linter_checking': 'lightline#ale#checking',
-\    'linter_warnings': 'lightline#ale#warnings',
-\    'linter_errors': 'lightline#ale#errors',
-\    'linter_ok': 'lightline#ale#ok',
-\  },
-\  'component_type': {
-\   'linter_checking': 'left',
-\   'linter_warnings': 'warning',
-\   'linter_errors': 'error',
-\   'linter_ok': 'left',
-\ },
-\}
+" Airline
+let g:airline_theme='base16_shell'
 
 " FZF.
 let g:fzf_command_prefix = 'Fzf'

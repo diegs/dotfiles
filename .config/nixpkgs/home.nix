@@ -10,6 +10,15 @@ let
       sha256 = "0r79bpl98xcsmkw6dg83cf1ghn89rzsr011zirk3v1wfxclri2c4";
     };
   };
+  customPlugins.tig-explorer-vim = pkgs.vimUtils.buildVimPlugin {
+    name = "tig-explorer-vim";
+    src = pkgs.fetchFromGitHub {
+      owner = "iberianpig";
+      repo = "tig-explorer.vim";
+      rev = "52052311b317117d0f0b8c1cc8d1760767f61277";
+      sha256 = "1j346l8jh1bya5nmw9jrv2vsb5piz3wgw0jmkmd41iq8ay4zjfnh";
+    };
+  };
   customPlugins.vim-asterisk = pkgs.vimUtils.buildVimPlugin {
     name = "vim-asterisk";
     src = pkgs.fetchFromGitHub {
@@ -49,8 +58,39 @@ let
       sha256 = "00wc14chwjfx95gl3yzbxm1ajx88zpzqz0ckl7xvd7gvkrf0mx04";
     };
   };
+  extraPkgs.gopls = pkgs.buildGoModule rec {
+    pname = "gopls";
+    version = "0.5.0";
+
+    src = pkgs.fetchgit {
+      rev = "gopls/v${version}";
+      url = "https://go.googlesource.com/tools";
+      sha256 = "150jg1qmdszfvh1x5fagawgc24xy19xjg9y1hq3drwy7lfdnahmq";
+    };
+
+    modRoot = "gopls";
+    vendorSha256 = "1s3d4hnbw0mab7njck79qmgkjn87vs4ffk44zk2qdrzqjjlqq5iv";
+
+    doCheck = false;
+
+    meta = with pkgs.stdenv.lib; {
+      description = "Official language server for the Go language";
+      homepage = "https://github.com/golang/tools/tree/master/gopls";
+      license = licenses.bsd3;
+      maintainers = with maintainers; [ mic92 zimbatm ];
+    };
+  };
 in {
-  targets.genericLinux.enable = true;
+  targets.genericLinux = {
+    enable = true;
+    extraXdgDataDirs = [
+      "/usr/share/ubuntu"
+      "/home/diegs/.local/share/flatpak/exports/share"
+      "/var/lib/flatpak/exports/share"
+      "/usr/local/share"
+      "/usr/share"
+    ];
+  };
 
   home = {
     extraOutputsToInstall = [ "man" ];
@@ -74,11 +114,12 @@ in {
       pkgs.ripgrep
       # pkgs.s-tui
       pkgs.xclip
+      pkgs.tig
       pkgs.tree
 
       # go
       pkgs.golangci-lint
-      pkgs.gopls
+      extraPkgs.gopls
       pkgs.gotags
       pkgs.gotools
 
@@ -91,7 +132,7 @@ in {
       EDITOR = "vim";
       LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
       VISUAL = "vim";
-      XDG_DATA_DIRS = "$HOME/.nix-profile/share:$XDG_DATA_DIRS";
+      # XDG_DATA_DIRS = "$HOME/.nix-profile/share:$XDG_DATA_DIRS";
     };
   };
 
@@ -219,6 +260,7 @@ in {
 
   programs.man = {
     enable = true;
+    generateCaches = true;
   };
 
   programs.neovim = {
@@ -228,24 +270,26 @@ in {
     extraConfig = lib.strings.fileContents ../nvim/init.vim;
     plugins = [
       customPlugins.salt-vim
+      customPlugins.tig-explorer-vim
       customPlugins.vim-asterisk
       customPlugins.vim-bufkill
       customPlugins.vim-textobj-comment
       customPlugins.vim-textobj-user
       pkgs.vimPlugins.ale
       pkgs.vimPlugins.base16-vim
+      pkgs.vimPlugins.bclose-vim
       pkgs.vimPlugins.fzf-vim
       pkgs.vimPlugins.fzfWrapper
-      pkgs.vimPlugins.goyo-vim
+      # pkgs.vimPlugins.goyo-vim
       pkgs.vimPlugins.haskell-vim
-      pkgs.vimPlugins.lightline-ale
-      pkgs.vimPlugins.lightline-vim
       pkgs.vimPlugins.tagbar
       pkgs.vimPlugins.vim-abolish
+      pkgs.vimPlugins.vim-airline
+      pkgs.vimPlugins.vim-airline-themes
       pkgs.vimPlugins.vim-commentary
       pkgs.vimPlugins.vim-easy-align
-      pkgs.vimPlugins.vim-fugitive
-      pkgs.vimPlugins.vim-orgmode
+      # pkgs.vimPlugins.vim-fugitive
+      # pkgs.vimPlugins.vim-orgmode
       pkgs.vimPlugins.vim-polyglot
       pkgs.vimPlugins.vim-repeat
       pkgs.vimPlugins.vim-sensible
