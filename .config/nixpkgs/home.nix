@@ -83,14 +83,16 @@ let
 in {
   targets.genericLinux = {
     enable = true;
-    extraXdgDataDirs = [
-      "/usr/share/ubuntu"
-      "/home/diegs/.local/share/flatpak/exports/share"
-      "/var/lib/flatpak/exports/share"
-      "/usr/local/share"
-      "/usr/share"
-    ];
+    # extraXdgDataDirs = [
+    #   "/usr/share/pop"
+    #   "/home/diegs/.local/share/flatpak/exports/share"
+    #   "/var/lib/flatpak/exports/share"
+    #   "/usr/local/share"
+    #   "/usr/share"
+    # ];
   };
+
+  fonts.fontconfig.enable = true;
 
   home = {
     extraOutputsToInstall = [ "man" ];
@@ -105,14 +107,12 @@ in {
       pkgs.fd
       pkgs.exa
       pkgs.cascadia-code
-      pkgs.fira-code
-      pkgs.fira-code-symbols
       pkgs.glibcLocales
       pkgs.hexyl
       pkgs.inotify-tools
       pkgs.graphviz
+      pkgs.neofetch
       pkgs.ripgrep
-      # pkgs.s-tui
       pkgs.xclip
       pkgs.tig
       pkgs.tree
@@ -227,6 +227,7 @@ in {
     };
     extraConfig = {
       fetch = { prune = true; tags = true; };
+      init = { templateDir = "~/.git-template"; };
       pull = { rebase = true; };
       push = { default = "current"; };
       url."git@github.com:".insteadOf = "https://github.com/";
@@ -351,10 +352,21 @@ in {
     keyMode = "vi";
     newSession = true;
     terminal = "screen-256color";
-    plugins = [
-      pkgs.tmuxPlugins.copycat
-      pkgs.tmuxPlugins.vim-tmux-navigator
-      pkgs.tmuxPlugins.yank
+    plugins = with pkgs; [
+      tmuxPlugins.copycat
+      {
+        plugin = tmuxPlugins.resurrect;
+        extraConfig = "set -g @resurrect-strategy-nvim 'session'";
+      }
+      {
+        plugin = tmuxPlugins.continuum;
+        extraConfig = ''
+          set -g @continuum-restore 'on'
+          set -g @continuum-save-interval '60' # minutes
+        '';
+      }
+      tmuxPlugins.vim-tmux-navigator
+      tmuxPlugins.yank
     ];
     extraConfig = lib.strings.fileContents ../../.tmux.conf;
   };
