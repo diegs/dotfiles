@@ -136,6 +136,10 @@ in {
     };
   };
 
+  home.file.".config/alacritty/alacritty.yml" = {
+    source = ../../.config/alacritty/alacritty.yml;
+  };
+
   programs.bash = {
     enable = true;
     enableVteIntegration = true;
