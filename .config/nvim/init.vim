@@ -35,13 +35,16 @@ set relativenumber
 set splitbelow
 set splitright
 set noshowmode
+augroup MyColors
+  autocmd!
+  autocmd ColorScheme * highlight SpellBad cterm=undercurl ctermbg=238 gui=undercurl guisp=#F07178
+                    \ | highlight Comment ctermfg=gray
+                    \ | highlight clear SpellCap
+augroup END
 if filereadable(expand("~/.vimrc_background"))
   let base16colorspace=256
   source ~/.vimrc_background
 endif
-highlight SpellBad cterm=undercurl ctermbg=238 gui=undercurl guisp=#F07178
-highlight Comment ctermfg=gray
-highlight clear SpellCap
 
 " Airline
 let g:airline_theme='base16_shell'
