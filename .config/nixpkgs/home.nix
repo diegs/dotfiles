@@ -160,6 +160,7 @@ in {
       fi
     '';
     shellAliases = {
+      docker = "podman";
       ls = "exa";
       ll = "ls -alF";
       la = "ls -aa";
@@ -180,6 +181,7 @@ in {
 
   programs.direnv = {
     enable = true;
+    enableNixDirenvIntegration = true;
   };
 
   programs.emacs = {
@@ -224,9 +226,10 @@ in {
     userName = "Diego Pontoriero";
     userEmail = "74719+diegs@users.noreply.github.com";
     aliases = {
-      co = "checkout";
       br = "branch";
       ci = "commit";
+      co = "checkout";
+      cp = "cherry-pick";
       st = "status";
     };
     extraConfig = {
@@ -305,10 +308,6 @@ in {
     ];
   };
 
-  programs.pazi = {
-    enable = true;
-  };
-
   programs.readline = {
     enable = true;
     variables = {
@@ -319,6 +318,9 @@ in {
   programs.starship = {
     enable = true;
     settings = {
+      aws = {
+        symbol = "";
+      };
       battery = {
         disabled = true;
       };
@@ -331,12 +333,12 @@ in {
         truncation_length = 20;
       };
       env_var = {
-        prefix = "";
+        format = "[$env_value]($style) ";
         style = "yellow";
         variable = "AWS_OKTA_PROFILE";
       };
       git_branch = {
-        prefix = "";
+        format = "[$symbol$branch]($style) ";
         symbol = "";
       };
       golang = {
