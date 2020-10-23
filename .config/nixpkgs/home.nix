@@ -60,7 +60,7 @@ let
   };
   extraPkgs.gopls = pkgs.buildGoModule rec {
     pname = "gopls";
-    version = "0.5.0";
+    version = "0.5.1";
 
     src = pkgs.fetchgit {
       rev = "gopls/v${version}";
@@ -232,6 +232,35 @@ in {
       cp = "cherry-pick";
       st = "status";
     };
+    attributes = [
+      # https://gist.github.com/tekin/12500956bd56784728e490d8cef9cb81
+      "*.c     diff=cpp"
+      "*.h     diff=cpp"
+      "*.c++   diff=cpp"
+      "*.h++   diff=cpp"
+      "*.cpp   diff=cpp"
+      "*.hpp   diff=cpp"
+      "*.cc    diff=cpp"
+      "*.hh    diff=cpp"
+      "*.m     diff=objc"
+      "*.mm    diff=objc"
+      "*.cs    diff=csharp"
+      "*.css   diff=css"
+      "*.html  diff=html"
+      "*.xhtml diff=html"
+      "*.ex    diff=elixir"
+      "*.exs   diff=elixir"
+      "*.go    diff=golang"
+      "*.php   diff=php"
+      "*.pl    diff=perl"
+      "*.py    diff=python"
+      "*.md    diff=markdown"
+      "*.rb    diff=ruby"
+      "*.rake  diff=ruby"
+      "*.rs    diff=rust"
+      "*.lisp  diff=lisp"
+      "*.el    diff=lisp"
+    ];
     extraConfig = {
       fetch = { prune = true; tags = true; };
       init = { templateDir = "~/.git-template"; };
