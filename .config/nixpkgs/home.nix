@@ -160,7 +160,6 @@ in {
       fi
     '';
     shellAliases = {
-      docker = "podman";
       ls = "exa";
       ll = "ls -alF";
       la = "ls -aa";
@@ -182,6 +181,12 @@ in {
   programs.direnv = {
     enable = true;
     enableNixDirenvIntegration = true;
+    stdlib = ''
+      layout_virtualenv() {
+        local venv_path="venv"
+        source $''\{venv_path}/bin/activate
+      }
+    '';
   };
 
   programs.emacs = {
