@@ -62,6 +62,7 @@ autocmd  FileType fzf set laststatus=0 noshowmode noruler
 " ALE.
 let g:ale_linters = {
 \  'go': ['gopls'],
+\  'haskell': ['hie'],
 \  'markdown': ['prettier'],
 \  'python': ['pyls'],
 \  'rust': ['rls'],
@@ -70,6 +71,7 @@ let g:ale_linters = {
 let g:ale_fixers = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
 \  'go': ['goimports', 'gofmt'],
+\  'haskell': ['brittany'],
 \  'python': [],
 \  'rust': ['rustfmt'],
 \}
@@ -80,6 +82,7 @@ let g:ale_fix_on_save = 1
 let g:ale_go_gofmt_options = '-s'
 let g:ale_go_golangci_lint_options = '--fast -c ~/.golangci.yml '
 let g:ale_go_golangci_lint_package = 1
+let g:ale_haskell_hie_executable = 'haskell-language-server'
 let g:ale_lint_on_insert_leave = 1
 let g:ale_lint_on_text_changed = 'normal'
 let g:ale_list_window_size = 10

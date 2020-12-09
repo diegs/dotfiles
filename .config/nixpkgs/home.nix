@@ -101,7 +101,7 @@ in {
     };
     packages = [
       # util
-      pkgs.awscli
+      pkgs.awscli2
       pkgs.bash-completion
       pkgs.ctags
       pkgs.fd
@@ -139,6 +139,11 @@ in {
   home.file.".config/alacritty/alacritty.yml" = {
     source = ../../.config/alacritty/alacritty.yml;
   };
+
+  home.file.".ignore" = {
+    source = ../../.ignore;
+  };
+
 
   programs.bash = {
     enable = true;
@@ -416,13 +421,13 @@ in {
 
   xdg.userDirs = {
     enable = true;
-    desktop = "\"$HOME/.desktop\"";
-    documents = "\"$HOME\"";
-    download = "\"$HOME/downloads\"";
-    music = "\"$HOME/music\"";
-    pictures = "\"$HOME\"";
-    publicShare = "\"$HOME\"";
-    templates = "\"$HOME\"";
-    videos = "\"$HOME\"";
+    desktop = "$HOME/.desktop";
+    documents = "$HOME";
+    download = "$HOME/downloads";
+    music = "$HOME/music";
+    pictures = "$HOME";
+    publicShare = "$HOME";
+    templates = "$HOME";
+    videos = "$HOME";
   };
 }
