@@ -35,6 +35,38 @@ set relativenumber
 set splitbelow
 set splitright
 set noshowmode
+
+" Lightline.
+let g:lightline = {
+\ 'colorscheme': 'wombat',
+\ 'active': {
+\   'left':  [ [ 'mode', 'paste' ],
+\              [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
+\   'right': [ [ 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos', 'linter_ok' ],
+\              [ 'lineinfo' ],
+\              [ 'percent' ],
+\              [ 'fileformat', 'fileencoding', 'filetype'] ],
+\ },
+\ 'component_function': {
+\   'gitbranch': 'FugitiveHead'
+\ },
+\ 'component_expand': {
+\   'linter_checking': 'lightline#ale#checking',
+\   'linter_infos': 'lightline#ale#infos',
+\   'linter_warnings': 'lightline#ale#warnings',
+\   'linter_errors': 'lightline#ale#errors',
+\   'linter_ok': 'lightline#ale#ok',
+\ },
+\ 'component_type': {
+\   'linter_checking': 'right',
+\   'linter_infos': 'right',
+\   'linter_warnings': 'warning',
+\   'linter_errors': 'error',
+\   'linter_ok': 'right',
+\ },
+\}
+
+" Colorscheme.
 augroup MyColors
   autocmd!
   autocmd ColorScheme * highlight SpellBad cterm=undercurl ctermbg=238 gui=undercurl guisp=#F07178
@@ -46,8 +78,6 @@ if filereadable(expand("~/.vimrc_background"))
   source ~/.vimrc_background
 endif
 
-" Airline
-let g:airline_theme='base16_shell'
 
 " FZF.
 let g:fzf_command_prefix = 'Fzf'
@@ -77,6 +107,7 @@ let g:ale_fixers = {
 \}
 autocmd BufNewFile,BufRead ~/src/github.com/lyft/dispatch/* let b:ale_fixers = {'python': ['black', 'reorder-python-imports']}
 autocmd BufNewFile,BufRead ~/src/github.com/lyft/ridescheduler/* let b:ale_fixers = {'python': ['black', 'reorder-python-imports']}
+
 let g:ale_completion_enabled = 1
 let g:ale_fix_on_save = 1
 let g:ale_go_gofmt_options = '-s'
@@ -170,3 +201,6 @@ let g:asterisk#keeppos = 1
 " Easy-align.
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
+
+" Salt.
+au! BufRead,BufNewFile *.sls     setfiletype yaml

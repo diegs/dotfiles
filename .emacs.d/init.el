@@ -3,7 +3,15 @@
 ;; base16.
 (require 'base16-theme)
 (setq base16-theme-256-color-source "base16-shell")
-(load-theme 'base16-brewer t)
+(load-theme 'base16-horizon-dark t)
+;; Color theme.
+(defvar my/base16-colors 'base16-horizon-dark)
+(setq evil-emacs-state-cursor   `(,(plist-get my/base16-colors :base0D) box)
+      evil-insert-state-cursor  `(,(plist-get my/base16-colors :base0D) bar)
+      evil-motion-state-cursor  `(,(plist-get my/base16-colors :base0E) box)
+      evil-normal-state-cursor  `(,(plist-get my/base16-colors :base0B) box)
+      evil-replace-state-cursor `(,(plist-get my/base16-colors :base08) bar)
+      evil-visual-state-cursor  `(,(plist-get my/base16-colors :base09) box))
 
 ;; Evil-mode.
 (setq evil-want-C-u-scroll t)
@@ -40,16 +48,12 @@
 ;; Enable some features that are disabled by default.
 (put 'narrow-to-region 'disabled nil)
 
-;; Typically, I only want spaces when pressing the TAB key. I also
-;; want 4 of them.
 (setq-default indent-tabs-mode nil
-              tab-width 4
-              c-basic-offset 4)
+              tab-width 2
+              c-basic-offset 2)
 
-;; No trailing whitespace.
 (setq-default show-trailing-whitespace t)
 
-;; Line numbers.
 (global-display-line-numbers-mode)
 
 (require 'ivy)
@@ -61,17 +65,23 @@
 (with-eval-after-load 'evil-maps
   (define-key evil-normal-state-map "\C-p" 'counsel-fzf)
   (define-key evil-normal-state-map "\C-b" 'counsel-switch-buffer))
-;;(require 'projectile)
-;;(projectile-mode +1)
-;; eglot
-;;(add-hook 'go-mode-hook 'eglot-ensure)
-;;(add-hook 'python-mode-hook 'eglot-ensure)
 
-;; Color theme.
-;;(defvar my/base16-colors base16-brewer)
-;;(setq evil-emacs-state-cursor   `(,(plist-get my/base16-colors :base0D) box)
-      ;;evil-insert-state-cursor  `(,(plist-get my/base16-colors :base0D) bar)
-      ;;evil-motion-state-cursor  `(,(plist-get my/base16-colors :base0E) box)
-      ;;evil-normal-state-cursor  `(,(plist-get my/base16-colors :base0B) box)
-      ;;evil-replace-state-cursor `(,(plist-get my/base16-colors :base08) bar)
-      ;;evil-visual-state-cursor  `(,(plist-get my/base16-colors :base09) box))
+(require 'company)
+(add-hook 'after-init-hook 'global-company-mode)
+(with-eval-after-load 'company
+  (define-key company-active-map (kbd "C-p") #'company-select-previous-or-abort)
+  (define-key company-active-map (kbd "C-n") #'company-select-next-or-abort))
+
+(require 'projectile)
+(projectile-mode +1)
+
+(require 'yasnippet)
+(setq yas-snippet-dirs '("~/.emacs.local/snippets"))
+(yas-global-mode 1)
+
+(require 'eglot)
+(add-hook 'go-mode-hook 'eglot-ensure)
+(add-hook 'python-mode-hook 'eglot-ensure)
+
+(require 'perspective)
+(persp-mode)
