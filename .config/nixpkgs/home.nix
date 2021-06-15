@@ -1,11 +1,11 @@
 { config, pkgs, lib, ... }:
 
 {
-  targets.genericLinux = {
-    enable = true;
+  nixpkgs.config = {
+    allowUnsupportedSystem = true;
   };
 
-  fonts.fontconfig.enable = true;
+  # fonts.fontconfig.enable = true;
 
   home = {
     extraOutputsToInstall = [ "man" ];
@@ -15,19 +15,17 @@
     packages = [
       # util
       pkgs.awscli2
-      pkgs.bash-completion
       pkgs.cachix
-      pkgs.cascadia-code
+      # pkgs.cascadia-code
       pkgs.ctags
       pkgs.fd
-      pkgs.glibcLocales
       pkgs.graphviz
       pkgs.hexyl
-      pkgs.inotify-tools
-      pkgs.neofetch
+      # pkgs.inotify-tools
+      # pkgs.neofetch
       pkgs.ripgrep
       pkgs.tree
-      pkgs.xclip
+      # pkgs.xclip
 
       # haskell
       pkgs.cabal-install
@@ -47,7 +45,6 @@
     ];
     sessionVariables = {
       EDITOR = "vim";
-      LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
       VISUAL = "vim";
     };
   };
@@ -60,40 +57,7 @@
     source = ../../.ignore;
   };
 
-
-  programs.bash = {
-    enable = true;
-    enableVteIntegration = true;
-    historyControl = ["ignoredups" "erasedups"];
-    initExtra = lib.mkBefore ''
-      # Base16 Shell
-      BASE16_SHELL="$HOME/.config/base16-shell/"
-      [ -n "$PS1" ] && \
-      [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
-        eval "$("$BASE16_SHELL/profile_helper.sh")"
-
-      # Completions
-      source $HOME/.nix-profile/etc/profile.d/bash_completion.sh
-    '';
-    profileExtra = ''
-      if [ -f ~/.bash_local ]; then
-        . ~/.bash_local
-      fi
-    '';
-    shellAliases = {
-      e = "emacsclient --create-frame --alternate-editor=''";
-      tm = "tmux a";
-      cat = "bat";
-      colors = ''for i in {0..255}; do printf "\x1b[38;5;$''\{i}mcolor%-5i\x1b[0m" $i ; if ! (( ($i + 1 ) % 8 )); then echo ; fi ; done'';
-      open = "xdg-open";
-    };
-  };
-
   programs.bat = {
-    enable = true;
-  };
-
-  programs.command-not-found = {
     enable = true;
   };
 
@@ -106,37 +70,6 @@
         source $''\{venv_path}/bin/activate
       }
     '';
-  };
-
-  programs.emacs = {
-    enable = false;
-    package = pkgs.emacs-nox;
-    extraPackages = epkgs: [
-      # epkgs.better-defaults
-      epkgs.base16-theme
-      epkgs.company
-      epkgs.counsel
-      epkgs.eglot
-      epkgs.evil
-      # epkgs.flycheck
-      epkgs.goto-chg
-      epkgs.ivy
-      epkgs.ivy-hydra
-      # epkgs.lsp-mode
-      epkgs.magit
-      epkgs.projectile
-      epkgs.perspective
-      epkgs.undo-tree
-      epkgs.yasnippet
-
-      # modes
-      epkgs.go-mode
-      epkgs.nix-mode
-      epkgs.yaml-mode
-    ];
-  };
-  home.file.".emacs.d" = {
-    source = ../../.emacs.d;
   };
 
   programs.exa = {
@@ -218,9 +151,9 @@
     enable = true;
   };
 
-  programs.htop = {
-    enable = true;
-  };
+  # programs.htop = {
+  #   enable = true;
+  # };
 
   programs.jq = {
     enable = true;
@@ -340,15 +273,30 @@
   # 'tmux-plugins/vim-tmux-focus-events'
   # 'roxma/vim-tmux-clipboard'
 
-  xdg.userDirs = {
+  # environment.pathsToLink = [ "/share/zsh" ] for completions
+  programs.zsh = {
     enable = true;
-    desktop = "$HOME/.desktop";
-    documents = "$HOME";
-    download = "$HOME/downloads";
-    music = "$HOME/music";
-    pictures = "$HOME";
-    publicShare = "$HOME";
-    templates = "$HOME";
-    videos = "$HOME";
+    defaultKeymap = "viins";
+    # dotDir = ".config/zsh";
+    initExtra = ''
+      if [ -e ~/.nix-profile/etc/profile.d/nix.sh ]; then
+        . ~/.nix-profile/etc/profile.d/nix.sh
+      fi
+
+      # Base16 Shell
+      BASE16_SHELL="$HOME/.config/base16-shell/"
+      [ -n "$PS1" ] && \
+      [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
+        eval "$("$BASE16_SHELL/profile_helper.sh")"
+    '';
+    profileExtra = ''
+      if [ -f ~/.zlocal ]; then
+        . ~/.zlocal
+      fi
+    '';
+    shellAliases = {
+      tm = "tmux a";
+      cat = "bat";
+    };
   };
 }
