@@ -68,6 +68,7 @@
       layout_virtualenv() {
         local venv_path="venv"
         source $''\{venv_path}/bin/activate
+        unset PS1
       }
     '';
   };
