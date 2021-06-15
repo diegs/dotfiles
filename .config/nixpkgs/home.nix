@@ -35,6 +35,7 @@
       pkgs.nix-prefetch-git
 
       # go
+      pkgs.go
       pkgs.golangci-lint
       pkgs.gopls
       pkgs.gotags
@@ -84,6 +85,7 @@
       tm = "tmux a";
       cat = "bat";
       colors = ''for i in {0..255}; do printf "\x1b[38;5;$''\{i}mcolor%-5i\x1b[0m" $i ; if ! (( ($i + 1 ) % 8 )); then echo ; fi ; done'';
+      open = "xdg-open";
     };
   };
 
@@ -194,6 +196,7 @@
       "*.el    diff=lisp"
     ];
     extraConfig = {
+      advice = { addIgnoredFile = false; };
       fetch = { prune = true; tags = true; };
       init = { templateDir = "~/.git-template"; };
       pull = { rebase = true; };
