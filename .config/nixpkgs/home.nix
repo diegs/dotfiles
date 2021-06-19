@@ -18,13 +18,15 @@
       pkgs.cachix
       # pkgs.cascadia-code
       pkgs.ctags
+      pkgs.dust
       pkgs.fd
       pkgs.graphviz
       pkgs.hexyl
       # pkgs.inotify-tools
-      # pkgs.neofetch
+      pkgs.neofetch
       pkgs.ripgrep
       pkgs.tree
+      pkgs.watch
       # pkgs.xclip
 
       # haskell
@@ -33,7 +35,6 @@
       pkgs.nix-prefetch-git
 
       # go
-      pkgs.go
       pkgs.golangci-lint
       pkgs.gopls
       pkgs.gotags
@@ -129,6 +130,9 @@
       "*.lisp  diff=lisp"
       "*.el    diff=lisp"
     ];
+    delta = {
+      enable = true;
+    };
     extraConfig = {
       advice = { addIgnoredFile = false; };
       fetch = { prune = true; tags = true; };
@@ -278,7 +282,6 @@
   programs.zsh = {
     enable = true;
     defaultKeymap = "viins";
-    # dotDir = ".config/zsh";
     initExtra = ''
       if [ -e ~/.nix-profile/etc/profile.d/nix.sh ]; then
         . ~/.nix-profile/etc/profile.d/nix.sh
