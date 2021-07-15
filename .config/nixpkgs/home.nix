@@ -15,19 +15,17 @@
     packages = [
       # util
       pkgs.awscli2
+      pkgs.bottom
       pkgs.cachix
-      # pkgs.cascadia-code
+      pkgs.cascadia-code
       pkgs.ctags
-      pkgs.dust
       pkgs.fd
       pkgs.graphviz
       pkgs.hexyl
-      # pkgs.inotify-tools
-      pkgs.neofetch
+      pkgs.procs
       pkgs.ripgrep
       pkgs.tree
       pkgs.watch
-      # pkgs.xclip
 
       # haskell
       pkgs.cabal-install
@@ -36,12 +34,17 @@
 
       # go
       pkgs.golangci-lint
+      pkgs.gofumpt
       pkgs.gopls
       pkgs.gotags
       pkgs.gotools
 
+      # python
+      pkgs.pyright
+
       # rust
       pkgs.cargo
+      pkgs.rls
       pkgs.rustc
     ];
     sessionVariables = {
@@ -64,7 +67,9 @@
 
   programs.direnv = {
     enable = true;
-    enableNixDirenvIntegration = true;
+    nix-direnv = {
+      enable = true;
+    };
     stdlib = ''
       layout_virtualenv() {
         local venv_path="venv"
@@ -77,10 +82,6 @@
   programs.exa = {
     enable = true;
     enableAliases = true;
-  };
-
-  programs.feh = {
-    enable = true;
   };
 
   programs.fzf = {
@@ -173,11 +174,15 @@
     generateCaches = true;
   };
 
+  xdg.configFile."nvim/lua".source = ../nvim/lua;
+  # xdg.configFile."nvim/colors".source = ../configs/nvim/colors;
+
   programs.neovim = {
     enable = true;
     viAlias = true;
     vimAlias = true;
     extraConfig = lib.strings.fileContents ../nvim/init.vim;
+    # extraConfig = "lua require('init')";
     plugins = [
       pkgs.vimPlugins.ale
       pkgs.vimPlugins.base16-vim
@@ -203,6 +208,10 @@
       pkgs.vimPlugins.vim-tmux-navigator
       pkgs.vimPlugins.vim-unimpaired
       pkgs.vimPlugins.vim-vinegar
+
+      pkgs.vimPlugins.nvim-lspconfig
+      pkgs.vimPlugins.nvim-treesitter
+      pkgs.vimPlugins.nvim-compe
     ];
   };
 
