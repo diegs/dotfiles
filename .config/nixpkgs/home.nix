@@ -53,10 +53,6 @@
     };
   };
 
-  home.file.".config/kitty/kitty.conf" = {
-    source = ../../.config/kitty/kitty.conf;
-  };
-
   home.file.".ignore" = {
     source = ../../.ignore;
   };
@@ -163,6 +159,14 @@
 
   programs.jq = {
     enable = true;
+  };
+
+  programs.kitty = {
+    enable = true;
+    font = {
+      name = "Cascadia Code Regular";
+      size = 14;
+    };
   };
 
   programs.lesspipe = {
