@@ -5,8 +5,6 @@
     allowUnsupportedSystem = true;
   };
 
-  # fonts.fontconfig.enable = true;
-
   home = {
     extraOutputsToInstall = [ "man" ];
     language = {
@@ -153,10 +151,6 @@
     enable = true;
   };
 
-  # programs.htop = {
-  #   enable = true;
-  # };
-
   programs.jq = {
     enable = true;
   };
@@ -270,26 +264,11 @@
     newSession = true;
     terminal = "screen-256color";
     plugins = with pkgs; [
-      tmuxPlugins.copycat
-      {
-        plugin = tmuxPlugins.resurrect;
-        extraConfig = "set -g @resurrect-strategy-nvim 'session'";
-      }
-      {
-        plugin = tmuxPlugins.continuum;
-        extraConfig = ''
-          set -g @continuum-restore 'on'
-          set -g @continuum-save-interval '60' # minutes
-        '';
-      }
       tmuxPlugins.vim-tmux-navigator
       tmuxPlugins.yank
     ];
     extraConfig = lib.strings.fileContents ../../.tmux.conf;
   };
-  # tmux clipboardy things to maybe try to get working someday.
-  # 'tmux-plugins/vim-tmux-focus-events'
-  # 'roxma/vim-tmux-clipboard'
 
   # environment.pathsToLink = [ "/share/zsh" ] for completions
   programs.zsh = {
