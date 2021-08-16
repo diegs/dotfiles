@@ -57,7 +57,7 @@ let g:fzf_command_prefix = 'Fzf'
 " let g:fzf_buffers_jump = 1
 nnoremap <silent> <C-p> :FzfFiles<CR>
 nnoremap <silent> <C-b> :FzfBuffers<CR>
-nnoremap <silent> <leader>r :FzfRg<CR>
+nnoremap <silent> <C-f> :FzfRg<CR>
 autocmd! FileType fzf
 autocmd  FileType fzf set laststatus=0 noshowmode noruler
   \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler

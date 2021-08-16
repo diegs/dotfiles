@@ -15,7 +15,6 @@
       pkgs.awscli2
       pkgs.bottom
       pkgs.cachix
-      pkgs.cascadia-code
       pkgs.ctags
       pkgs.fd
       pkgs.graphviz
@@ -24,6 +23,10 @@
       pkgs.ripgrep
       pkgs.tree
       pkgs.watch
+
+      # fonts
+      pkgs.cascadia-code
+      pkgs.ibm-plex
 
       # haskell
       pkgs.cabal-install
@@ -42,7 +45,7 @@
 
       # rust
       pkgs.cargo
-      pkgs.rls
+      pkgs.rust-analyzer
       pkgs.rustc
     ];
     sessionVariables = {
@@ -159,6 +162,7 @@
     enable = true;
     font = {
       name = "Cascadia Code Regular";
+      # name = "IBM Plex Mono Regular";
       size = 14;
     };
   };
@@ -182,7 +186,6 @@
     extraConfig = lib.strings.fileContents ../nvim/init.vim;
     # extraConfig = "lua require('init')";
     plugins = [
-      pkgs.vimPlugins.ale
       pkgs.vimPlugins.base16-vim
       pkgs.vimPlugins.bclose-vim
       pkgs.vimPlugins.fzf-vim
@@ -265,7 +268,6 @@
     terminal = "screen-256color";
     plugins = with pkgs; [
       tmuxPlugins.vim-tmux-navigator
-      tmuxPlugins.yank
     ];
     extraConfig = lib.strings.fileContents ../../.tmux.conf;
   };
