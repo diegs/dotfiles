@@ -26,7 +26,6 @@
 
       # fonts
       pkgs.cascadia-code
-      pkgs.ibm-plex
 
       # haskell
       pkgs.cabal-install
@@ -162,8 +161,10 @@
     enable = true;
     font = {
       name = "Cascadia Code Regular";
-      # name = "IBM Plex Mono Regular";
       size = 14;
+    };
+    settings = {
+      macos_option_as_alt = "left";
     };
   };
 
