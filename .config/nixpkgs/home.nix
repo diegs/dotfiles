@@ -75,6 +75,37 @@
     '';
   };
 
+  programs.emacs = {
+    enable = false;
+    package = pkgs.emacs-nox;
+    extraPackages = epkgs: [
+      # epkgs.better-defaults
+      epkgs.base16-theme
+      epkgs.company
+      epkgs.counsel
+      epkgs.eglot
+      epkgs.evil
+      # epkgs.flycheck
+      epkgs.goto-chg
+      epkgs.ivy
+      epkgs.ivy-hydra
+      # epkgs.lsp-mode
+      epkgs.magit
+      epkgs.projectile
+      epkgs.perspective
+      epkgs.undo-tree
+      epkgs.yasnippet
+
+      # modes
+      epkgs.go-mode
+      epkgs.nix-mode
+      epkgs.yaml-mode
+    ];
+  };
+  home.file.".emacs.d" = {
+    source = ../../.emacs.d;
+  };
+
   programs.exa = {
     enable = true;
     enableAliases = true;
