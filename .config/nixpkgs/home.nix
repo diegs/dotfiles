@@ -76,34 +76,35 @@
   };
 
   programs.emacs = {
-    enable = false;
+    enable = true;
     package = pkgs.emacs-nox;
     extraPackages = epkgs: [
-      # epkgs.better-defaults
       epkgs.base16-theme
       epkgs.company
-      epkgs.counsel
       epkgs.eglot
       epkgs.evil
-      # epkgs.flycheck
-      epkgs.goto-chg
-      epkgs.ivy
-      epkgs.ivy-hydra
-      # epkgs.lsp-mode
-      epkgs.magit
-      epkgs.projectile
-      epkgs.perspective
-      epkgs.undo-tree
+      epkgs.tree-sitter
+      epkgs.tree-sitter-langs
       epkgs.yasnippet
 
+      # epkgs.counsel
+      # epkgs.flycheck
+      # epkgs.goto-chg
+      # epkgs.ivy
+      # epkgs.ivy-hydra
+      # epkgs.magit
+      # epkgs.projectile
+      # epkgs.perspective
+      # epkgs.undo-tree
+
       # modes
-      epkgs.go-mode
+      # epkgs.go-mode
       epkgs.nix-mode
       epkgs.yaml-mode
     ];
   };
-  home.file.".emacs.d" = {
-    source = ../../.emacs.d;
+  home.file.".emacs" = {
+    source = ../../.emacs;
   };
 
   programs.exa = {
