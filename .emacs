@@ -91,11 +91,8 @@
 ;; selectrum.
 (require 'selectrum)
 (selectrum-mode +1)
-
-;; (setq selectrum-prescient-enable-filtering nil)
 (selectrum-prescient-mode +1)
 (prescient-persist-mode +1)
-
 (marginalia-mode)
 
 ;; company.
@@ -107,8 +104,7 @@
 
 ;; yasnippet.
 (require 'yasnippet)
-; (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
-(yas-global-mode 1)
+(yas-global-mode +1)
 
 ;; tree-sitter.
 (require 'tree-sitter)

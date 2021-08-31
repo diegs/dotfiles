@@ -217,11 +217,11 @@
     generateCaches = true;
   };
 
-  xdg.configFile."nvim/lua".source = ../nvim/lua;
+  # xdg.configFile."nvim/lua".source = ../nvim/lua;
   # xdg.configFile."nvim/colors".source = ../configs/nvim/colors;
 
   programs.neovim = {
-    enable = true;
+    enable = false;
     viAlias = true;
     vimAlias = true;
     extraConfig = lib.strings.fileContents ../nvim/init.vim;
