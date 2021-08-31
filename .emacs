@@ -70,6 +70,7 @@
 
 ;; Frame settings.
 (line-number-mode)
+(setq display-line-numbers-type 'relative)
 (column-number-mode)
 (setq-default show-trailing-whitespace t)
 (show-paren-mode 1)
@@ -87,25 +88,24 @@
 
 ;; PLUGINS
 
-; (require 'ivy)
-; (setq ivy-use-virtual-buffers t
-;       ivy-count-format "%d/%d ")
-; (ivy-mode 1)
-; (global-set-key (kbd "C-p") 'counsel-fzf)
+;; selectrum.
+(require 'selectrum)
+(selectrum-mode +1)
 
-; (with-eval-after-load 'evil-maps
-;   (define-key evil-normal-state-map "\C-p" 'counsel-fzf)
-;   (define-key evil-normal-state-map "\C-b" 'counsel-switch-buffer))
+;; (setq selectrum-prescient-enable-filtering nil)
+(selectrum-prescient-mode +1)
+(prescient-persist-mode +1)
 
+(marginalia-mode)
+
+;; company.
 (require 'company)
 (add-hook 'after-init-hook 'global-company-mode)
 (with-eval-after-load 'company
   (define-key company-active-map (kbd "C-p") #'company-select-previous-or-abort)
   (define-key company-active-map (kbd "C-n") #'company-select-next-or-abort))
 
-; (require 'projectile)
-; (projectile-mode +1)
-
+;; yasnippet.
 (require 'yasnippet)
 ; (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
 (yas-global-mode 1)
@@ -126,8 +126,10 @@
 ;(add-hook 'eglot--managed-mode-hook
 ;          (lambda () (add-hook 'before-save-hook '+eglot-organize-imports nil 'local)))
 
-; (require 'perspective)
-; (persp-mode)
-
 ;; Dummy go-mode since tree-sitter and LSP do all the work.
 (define-generic-mode 'go-mode nil nil nil '("\\.go$") nil "A mode for Go files")
+
+;; Evil keymaps.
+(with-eval-after-load 'evil-maps
+  (define-key evil-normal-state-map "\C-p" 'project-find-file)
+  (define-key evil-normal-state-map "\C-b" 'consult-buffer))

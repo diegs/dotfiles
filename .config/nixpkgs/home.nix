@@ -48,8 +48,9 @@
       pkgs.rustc
     ];
     sessionVariables = {
-      EDITOR = "vim";
-      VISUAL = "vim";
+      ALTERNATE_EDITOR = "";
+      EDITOR = "emacsclient -t";
+      VISUAL = "emacsclient -c -a emacs";
     };
   };
 
@@ -79,28 +80,35 @@
     enable = true;
     package = pkgs.emacs-nox;
     extraPackages = epkgs: [
+      # Core.
       epkgs.base16-theme
+      epkgs.evil
+
+      # Navigation.
+      epkgs.consult
+      epkgs.marginalia
+      epkgs.orderless
+      epkgs.selectrum
+      epkgs.selectrum-prescient
+
+      # Coding.
       epkgs.company
       epkgs.eglot
-      epkgs.evil
       epkgs.tree-sitter
       epkgs.tree-sitter-langs
       epkgs.yasnippet
 
+      # Modes.
+      epkgs.nix-mode
+      epkgs.yaml-mode
+
       # epkgs.counsel
       # epkgs.flycheck
       # epkgs.goto-chg
-      # epkgs.ivy
-      # epkgs.ivy-hydra
       # epkgs.magit
       # epkgs.projectile
       # epkgs.perspective
       # epkgs.undo-tree
-
-      # modes
-      # epkgs.go-mode
-      epkgs.nix-mode
-      epkgs.yaml-mode
     ];
   };
   home.file.".emacs" = {
@@ -326,6 +334,7 @@
       fi
     '';
     shellAliases = {
+      ec = "emacsclient -c -a=''";
       tm = "tmux a";
       cat = "bat";
     };
