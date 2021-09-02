@@ -2,6 +2,7 @@
 
 ;; Evil-mode first.
 (setq evil-want-C-u-scroll t)
+(setq evil-undo-system 'undo-tree)
 (require 'evil)
 (evil-mode 1)
 
@@ -123,7 +124,7 @@
 ;          (lambda () (add-hook 'before-save-hook '+eglot-organize-imports nil 'local)))
 
 ;; Dummy go-mode since tree-sitter and LSP do all the work.
-(define-generic-mode 'go-mode nil nil nil '("\\.go$") nil "A mode for Go files")
+; (define-generic-mode 'go-mode nil nil nil '("\\.go$") nil "A mode for Go files")
 
 ;; Evil keymaps.
 (with-eval-after-load 'evil-maps
