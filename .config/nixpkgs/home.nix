@@ -103,6 +103,7 @@
       epkgs.go-mode
       epkgs.nix-mode
       epkgs.rust-mode
+      epkgs.salt-mode
       epkgs.yaml-mode
 
       # Utils.

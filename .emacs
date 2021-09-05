@@ -89,6 +89,9 @@
 
 ;; PLUGINS
 
+;; magit
+(require 'git-commit)
+
 ;; selectrum.
 (require 'selectrum)
 (selectrum-mode +1)
