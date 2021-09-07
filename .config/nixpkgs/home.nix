@@ -333,7 +333,7 @@
       fi
     '';
     shellAliases = {
-      ec = "emacsclient -c -a=''";
+      e = "emacsclient -c -a=''";
       tm = "tmux a";
       cat = "bat";
     };
