@@ -216,46 +216,6 @@
     generateCaches = true;
   };
 
-  # xdg.configFile."nvim/lua".source = ../nvim/lua;
-  # xdg.configFile."nvim/colors".source = ../configs/nvim/colors;
-
-  # programs.neovim = {
-  #   enable = false;
-  #   viAlias = true;
-  #   vimAlias = true;
-  #   extraConfig = lib.strings.fileContents ../nvim/init.vim;
-  #   # extraConfig = "lua require('init')";
-  #   plugins = [
-  #     pkgs.vimPlugins.base16-vim
-  #     pkgs.vimPlugins.bclose-vim
-  #     pkgs.vimPlugins.fzf-vim
-  #     pkgs.vimPlugins.fzfWrapper
-  #     pkgs.vimPlugins.haskell-vim
-  #     pkgs.vimPlugins.lightline-ale
-  #     pkgs.vimPlugins.lightline-vim
-  #     pkgs.vimPlugins.tagbar
-  #     pkgs.vimPlugins.vim-abolish
-  #     pkgs.vimPlugins.vim-asterisk
-  #     pkgs.vimPlugins.vim-bufkill
-  #     pkgs.vimPlugins.vim-commentary
-  #     pkgs.vimPlugins.vim-easy-align
-  #     pkgs.vimPlugins.vim-fugitive
-  #     pkgs.vimPlugins.vim-polyglot
-  #     pkgs.vimPlugins.vim-repeat
-  #     pkgs.vimPlugins.vim-sensible
-  #     pkgs.vimPlugins.vim-surround
-  #     pkgs.vimPlugins.vim-textobj-comment
-  #     pkgs.vimPlugins.vim-textobj-user
-  #     pkgs.vimPlugins.vim-tmux-navigator
-  #     pkgs.vimPlugins.vim-unimpaired
-  #     pkgs.vimPlugins.vim-vinegar
-
-  #     pkgs.vimPlugins.nvim-lspconfig
-  #     pkgs.vimPlugins.nvim-treesitter
-  #     pkgs.vimPlugins.nvim-compe
-  #   ];
-  # };
-
   programs.readline = {
     enable = true;
     variables = {
