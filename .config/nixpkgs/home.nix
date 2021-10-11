@@ -1,8 +1,27 @@
 { config, pkgs, lib, ... }:
 
 {
-  nixpkgs.config = {
-    allowUnsupportedSystem = true;
+  nixpkgs = {
+    config = {
+      allowUnsupportedSystem = true;
+    };
+    overlays = [
+      (self: super:
+        let
+          lib = super.lib;
+        in
+          rec {
+            python39 = super.python39.override {
+              packageOverrides = self: super: {
+                beautifulsoup4 = super.beautifulsoup4.overrideAttrs (old: {
+                  propagatedBuildInputs = lib.remove super.lxml old.propagatedBuildInputs;
+                });
+              };
+            };
+            python39Packages = python39.pkgs;
+          }
+      )
+    ];
   };
 
   home = {
@@ -16,6 +35,7 @@
       pkgs.bottom
       pkgs.cachix
       pkgs.ctags
+      # pkgs.fast-cli
       pkgs.fd
       pkgs.graphviz
       pkgs.hexyl
@@ -98,8 +118,8 @@
       epkgs.yasnippet
 
       # Modes.
-      epkgs.tree-sitter
-      epkgs.tree-sitter-langs
+      # epkgs.tree-sitter
+      # epkgs.tree-sitter-langs
       epkgs.go-mode
       epkgs.nix-mode
       epkgs.rust-mode
