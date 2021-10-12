@@ -8,18 +8,25 @@
     overlays = [
       (self: super:
         let
-          lib = super.lib;
-        in
-          rec {
-            python39 = super.python39.override {
-              packageOverrides = self: super: {
-                beautifulsoup4 = super.beautifulsoup4.overrideAttrs (old: {
-                  propagatedBuildInputs = lib.remove super.lxml old.propagatedBuildInputs;
-                });
-              };
-            };
-            python39Packages = python39.pkgs;
-          }
+          pkgs_x86_64 = import <nixpkgs> { localSystem = "x86_64-darwin"; overlays = [
+            (self: super:
+              let
+                lib = super.lib;
+              in
+                rec {
+                  python39 = super.python39.override {
+                    packageOverrides = self: super: {
+                      beautifulsoup4 = super.beautifulsoup4.overrideAttrs (old: {
+                        propagatedBuildInputs = lib.remove super.lxml old.propagatedBuildInputs;
+                      });
+                    };
+                  };
+                  python39Packages = python39.pkgs;
+                }
+            ) ]; };
+        in {
+          kitty = pkgs_x86_64.kitty;
+	      }
       )
     ];
   };
