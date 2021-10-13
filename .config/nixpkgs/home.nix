@@ -199,7 +199,7 @@
     extraConfig = {
       advice = { addIgnoredFile = false; };
       fetch = { prune = true; tags = true; };
-      init = { templateDir = "~/.git-template"; };
+      init = { defaultBranch = "main"; templateDir = "~/.git-template"; };
       pull = { rebase = true; };
       push = { default = "current"; };
       url."git@github.com:".insteadOf = "https://github.com/";
