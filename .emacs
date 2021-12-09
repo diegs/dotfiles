@@ -2,7 +2,7 @@
 
 ;; Evil-mode first.
 (setq evil-want-C-u-scroll t)
-(setq evil-undo-system 'undo-tree)
+(setq evil-undo-system 'undo-fu) ; TODO remove in emacs 28
 (require 'evil)
 (evil-mode 1)
 
@@ -111,16 +111,18 @@
 (yas-global-mode +1)
 
 ;; tree-sitter.
-;(require 'tree-sitter)
-;(require 'tree-sitter-langs)
-;(global-tree-sitter-mode)
-;(add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode)
+(require 'tree-sitter)
+(require 'tree-sitter-langs)
+(global-tree-sitter-mode)
+(add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode)
 
 ;; eglot.
 (require 'eglot)
 (add-hook 'go-mode-hook 'eglot-ensure)
 (add-hook 'python-mode-hook 'eglot-ensure)
 (add-hook 'rust-mode-hook 'eglot-ensure)
+(add-to-list 'eglot-server-programs '(rust-mode . ("rust-analyzer")))
+
 
 ;(defun +eglot-organize-imports() (call-interactively 'eglot-code-action-organize-imports))
 ;(add-hook 'eglot--managed-mode-hook
@@ -130,6 +132,17 @@
 ; (define-generic-mode 'go-mode nil nil nil '("\\.go$") nil "A mode for Go files")
 
 ;; Evil keymaps.
+(defun evil-keyboard-quit ()
+  "Keyboard quit and force normal state."
+  (interactive)
+  (and evil-mode (evil-force-normal-state))
+  (keyboard-quit))
+
 (with-eval-after-load 'evil-maps
   (define-key evil-normal-state-map "\C-p" 'project-find-file)
-  (define-key evil-normal-state-map "\C-b" 'consult-buffer))
+  (define-key evil-normal-state-map "\C-b" 'consult-buffer)
+  (define-key evil-normal-state-map   (kbd "C-g") #'evil-keyboard-quit)
+  (define-key evil-motion-state-map   (kbd "C-g") #'evil-keyboard-quit)
+  (define-key evil-insert-state-map   (kbd "C-g") #'evil-keyboard-quit)
+  (define-key evil-window-map         (kbd "C-g") #'evil-keyboard-quit)
+  (define-key evil-operator-state-map (kbd "C-g") #'evil-keyboard-quit))

@@ -6,28 +6,28 @@
       allowUnsupportedSystem = true;
     };
     overlays = [
-      (self: super:
-        let
-          pkgs_x86_64 = import <nixpkgs> { localSystem = "x86_64-darwin"; overlays = [
-            (self: super:
-              let
-                lib = super.lib;
-              in
-                rec {
-                  python39 = super.python39.override {
-                    packageOverrides = self: super: {
-                      beautifulsoup4 = super.beautifulsoup4.overrideAttrs (old: {
-                        propagatedBuildInputs = lib.remove super.lxml old.propagatedBuildInputs;
-                      });
-                    };
-                  };
-                  python39Packages = python39.pkgs;
-                }
-            ) ]; };
-        in {
-          kitty = pkgs_x86_64.kitty;
-	      }
-      )
+      # (self: super:
+      #   let
+      #     pkgs_x86_64 = import <nixpkgs> { localSystem = "x86_64-darwin"; overlays = [
+      #       (self: super:
+      #         let
+      #           lib = super.lib;
+      #         in
+      #           rec {
+      #             python39 = super.python39.override {
+      #               packageOverrides = self: super: {
+      #                 beautifulsoup4 = super.beautifulsoup4.overrideAttrs (old: {
+      #                   propagatedBuildInputs = lib.remove super.lxml old.propagatedBuildInputs;
+      #                 });
+      #               };
+      #             };
+      #             python39Packages = python39.pkgs;
+      #           }
+      #       ) ]; };
+      #   in {
+      #     kitty = pkgs_x86_64.kitty;
+	    #   }
+      # )
     ];
   };
 
@@ -73,6 +73,7 @@
       pkgs.cargo
       pkgs.rust-analyzer
       pkgs.rustc
+      pkgs.rustfmt
     ];
     sessionVariables = {
       ALTERNATE_EDITOR = "";
@@ -110,7 +111,7 @@
       # Core.
       epkgs.base16-theme
       epkgs.evil
-      epkgs.undo-tree
+      epkgs.undo-fu
 
       # Navigation.
       epkgs.consult
@@ -124,9 +125,13 @@
       epkgs.eglot
       epkgs.yasnippet
 
+      # Org.
+      epkgs.org
+      epkgs.org-roam
+
       # Modes.
-      # epkgs.tree-sitter
-      # epkgs.tree-sitter-langs
+      epkgs.tree-sitter
+      epkgs.tree-sitter-langs
       epkgs.go-mode
       epkgs.nix-mode
       epkgs.rust-mode
@@ -219,6 +224,10 @@
     enable = true;
   };
 
+  programs.java = {
+    enable = true;
+  };
+
   programs.jq = {
     enable = true;
   };
@@ -280,6 +289,9 @@
         disabled = true;
       };
       python = {
+        disabled = true;
+      };
+      rust = {
         disabled = true;
       };
     };
