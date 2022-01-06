@@ -52,12 +52,12 @@
       pkgs.watch
 
       # fonts
-      pkgs.cascadia-code
+      # pkgs.cascadia-code
 
       # haskell
-      pkgs.cabal-install
-      pkgs.cabal2nix
-      pkgs.nix-prefetch-git
+      # pkgs.cabal-install
+      # pkgs.cabal2nix
+      # pkgs.nix-prefetch-git
 
       # go
       pkgs.golangci-lint
@@ -218,6 +218,7 @@
   programs.go = {
     enable = true;
     goPath = ".go/";
+    package = pkgs.go_1_17;
   };
 
   programs.home-manager = {
@@ -233,7 +234,7 @@
   };
 
   programs.kitty = {
-    enable = true;
+    enable = false;
     font = {
       name = "Cascadia Code Regular";
       size = 14;
