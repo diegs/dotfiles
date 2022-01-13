@@ -25,6 +25,12 @@
     ediff-window-setup-function 'ediff-setup-windows-plain
     custom-file (expand-file-name "~/.emacs.d/custom.el"))
 
+;(setq-default word-wrap t)
+(add-hook 'text-mode-hook 'turn-on-visual-line-mode)
+;(add-hook 'before-save-hook 'delete-trailing-whitespace)
+(add-hook 'before-save-hook 'whitespace-cleanup)
+
+
 ;; TODO: figure out if I want these in evil-mode.
 ;(global-set-key (kbd "M-/") 'hippie-expand)
 ;(global-set-key (kbd "C-x C-b") 'ibuffer)
