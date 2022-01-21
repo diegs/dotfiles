@@ -26,7 +26,7 @@
       #       ) ]; };
       #   in {
       #     kitty = pkgs_x86_64.kitty;
-	    #   }
+      #   }
       # )
     ];
   };
@@ -336,6 +336,7 @@
       e = "emacsclient -c -a=''";
       tm = "tmux a";
       cat = "bat";
+      upgrade-nix = "sudo -i sh -c 'nix-channel --update && nix-env -iA nixpkgs.nix && launchctl remove org.nixos.nix-daemon && launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist'";
     };
   };
 }
