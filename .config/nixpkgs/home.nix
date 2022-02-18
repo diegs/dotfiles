@@ -42,7 +42,6 @@
       pkgs.bottom
       pkgs.cachix
       pkgs.ctags
-      # pkgs.fast-cli
       pkgs.fd
       pkgs.graphviz
       pkgs.hexyl
@@ -50,9 +49,6 @@
       pkgs.ripgrep
       pkgs.tree
       pkgs.watch
-
-      # fonts
-      # pkgs.cascadia-code
 
       # haskell
       # pkgs.cabal-install
@@ -95,6 +91,9 @@
     nix-direnv = {
       enable = true;
     };
+    config = {
+      skip_dotenv = true;
+    };
     stdlib = ''
       layout_virtualenv() {
         local venv_path="venv"
@@ -122,7 +121,7 @@
 
       # Coding.
       epkgs.company
-      epkgs.eglot
+      # epkgs.eglot
       epkgs.yasnippet
 
       # Org.
@@ -130,12 +129,13 @@
       epkgs.org-roam
 
       # Modes.
-      epkgs.tree-sitter
-      epkgs.tree-sitter-langs
       epkgs.go-mode
       epkgs.nix-mode
+      epkgs.protobuf-mode
       epkgs.rust-mode
       epkgs.salt-mode
+      epkgs.tree-sitter
+      epkgs.tree-sitter-langs
       epkgs.yaml-mode
 
       # Utils.
@@ -217,7 +217,7 @@
 
   programs.go = {
     enable = true;
-    goPath = ".go/";
+    goPath = "src/go";
     package = pkgs.go_1_17;
   };
 
@@ -234,10 +234,10 @@
   };
 
   programs.kitty = {
-    enable = false;
+    enable = true;
     font = {
-      name = "Cascadia Code Regular";
-      size = 14;
+      name = "SF Mono Regular";
+      size = 12;
     };
     settings = {
       macos_option_as_alt = "left";
@@ -328,6 +328,12 @@
         eval "$("$BASE16_SHELL/profile_helper.sh")"
     '';
     profileExtra = ''
+      # Nix
+      if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+      . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+      fi
+      # End Nix
+
       if [ -f ~/.zlocal ]; then
         . ~/.zlocal
       fi
