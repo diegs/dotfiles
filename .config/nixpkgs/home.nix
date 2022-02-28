@@ -121,7 +121,7 @@
 
       # Coding.
       epkgs.company
-      # epkgs.eglot
+      epkgs.eglot
       epkgs.yasnippet
 
       # Org.
