@@ -236,7 +236,8 @@
   programs.kitty = {
     enable = true;
     font = {
-      name = "SF Mono Regular";
+      # name = "SF Mono";
+      name = "Berkeley Mono";
       size = 12;
     };
     settings = {
