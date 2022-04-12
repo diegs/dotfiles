@@ -72,9 +72,8 @@
       pkgs.rustfmt
     ];
     sessionVariables = {
-      ALTERNATE_EDITOR = "";
-      EDITOR = "emacsclient -t";
-      VISUAL = "emacsclient -c -a emacs";
+      EDITOR = "hx";
+      VISUAL = "hx";
     };
   };
 
@@ -104,8 +103,8 @@
   };
 
   programs.emacs = {
-    enable = true;
-    package = pkgs.emacs-nox;
+    enable = false;
+    package = pkgs.emacsGcc;
     extraPackages = epkgs: [
       # Core.
       epkgs.base16-theme
@@ -116,8 +115,8 @@
       epkgs.consult
       epkgs.marginalia
       epkgs.orderless
-      epkgs.selectrum
-      epkgs.selectrum-prescient
+      #epkgs.selectrum
+      #epkgs.selectrum-prescient
 
       # Coding.
       epkgs.company
@@ -134,16 +133,22 @@
       epkgs.protobuf-mode
       epkgs.rust-mode
       epkgs.salt-mode
-      epkgs.tree-sitter
-      epkgs.tree-sitter-langs
+      # epkgs.tree-sitter
+      # epkgs.tree-sitter-langs
+      #tree-sitter-langs = epkgs.tree-sitter-langs.overrideAttrs (oldAttrs: {
+          #postPatch = oldAttrs.postPatch or "" + ''
+          #substituteInPlace ./tree-sitter-langs-build.el \
+          #--replace "tree-sitter-langs-grammar-dir tree-sitter-langs--dir"  "tree-sitter-langs-grammar-dir \"${self.tree-sitter-grammars}/langs\""
+          #'';
+          #});
       epkgs.yaml-mode
 
       # Utils.
       epkgs.magit
     ];
   };
-  home.file.".emacs" = {
-    source = ../../.emacs;
+  home.file.".config/kitty/kitty.conf" = {
+    source = ../kitty/kitty.conf;
   };
 
   programs.exa = {
@@ -221,6 +226,17 @@
     package = pkgs.go_1_17;
   };
 
+  programs.helix  = {
+    enable = true;
+    settings = {
+      theme = "base16_terminal";
+      lsp.display-messages = true;
+      keys.normal = {
+        space.space = "file_picker";
+      };
+    };
+  };
+
   programs.home-manager = {
     enable = true;
   };
@@ -234,7 +250,7 @@
   };
 
   programs.kitty = {
-    enable = true;
+    enable = false;
     font = {
       # name = "SF Mono";
       name = "Berkeley Mono";
@@ -290,6 +306,9 @@
       golang = {
         disabled = true;
       };
+      nodejs = {
+        disabled = true;
+      };
       python = {
         disabled = true;
       };
@@ -307,9 +326,9 @@
     keyMode = "vi";
     newSession = true;
     terminal = "screen-256color";
-    plugins = with pkgs; [
-      tmuxPlugins.vim-tmux-navigator
-    ];
+    #plugins = with pkgs; [
+    #  tmuxPlugins.vim-tmux-navigator
+    #];
     extraConfig = lib.strings.fileContents ../../.tmux.conf;
   };
 
@@ -340,7 +359,6 @@
       fi
     '';
     shellAliases = {
-      e = "emacsclient -c -a=''";
       tm = "tmux a";
       cat = "bat";
       upgrade-nix = "sudo -i sh -c 'nix-channel --update && nix-env -iA nixpkgs.nix && launchctl remove org.nixos.nix-daemon && launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist'";
