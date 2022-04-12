@@ -77,10 +77,6 @@
     };
   };
 
-  home.file.".ignore" = {
-    source = ../../.ignore;
-  };
-
   programs.bat = {
     enable = true;
   };
@@ -100,55 +96,6 @@
         unset PS1
       }
     '';
-  };
-
-  programs.emacs = {
-    enable = false;
-    package = pkgs.emacsGcc;
-    extraPackages = epkgs: [
-      # Core.
-      epkgs.base16-theme
-      epkgs.evil
-      epkgs.undo-fu
-
-      # Navigation.
-      epkgs.consult
-      epkgs.marginalia
-      epkgs.orderless
-      #epkgs.selectrum
-      #epkgs.selectrum-prescient
-
-      # Coding.
-      epkgs.company
-      epkgs.eglot
-      epkgs.yasnippet
-
-      # Org.
-      epkgs.org
-      epkgs.org-roam
-
-      # Modes.
-      epkgs.go-mode
-      epkgs.nix-mode
-      epkgs.protobuf-mode
-      epkgs.rust-mode
-      epkgs.salt-mode
-      # epkgs.tree-sitter
-      # epkgs.tree-sitter-langs
-      #tree-sitter-langs = epkgs.tree-sitter-langs.overrideAttrs (oldAttrs: {
-          #postPatch = oldAttrs.postPatch or "" + ''
-          #substituteInPlace ./tree-sitter-langs-build.el \
-          #--replace "tree-sitter-langs-grammar-dir tree-sitter-langs--dir"  "tree-sitter-langs-grammar-dir \"${self.tree-sitter-grammars}/langs\""
-          #'';
-          #});
-      epkgs.yaml-mode
-
-      # Utils.
-      epkgs.magit
-    ];
-  };
-  home.file.".config/kitty/kitty.conf" = {
-    source = ../kitty/kitty.conf;
   };
 
   programs.exa = {
@@ -248,6 +195,10 @@
     enable = true;
   };
 
+  home.file.".ignore" = {
+    source = ../../.ignore;
+  };
+
   programs.java = {
     enable = true;
   };
@@ -256,16 +207,8 @@
     enable = true;
   };
 
-  programs.kitty = {
-    enable = false;
-    font = {
-      # name = "SF Mono";
-      name = "Berkeley Mono";
-      size = 12;
-    };
-    settings = {
-      macos_option_as_alt = "left";
-    };
+  home.file.".config/kitty/kitty.conf" = {
+    source = ../kitty/kitty.conf;
   };
 
   programs.lesspipe = {
