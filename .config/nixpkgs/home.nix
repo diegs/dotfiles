@@ -229,10 +229,17 @@
   programs.helix  = {
     enable = true;
     settings = {
-      theme = "base16_terminal";
+      theme = "monokai_pro_spectrum";
       lsp.display-messages = true;
       keys.normal = {
         space.space = "file_picker";
+      };
+      editor = {
+        cursor-shape = {
+          insert = "bar";
+          normal = "block";
+          select = "underline";
+        };
       };
     };
   };
