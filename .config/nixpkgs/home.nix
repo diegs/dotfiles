@@ -64,7 +64,7 @@
       enable = true;
     };
     config = {
-      skip_dotenv = true;
+      load_direnv = false;
     };
     stdlib = ''
       layout_virtualenv() {
@@ -154,7 +154,12 @@
     enable = true;
     settings = {
       theme = "monokai_pro_spectrum";
-      lsp.display-messages = true;
+      editor.lsp.display-messages = true;
+      editor.cursor-shape = {
+        insert = "bar";
+        normal = "block";
+        select = "underline";
+      };
       keys.normal = {
         space.space = "file_picker";
       };
