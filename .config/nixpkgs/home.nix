@@ -15,7 +15,7 @@
     };
     packages = [
       # util
-      pkgs.awscli2
+      # pkgs.awscli2
       pkgs.bottom
       pkgs.cachix
       pkgs.ctags
@@ -33,10 +33,10 @@
       # pkgs.nix-prefetch-git
 
       # go
-      pkgs.golangci-lint
-      pkgs.gofumpt
+      # pkgs.golangci-lint
+      # pkgs.gofumpt
       pkgs.gopls
-      pkgs.gotags
+      # pkgs.gotags
       pkgs.gotools
 
       # python
@@ -154,11 +154,14 @@
     enable = true;
     settings = {
       theme = "monokai_pro_spectrum";
-      editor.lsp.display-messages = true;
-      editor.cursor-shape = {
-        insert = "bar";
-        normal = "block";
-        select = "underline";
+      editor = {
+        line-number = "relative";
+        lsp.display-messages = true;
+        cursor-shape = {
+          insert = "bar";
+          normal = "block";
+          select = "underline";
+        };
       };
       keys.normal = {
         space.space = "file_picker";
