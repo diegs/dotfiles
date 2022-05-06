@@ -155,13 +155,14 @@
     settings = {
       theme = "monokai_pro_spectrum";
       editor = {
-        line-number = "relative";
-        lsp.display-messages = true;
         cursor-shape = {
           insert = "bar";
           normal = "block";
           select = "underline";
         };
+        line-number = "relative";
+        lsp.display-messages = true;
+        mouse = false;
       };
       keys.normal = {
         space.space = "file_picker";
