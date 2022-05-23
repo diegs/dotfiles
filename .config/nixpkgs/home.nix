@@ -291,7 +291,7 @@
     shellAliases = {
       tm = "tmux a";
       cat = "bat";
-      upgrade-nix = "sudo -i sh -c \"nix-channel --update && nix-env -iA nixpkgs.nix && launchctl remove org.nixos.nix-daemon && sleep 3 && launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist\"";
+      upgrade-nix = "sudo -i sh -c \"nix-channel --update && nix-env -u && nix-collect-garbage -d && launchctl remove org.nixos.nix-daemon && sleep 3 && launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist\"";
     };
   };
 }
