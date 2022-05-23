@@ -246,6 +246,10 @@
       };
     };
   };
+  
+  programs.tealdeer = {
+    enable = true;
+  };
 
   programs.tmux = {
     enable = true;
@@ -255,9 +259,6 @@
     keyMode = "vi";
     newSession = true;
     terminal = "screen-256color";
-    #plugins = with pkgs; [
-    #  tmuxPlugins.vim-tmux-navigator
-    #];
     extraConfig = lib.strings.fileContents ../../.tmux.conf;
   };
 
@@ -290,7 +291,7 @@
     shellAliases = {
       tm = "tmux a";
       cat = "bat";
-      upgrade-nix = "sudo -i sh -c 'nix-channel --update && nix-env -iA nixpkgs.nix && launchctl remove org.nixos.nix-daemon && launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist'";
+      upgrade-nix = "sudo -i sh -c \"nix-channel --update && nix-env -iA nixpkgs.nix && launchctl remove org.nixos.nix-daemon && sleep 3 && launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist\"";
     };
   };
 }
