@@ -10,9 +10,8 @@
 
   home = {
     extraOutputsToInstall = [ "man" ];
-    language = {
-      base = "en_US.UTF-8";
-    };
+    language = { base = "en_US.UTF-8"; };
+    stateVersion = "18.09";
     packages = [
       # util
       # pkgs.awscli2
