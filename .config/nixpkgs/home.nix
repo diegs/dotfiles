@@ -173,7 +173,11 @@
         lsp.display-messages = false;
         mouse = false;
         whitespace = {
-          render = "all";
+          render = {
+            space = "all";
+            tab = "all";
+            newline = "none";
+          };
         };
       };
       keys.normal = {
