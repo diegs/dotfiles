@@ -22,6 +22,7 @@
       pkgs.graphviz
       pkgs.hexyl
       pkgs.procs
+      pkgs.ranger
       pkgs.ripgrep
       pkgs.tree
       pkgs.watch
@@ -82,8 +83,14 @@
   programs.fzf = {
     enable = true;
     changeDirWidgetCommand = "fd --type d";
+    changeDirWidgetOptions = ["--preview 'tree -C {} | head -200'"];
     defaultCommand = "fd --type f";
     fileWidgetCommand = "fd --type f";
+    fileWidgetOptions = ["--preview 'bat -f --style=numbers {}'"];
+    tmux = {
+      enableShellIntegration = true;
+      shellIntegrationOptions = ["-p 80%"];
+    };
   };
 
   programs.git = {
@@ -159,12 +166,19 @@
           normal = "block";
           select = "underline";
         };
+        file-picker = {
+          hidden = false;
+        };
         line-number = "relative";
-        lsp.display-messages = true;
+        lsp.display-messages = false;
         mouse = false;
+        whitespace = {
+          render = "all";
+        };
       };
       keys.normal = {
         space.space = "file_picker";
+        semicolon = "repeat_last_motion";
       };
     };
   };
@@ -258,7 +272,7 @@
     keyMode = "vi";
     newSession = true;
     terminal = "screen-256color";
-    extraConfig = lib.strings.fileContents ../../.tmux.conf;
+    extraConfig = lib.strings.fileContents ../tmux/tmux.conf;
   };
 
   # environment.pathsToLink = [ "/share/zsh" ] for completions
