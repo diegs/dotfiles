@@ -153,13 +153,13 @@
   programs.go = {
     enable = true;
     goPath = "src/go";
-    package = pkgs.go_1_17;
+    package = pkgs.go_1_18;
   };
 
   programs.helix  = {
     enable = true;
     settings = {
-      theme = "monokai_pro_spectrum";
+      theme = "diegs";
       editor = {
         cursor-shape = {
           insert = "bar";
@@ -272,11 +272,14 @@
     enable = true;
     baseIndex = 1;
     clock24 = true;
+    customPaneNavigationAndResize = true;
     escapeTime = 20;
+    extraConfig = lib.strings.fileContents ../tmux/tmux.conf;
     keyMode = "vi";
     newSession = true;
-    terminal = "screen-256color";
-    extraConfig = lib.strings.fileContents ../tmux/tmux.conf;
+    prefix = "`";
+    sensibleOnTop = true;
+    terminal = "tmux-256color";
   };
 
   # environment.pathsToLink = [ "/share/zsh" ] for completions
