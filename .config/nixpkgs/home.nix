@@ -290,12 +290,6 @@
       if [ -e ~/.nix-profile/etc/profile.d/nix.sh ]; then
         . ~/.nix-profile/etc/profile.d/nix.sh
       fi
-
-      # Base16 Shell
-      BASE16_SHELL="$HOME/.config/base16-shell/"
-      [ -n "$PS1" ] && \
-      [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
-        eval "$("$BASE16_SHELL/profile_helper.sh")"
     '';
     profileExtra = ''
       # Nix
@@ -303,6 +297,16 @@
       . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
       fi
       # End Nix
+
+      # https://gpanders.com/blog/the-definitive-guide-to-using-tmux-256color-on-macos/
+      if [ -d "$HOME/.local/share/terminfo" ]; then
+        export TERMINFO_DIRS=$TERMINFO_DIRS:$HOME/.local/share/terminfo
+      fi
+
+      # Homebrew
+      if [ -e '/opt/homebrew/bin/brew' ]; then
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+      fi
 
       if [ -f ~/.zlocal ]; then
         . ~/.zlocal
