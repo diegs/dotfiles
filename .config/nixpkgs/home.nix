@@ -3,6 +3,7 @@
 {
   nixpkgs = {
     config = {
+      allowUnfree = true;
       allowUnsupportedSystem = true;
     };
     overlays = [ ];
@@ -23,7 +24,9 @@
       pkgs.hexyl
       pkgs.procs
       pkgs.ranger
+      # pkgs.redpanda
       pkgs.ripgrep
+      pkgs.spr
       pkgs.tree
       pkgs.watch
 
@@ -33,11 +36,14 @@
       # pkgs.nix-prefetch-git
 
       # go
-      # pkgs.golangci-lint
+      pkgs.golangci-lint
       # pkgs.gofumpt
       pkgs.gopls
       # pkgs.gotags
       pkgs.gotools
+      
+      # protobuf
+      # pkgs.buf
 
       # python
       pkgs.pyright
@@ -87,10 +93,6 @@
     defaultCommand = "fd --type f";
     fileWidgetCommand = "fd --type f";
     fileWidgetOptions = ["--preview 'bat -f --style=numbers {}'"];
-    tmux = {
-      enableShellIntegration = true;
-      shellIntegrationOptions = ["-p 80%"];
-    };
   };
 
   programs.git = {
@@ -159,8 +161,10 @@
   programs.helix  = {
     enable = true;
     settings = {
-      theme = "diegs";
+      theme = "catppuccin_macchiato";
       editor = {
+        color-modes = true;
+        cursorline = true;
         cursor-shape = {
           insert = "bar";
           normal = "block";
@@ -169,8 +173,10 @@
         file-picker = {
           hidden = false;
         };
+        indent-guides = {
+          render = true;
+        };
         line-number = "relative";
-        lsp.display-messages = false;
         mouse = false;
         whitespace = {
           render = {
@@ -181,8 +187,8 @@
         };
       };
       keys.normal = {
-        space.space = "file_picker";
-        semicolon = "repeat_last_motion";
+        # space.space = "file_picker";
+        ";" = "repeat_last_motion";
       };
     };
   };
@@ -196,15 +202,15 @@
   };
 
   programs.java = {
-    enable = true;
+    enable = false;
   };
 
   programs.jq = {
     enable = true;
   };
 
-  home.file.".config/kitty/kitty.conf" = {
-    source = ../kitty/kitty.conf;
+  home.file.".config/kitty" = {
+    source = ../kitty;
   };
 
   programs.lesspipe = {
@@ -240,11 +246,6 @@
         truncate_to_repo = false;
         truncation_length = 20;
       };
-      env_var = {
-        format = "[$env_value]($style) ";
-        style = "yellow";
-        variable = "AWS_OKTA_PROFILE";
-      };
       git_branch = {
         format = "[$symbol$branch]($style) ";
         symbol = "";
@@ -268,24 +269,11 @@
     enable = true;
   };
 
-  programs.tmux = {
-    enable = true;
-    baseIndex = 1;
-    clock24 = true;
-    customPaneNavigationAndResize = true;
-    escapeTime = 20;
-    extraConfig = lib.strings.fileContents ../tmux/tmux.conf;
-    keyMode = "vi";
-    newSession = true;
-    prefix = "`";
-    sensibleOnTop = true;
-    terminal = "tmux-256color";
-  };
-
-  # environment.pathsToLink = [ "/share/zsh" ] for completions
+  # environment.pathsToLink = [ "/share/zsh" ]; # for completions
   programs.zsh = {
     enable = true;
     defaultKeymap = "viins";
+    dotDir = ".config/zsh";
     initExtra = ''
       if [ -e ~/.nix-profile/etc/profile.d/nix.sh ]; then
         . ~/.nix-profile/etc/profile.d/nix.sh
@@ -298,11 +286,6 @@
       fi
       # End Nix
 
-      # https://gpanders.com/blog/the-definitive-guide-to-using-tmux-256color-on-macos/
-      if [ -d "$HOME/.local/share/terminfo" ]; then
-        export TERMINFO_DIRS=$TERMINFO_DIRS:$HOME/.local/share/terminfo
-      fi
-
       # Homebrew
       if [ -e '/opt/homebrew/bin/brew' ]; then
         eval "$(/opt/homebrew/bin/brew shellenv)"
@@ -313,9 +296,8 @@
       fi
     '';
     shellAliases = {
-      tm = "tmux a";
       cat = "bat";
-      upgrade-nix = "sudo -i sh -c \"nix-channel --update && nix-env -u && nix-collect-garbage -d && launchctl remove org.nixos.nix-daemon && sleep 3 && launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist\"";
+      upgrade-nix = "sudo -i sh -c \"nix-channel --update && nix-env -u && launchctl remove org.nixos.nix-daemon && sleep 3 && launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist\"";
     };
   };
 }
