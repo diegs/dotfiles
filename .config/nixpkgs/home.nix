@@ -43,7 +43,7 @@
       pkgs.gotools
       
       # protobuf
-      # pkgs.buf
+      pkgs.buf
 
       # python
       pkgs.pyright
@@ -62,6 +62,9 @@
 
   programs.bat = {
     enable = true;
+    config = {
+      theme = "base16";
+    };
   };
 
   programs.direnv = {
@@ -135,13 +138,19 @@
       "*.lisp  diff=lisp"
       "*.el    diff=lisp"
     ];
-    delta = {
+    difftastic = {
       enable = true;
     };
+    # delta = {
+    #   enable = true;
+    #   options = {
+    #     syntax-theme = "base16";
+    #   };
+    # };
     extraConfig = {
       advice = { addIgnoredFile = false; };
       fetch = { prune = true; tags = true; };
-      init = { defaultBranch = "main"; templateDir = "~/.git-template"; };
+      init = { defaultBranch = "main"; };
       pull = { rebase = true; };
       push = { default = "current"; };
       url."git@github.com:".insteadOf = "https://github.com/";
@@ -161,7 +170,7 @@
   programs.helix  = {
     enable = true;
     settings = {
-      theme = "catppuccin_macchiato";
+      theme = "sonokai";
       editor = {
         color-modes = true;
         cursorline = true;
@@ -238,6 +247,9 @@
       battery = {
         disabled = true;
       };
+      buf = {
+        disabled = true;
+      };
       cmd_duration = {
         disabled = true;
       };
@@ -274,6 +286,8 @@
     enable = true;
     defaultKeymap = "viins";
     dotDir = ".config/zsh";
+    enableSyntaxHighlighting = true;
+    enableVteIntegration = true;
     initExtra = ''
       if [ -e ~/.nix-profile/etc/profile.d/nix.sh ]; then
         . ~/.nix-profile/etc/profile.d/nix.sh
@@ -295,6 +309,10 @@
         . ~/.zlocal
       fi
     '';
+    sessionVariables = {
+      DFT_DISPLAY = "side-by-side-show-both";
+      DFT_TAB_WIDTH = 2;
+    };
     shellAliases = {
       cat = "bat";
       upgrade-nix = "sudo -i sh -c \"nix-channel --update && nix-env -u && launchctl remove org.nixos.nix-daemon && sleep 3 && launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist\"";
