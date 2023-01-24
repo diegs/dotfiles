@@ -9,6 +9,8 @@
     overlays = [ ];
   };
 
+  manual.manpages.enable = true;
+
   home = {
     extraOutputsToInstall = [ "man" ];
     language = { base = "en_US.UTF-8"; };
@@ -19,27 +21,30 @@
       pkgs.bottom
       pkgs.cachix
       pkgs.ctags
+      pkgs.delta
+      pkgs.du-dust
       pkgs.fd
       pkgs.graphviz
       pkgs.hexyl
       pkgs.procs
-      pkgs.ranger
-      # pkgs.redpanda
       pkgs.ripgrep
+      pkgs.sd
       pkgs.spr
       pkgs.tree
       pkgs.watch
-
+      
       # haskell
       # pkgs.cabal-install
       # pkgs.cabal2nix
       # pkgs.nix-prefetch-git
+      
+      # kafka
+      pkgs.kafkactl
+      # pkgs.redpanda
 
       # go
       pkgs.golangci-lint
-      # pkgs.gofumpt
       pkgs.gopls
-      # pkgs.gotags
       pkgs.gotools
       
       # protobuf
@@ -49,6 +54,7 @@
       pkgs.pyright
 
       # rust
+      # pkgs.rustup
       pkgs.cargo
       pkgs.rust-analyzer
       pkgs.rustc
@@ -62,9 +68,6 @@
 
   programs.bat = {
     enable = true;
-    config = {
-      theme = "base16";
-    };
   };
 
   programs.direnv = {
@@ -108,51 +111,22 @@
       co = "checkout";
       cp = "cherry-pick";
       st = "status";
+      l = "!f() {\n git log --ext-diff $@ \n}; f";
+      sh = "!f() {\n git show --ext-diff $@ \n}; f";
     };
-    attributes = [
-      # https://gist.github.com/tekin/12500956bd56784728e490d8cef9cb81
-      "*.c     diff=cpp"
-      "*.h     diff=cpp"
-      "*.c++   diff=cpp"
-      "*.h++   diff=cpp"
-      "*.cpp   diff=cpp"
-      "*.hpp   diff=cpp"
-      "*.cc    diff=cpp"
-      "*.hh    diff=cpp"
-      "*.m     diff=objc"
-      "*.mm    diff=objc"
-      "*.cs    diff=csharp"
-      "*.css   diff=css"
-      "*.html  diff=html"
-      "*.xhtml diff=html"
-      "*.ex    diff=elixir"
-      "*.exs   diff=elixir"
-      "*.go    diff=golang"
-      "*.php   diff=php"
-      "*.pl    diff=perl"
-      "*.py    diff=python"
-      "*.md    diff=markdown"
-      "*.rb    diff=ruby"
-      "*.rake  diff=ruby"
-      "*.rs    diff=rust"
-      "*.lisp  diff=lisp"
-      "*.el    diff=lisp"
-    ];
-    difftastic = {
+    delta = {
       enable = true;
+      options = {
+        features = "decorations";
+        light = true;
+      };
     };
-    # delta = {
-    #   enable = true;
-    #   options = {
-    #     syntax-theme = "base16";
-    #   };
-    # };
     extraConfig = {
       advice = { addIgnoredFile = false; };
       fetch = { prune = true; tags = true; };
       init = { defaultBranch = "main"; };
       pull = { rebase = true; };
-      push = { default = "current"; };
+      push = { default = "current"; autoSetupRemote = true; };
       url."git@github.com:".insteadOf = "https://github.com/";
     };
     ignores = [
@@ -164,13 +138,13 @@
   programs.go = {
     enable = true;
     goPath = "src/go";
-    package = pkgs.go_1_18;
+    package = pkgs.go_1_19;
   };
 
   programs.helix  = {
     enable = true;
     settings = {
-      theme = "sonokai";
+      theme = "edge_light";
       editor = {
         color-modes = true;
         cursorline = true;
@@ -218,8 +192,8 @@
     enable = true;
   };
 
-  home.file.".config/kitty" = {
-    source = ../kitty;
+  home.file.".config/kitty/kitty.conf" = {
+    source = ../kitty/kitty.conf;
   };
 
   programs.lesspipe = {
@@ -281,7 +255,6 @@
     enable = true;
   };
 
-  # environment.pathsToLink = [ "/share/zsh" ]; # for completions
   programs.zsh = {
     enable = true;
     defaultKeymap = "viins";
@@ -291,6 +264,11 @@
     initExtra = ''
       if [ -e ~/.nix-profile/etc/profile.d/nix.sh ]; then
         . ~/.nix-profile/etc/profile.d/nix.sh
+      fi
+      
+      # Local
+      if [ -f ~/.zshrc_local ]; then
+        . ~/.zshrc_local
       fi
     '';
     profileExtra = ''
@@ -305,16 +283,20 @@
         eval "$(/opt/homebrew/bin/brew shellenv)"
       fi
 
-      if [ -f ~/.zlocal ]; then
-        . ~/.zlocal
+      # Local
+      if [ -f ~/.zprofile_local ]; then
+        . ~/.zprofile_local
       fi
     '';
     sessionVariables = {
-      DFT_DISPLAY = "side-by-side-show-both";
-      DFT_TAB_WIDTH = 2;
+      # DFT_DISPLAY = "side-by-side-show-both";
+      # DFT_TAB_WIDTH = 2;
     };
     shellAliases = {
       cat = "bat";
+      du = "dust";
+      diff = "delta";
+      ps = "procs";
       upgrade-nix = "sudo -i sh -c \"nix-channel --update && nix-env -u && launchctl remove org.nixos.nix-daemon && sleep 3 && launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist\"";
     };
   };
