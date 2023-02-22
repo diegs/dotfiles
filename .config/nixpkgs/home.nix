@@ -1,5 +1,4 @@
 { config, pkgs, lib, ... }:
-
 {
   nixpkgs = {
     config = {
@@ -17,7 +16,6 @@
     stateVersion = "18.09";
     packages = [
       # util
-      # pkgs.awscli2
       pkgs.bottom
       pkgs.cachix
       pkgs.ctags
@@ -32,20 +30,47 @@
       pkgs.spr
       pkgs.tree
       pkgs.watch
+
+      # build
+      pkgs.bazelisk
+
+      # c++
+      pkgs.clang-tools
+      pkgs.cmake
+      pkgs.jemalloc
+      pkgs.gmp
+      pkgs.prometheus-cpp
+      pkgs.rdkafka
+
+
+      # sysadmin
+      pkgs.ansible
+      pkgs.awscli2
+      pkgs.kafkactl
+      pkgs.mysql-client
+      pkgs.nomad
+      pkgs.redpanda
       
       # haskell
       # pkgs.cabal-install
       # pkgs.cabal2nix
       # pkgs.nix-prefetch-git
       
-      # kafka
-      pkgs.kafkactl
-      # pkgs.redpanda
+      # java
+      pkgs.jdt-language-server
+      pkgs.gradle
+      pkgs.maven
+
+      # scala
+      pkgs.scala
+      pkgs.metals
 
       # go
       pkgs.golangci-lint
       pkgs.gopls
       pkgs.gotools
+      pkgs.grpcurl
+      pkgs.grpcui
       
       # protobuf
       pkgs.buf
@@ -68,6 +93,9 @@
 
   programs.bat = {
     enable = true;
+    config = {
+      theme = "ansi";
+    };
   };
 
   programs.direnv = {
@@ -143,6 +171,24 @@
 
   programs.helix  = {
     enable = true;
+    languages = [
+      {
+        name = "java";
+        indent = { tab-width = 2; unit = "  "; };
+        language-server = {
+          # command = "jdt-language-server";
+          command = "jdtls";
+          args = [
+            "-configuration" "/Users/diegs/.cache/jdtls/config"
+            "-data" "/Users/diegs/.cache/jdtls/workspace"
+          ];
+        };
+      }
+      {
+        name = "go";
+        indent = { tab-width = 2; unit = "\t"; };
+      }
+    ];
     settings = {
       theme = "edge_light";
       editor = {
@@ -160,6 +206,9 @@
           render = true;
         };
         line-number = "relative";
+        lsp = {
+          display-messages = true;
+        };
         mouse = false;
         whitespace = {
           render = {
@@ -185,15 +234,41 @@
   };
 
   programs.java = {
-    enable = false;
+    enable = true;
+    package = pkgs.jdk11_headless; 
   };
 
   programs.jq = {
     enable = true;
   };
 
-  home.file.".config/kitty/kitty.conf" = {
-    source = ../kitty/kitty.conf;
+  programs.kitty = {
+    enable = true;
+    font = {
+      name = "Berkeley Mono";
+      size = 13;
+    };
+    keybindings = {
+      "cmd+t" = "new_tab_with_cwd";
+      "cmd+ctrl+shift+[" = "move_tab_backward";
+      "cmd+ctrl+shift+]" = "move_tab_forward";
+    };
+    settings = {
+      disable_ligatures = "cursor";
+      macos_option_as_alt = "left";
+      term = "xterm-256color";
+      resize_in_steps = true;
+      tab_title_template = "\" {fmt.fg.red}{bell_symbol}{activity_symbol}{fmt.fg.tab}{title} \"";
+      tab_separator = "\" \"";
+      tab_bar_style = "separator";
+      active_tab_foreground = "#fafafa";
+      active_tab_background = "#0184bc";
+      active_tab_font_style = "bold";
+      inactive_tab_foreground = "#383a42";
+      inactive_tab_background = "#dadada";
+      inactive_tab_font_style = "normal";
+    };
+    extraConfig = builtins.readFile ../kitty/themes/edge-light.theme.conf;
   };
 
   programs.lesspipe = {
@@ -216,7 +291,7 @@
     enable = true;
     settings = {
       aws = {
-        symbol = "";
+        disabled = true;
       };
       battery = {
         disabled = true;
@@ -237,6 +312,9 @@
         symbol = "";
       };
       golang = {
+        disabled = true;
+      };
+      java = {
         disabled = true;
       };
       nodejs = {
@@ -271,6 +349,9 @@
         . ~/.zshrc_local
       fi
     '';
+    initExtraBeforeCompInit = ''
+      fpath+=(/opt/homebrew/share/zsh/site-functions)
+    '';
     profileExtra = ''
       # Nix
       if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
@@ -296,7 +377,6 @@
       cat = "bat";
       du = "dust";
       diff = "delta";
-      ps = "procs";
       upgrade-nix = "sudo -i sh -c \"nix-channel --update && nix-env -u && launchctl remove org.nixos.nix-daemon && sleep 3 && launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist\"";
     };
   };
