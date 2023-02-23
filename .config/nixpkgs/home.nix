@@ -17,38 +17,39 @@
     packages = [
       # util
       pkgs.bottom
-      pkgs.cachix
-      pkgs.ctags
       pkgs.delta
       pkgs.du-dust
       pkgs.fd
+      pkgs.nodePackages.graphite-cli
       pkgs.graphviz
       pkgs.hexyl
       pkgs.procs
       pkgs.ripgrep
       pkgs.sd
-      pkgs.spr
       pkgs.tree
       pkgs.watch
 
-      # build
+      # tooling
       pkgs.bazelisk
+      pkgs.cachix
 
       # c++
-      pkgs.clang-tools
-      pkgs.cmake
-      pkgs.jemalloc
-      pkgs.gmp
-      pkgs.prometheus-cpp
-      pkgs.rdkafka
-
+      # pkgs.clang-tools
+      # pkgs.cmake
+      # pkgs.jemalloc
+      # pkgs.gmp
+      # pkgs.prometheus-cpp
+      # pkgs.rdkafka
 
       # sysadmin
       pkgs.ansible
       pkgs.awscli2
+      pkgs.nomad
+      pkgs.nomad-pack
+
+      # data
       pkgs.kafkactl
       pkgs.mysql-client
-      pkgs.nomad
       pkgs.redpanda
       
       # haskell
@@ -74,6 +75,7 @@
       
       # protobuf
       pkgs.buf
+      pkgs.protobuf
 
       # python
       pkgs.pyright
@@ -165,8 +167,8 @@
 
   programs.go = {
     enable = true;
-    goPath = "src/go";
-    package = pkgs.go_1_19;
+    goPath = ".go";
+    package = pkgs.go;
   };
 
   programs.helix  = {
@@ -176,8 +178,8 @@
         name = "java";
         indent = { tab-width = 2; unit = "  "; };
         language-server = {
-          # command = "jdt-language-server";
-          command = "jdtls";
+          # command = "/Users/diegs/src/java-language-server/dist/lang_server_mac.sh";
+          command = "jdt-language-server";
           args = [
             "-configuration" "/Users/diegs/.cache/jdtls/config"
             "-data" "/Users/diegs/.cache/jdtls/workspace"
@@ -219,7 +221,6 @@
         };
       };
       keys.normal = {
-        # space.space = "file_picker";
         ";" = "repeat_last_motion";
       };
     };
@@ -236,6 +237,7 @@
   programs.java = {
     enable = true;
     package = pkgs.jdk11_headless; 
+    # package = pkgs.jdk_headless; 
   };
 
   programs.jq = {
@@ -256,6 +258,7 @@
     settings = {
       disable_ligatures = "cursor";
       macos_option_as_alt = "left";
+      enable_audio_bell = false;
       term = "xterm-256color";
       resize_in_steps = true;
       tab_title_template = "\" {fmt.fg.red}{bell_symbol}{activity_symbol}{fmt.fg.tab}{title} \"";
@@ -336,37 +339,21 @@
   programs.zsh = {
     enable = true;
     defaultKeymap = "viins";
-    dotDir = ".config/zsh";
     enableSyntaxHighlighting = true;
     enableVteIntegration = true;
     initExtra = ''
       if [ -e ~/.nix-profile/etc/profile.d/nix.sh ]; then
         . ~/.nix-profile/etc/profile.d/nix.sh
       fi
-      
-      # Local
-      if [ -f ~/.zshrc_local ]; then
-        . ~/.zshrc_local
-      fi
-    '';
-    initExtraBeforeCompInit = ''
-      fpath+=(/opt/homebrew/share/zsh/site-functions)
     '';
     profileExtra = ''
-      # Nix
       if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
       . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
       fi
-      # End Nix
-
-      # Homebrew
-      if [ -e '/opt/homebrew/bin/brew' ]; then
-        eval "$(/opt/homebrew/bin/brew shellenv)"
-      fi
 
       # Local
-      if [ -f ~/.zprofile_local ]; then
-        . ~/.zprofile_local
+      if [ -f ~/.zlocal ]; then
+        . ~/.zlocal
       fi
     '';
     sessionVariables = {
