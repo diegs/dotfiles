@@ -148,7 +148,7 @@
       enable = true;
       options = {
         features = "decorations";
-        light = true;
+        light = false;
       };
     };
     extraConfig = {
@@ -192,7 +192,8 @@
       }
     ];
     settings = {
-      theme = "edge_light";
+      # theme = "edge_light";
+      theme = "edge_default";
       editor = {
         color-modes = true;
         cursorline = true;
@@ -248,7 +249,7 @@
     enable = true;
     font = {
       name = "Berkeley Mono";
-      size = 13;
+      size = 14;
     };
     keybindings = {
       "cmd+t" = "new_tab_with_cwd";
@@ -270,8 +271,12 @@
       inactive_tab_foreground = "#383a42";
       inactive_tab_background = "#dadada";
       inactive_tab_font_style = "normal";
+      include = "themes/edge-dark.theme.conf";
     };
-    extraConfig = builtins.readFile ../kitty/themes/edge-light.theme.conf;
+  };
+
+  home.file.".config/kitty/themes" = {
+    source = ../kitty/themes;
   };
 
   programs.lesspipe = {
