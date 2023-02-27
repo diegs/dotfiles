@@ -1,11 +1,17 @@
 { config, pkgs, lib, ... }:
-{
+let
+  stable = import <nixpkgs-stable> { config = config.nixpkgs.config; };
+in {
   nixpkgs = {
     config = {
       allowUnfree = true;
       allowUnsupportedSystem = true;
     };
-    overlays = [ ];
+    overlays = [ 
+      (self: super: {
+        awscli2 = stable.awscli2;
+      })
+    ];
   };
 
   manual.manpages.enable = true;
