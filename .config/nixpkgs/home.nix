@@ -350,32 +350,14 @@ in {
   programs.zsh = {
     enable = true;
     defaultKeymap = "viins";
+    dotDir = ".config/zsh";
     enableSyntaxHighlighting = true;
     enableVteIntegration = true;
-    initExtra = ''
-      if [ -e ~/.nix-profile/etc/profile.d/nix.sh ]; then
-        . ~/.nix-profile/etc/profile.d/nix.sh
-      fi
-    '';
     profileExtra = ''
-      if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
-      . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
-      fi
-
       # Local
       if [ -f ~/.zlocal ]; then
         . ~/.zlocal
       fi
     '';
-    sessionVariables = {
-      # DFT_DISPLAY = "side-by-side-show-both";
-      # DFT_TAB_WIDTH = 2;
-    };
-    shellAliases = {
-      cat = "bat";
-      du = "dust";
-      diff = "delta";
-      upgrade-nix = "sudo -i sh -c \"nix-channel --update && nix-env -u && launchctl remove org.nixos.nix-daemon && sleep 3 && launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist\"";
-    };
   };
 }
