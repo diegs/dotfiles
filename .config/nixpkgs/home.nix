@@ -19,7 +19,9 @@ in {
   home = {
     extraOutputsToInstall = [ "man" ];
     language = { base = "en_US.UTF-8"; };
-    stateVersion = "18.09";
+    homeDirectory = "/Users/diegs";
+    username = "diegs";
+    stateVersion = "23.05";
     packages = [
       # util
       pkgs.bottom
@@ -345,8 +347,11 @@ in {
   programs.zsh = {
     enable = true;
     defaultKeymap = "viins";
-    dotDir = ".config/zsh";
     enableSyntaxHighlighting = true;
+    history = {
+      expireDuplicatesFirst = true;
+      save = 100000;
+    };
     profileExtra = ''
       # Local
       if [ -f ~/.zlocal ]; then
