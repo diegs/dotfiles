@@ -23,6 +23,7 @@ in {
     packages = [
       # util
       pkgs.bottom
+      pkgs.bashInteractive
       pkgs.delta
       pkgs.du-dust
       pkgs.fd
@@ -141,15 +142,6 @@ in {
     enable = true;
     userName = "Diego Pontoriero";
     userEmail = "74719+diegs@users.noreply.github.com";
-    aliases = {
-      br = "branch";
-      ci = "commit";
-      co = "checkout";
-      cp = "cherry-pick";
-      st = "status";
-      l = "!f() {\n git log --ext-diff $@ \n}; f";
-      sh = "!f() {\n git show --ext-diff $@ \n}; f";
-    };
     delta = {
       enable = true;
       options = {
@@ -263,6 +255,7 @@ in {
       "cmd+ctrl+shift+]" = "move_tab_forward";
     };
     settings = {
+      shell_integration = true;
       disable_ligatures = "cursor";
       macos_option_as_alt = "left";
       enable_audio_bell = false;
@@ -298,6 +291,8 @@ in {
     enable = true;
     variables = {
       editing-mode = "vi";
+      show-all-if-ambiguous = true;
+      page-completions = false;
     };
   };
 
@@ -352,7 +347,6 @@ in {
     defaultKeymap = "viins";
     dotDir = ".config/zsh";
     enableSyntaxHighlighting = true;
-    enableVteIntegration = true;
     profileExtra = ''
       # Local
       if [ -f ~/.zlocal ]; then
