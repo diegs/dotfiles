@@ -9,7 +9,7 @@ in {
     };
     overlays = [ 
       (self: super: {
-        awscli2 = stable.awscli2;
+        # awscli2 = stable.awscli2;
       })
     ];
   };
@@ -24,27 +24,28 @@ in {
     stateVersion = "23.05";
     packages = [
       # util
-      pkgs.bottom
-      pkgs.bashInteractive
-      pkgs.delta
+      stable.buildah
+      stable.graphviz
+      stable.tree
+      stable.watch
+
+      # rust alternates
+      # pkgs.delta
       pkgs.du-dust
       pkgs.fd
-      pkgs.nodePackages.graphite-cli
-      pkgs.graphviz
       pkgs.hexyl
       pkgs.procs
       pkgs.ripgrep
       pkgs.sd
-      pkgs.tree
-      pkgs.watch
 
-      # tooling
+      # dev tools
       pkgs.bazelisk
       pkgs.cachix
+      pkgs.nodePackages.graphite-cli
 
       # c++
       # pkgs.clang-tools
-      # pkgs.cmake
+      pkgs.cmake
       # pkgs.jemalloc
       # pkgs.gmp
       # pkgs.prometheus-cpp
@@ -52,7 +53,7 @@ in {
 
       # sysadmin
       pkgs.ansible
-      pkgs.awscli2
+      stable.awscli2
       pkgs.nomad
       pkgs.nomad-pack
 
@@ -109,6 +110,15 @@ in {
     };
   };
 
+  programs.bottom = {
+    enable = true;
+    settings = {
+      flags = {
+        color = "default";  # default-light
+      };
+    };
+  };
+
   programs.direnv = {
     enable = true;
     nix-direnv = {
@@ -157,7 +167,7 @@ in {
       init = { defaultBranch = "main"; };
       pull = { rebase = true; };
       push = { default = "current"; autoSetupRemote = true; };
-      url."git@github.com:".insteadOf = "https://github.com/";
+      url."git@github.com:comitylabs".insteadOf = "https://github.com/comitylabs";
     };
     ignores = [
       ".envrc"
@@ -210,7 +220,7 @@ in {
         };
         line-number = "relative";
         lsp = {
-          display-messages = true;
+          display-messages = false;
         };
         mouse = false;
         whitespace = {
@@ -352,6 +362,11 @@ in {
       expireDuplicatesFirst = true;
       save = 100000;
     };
+    initExtra = ''
+      autoload -U edit-command-line
+      zle -N edit-command-line
+      bindkey -M vicmd v edit-command-line
+    '';
     profileExtra = ''
       # Local
       if [ -f ~/.zlocal ]; then
