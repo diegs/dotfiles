@@ -106,7 +106,15 @@ in {
   programs.bat = {
     enable = true;
     config = {
-      theme = "ansi";
+      theme = "terminal-ansi16";
+    };
+    themes = {
+      terminal-ansi16 = builtins.readFile (pkgs.fetchFromGitHub {
+        owner = "chtenb";
+        repo = "ansi16";
+        rev = "f8c8948008a5773a96bd736aa05cfff77fcfed71";
+        sha256 = "sha256-tgu6wjaDFB/hCaoXkJHat0H7Ps3xNfK9Obb+3HxBGzA=";
+      } + "/terminal-ansi16.tmTheme");
     };
   };
 
@@ -157,8 +165,12 @@ in {
     delta = {
       enable = true;
       options = {
-        features = "decorations";
-        light = false;
+        navigate = true;
+        syntax-theme = "terminal-ansi16";
+        minus-style = "syntax 52";
+        minus-emph-style = "syntax 88";
+        plus-style = "syntax 22";
+        plus-emph-style = "syntax 28";
       };
     };
     extraConfig = {
@@ -172,6 +184,8 @@ in {
     ignores = [
       ".envrc"
       ".mypy_cache/"
+      "**/.settings/org.eclipse.*"
+      "**/.idea"
     ];
   };
 
@@ -188,7 +202,6 @@ in {
         name = "java";
         indent = { tab-width = 2; unit = "  "; };
         language-server = {
-          # command = "/Users/diegs/src/java-language-server/dist/lang_server_mac.sh";
           command = "jdt-language-server";
           args = [
             "-configuration" "/Users/diegs/.cache/jdtls/config"
@@ -202,8 +215,7 @@ in {
       }
     ];
     settings = {
-      # theme = "edge_light";
-      theme = "edge_default";
+      theme = "catppuccin_latte";
       editor = {
         color-modes = true;
         cursorline = true;
@@ -248,46 +260,10 @@ in {
   programs.java = {
     enable = true;
     package = pkgs.jdk11_headless; 
-    # package = pkgs.jdk_headless; 
   };
 
   programs.jq = {
     enable = true;
-  };
-
-  programs.kitty = {
-    enable = true;
-    font = {
-      name = "Berkeley Mono";
-      size = 14;
-    };
-    keybindings = {
-      "cmd+t" = "new_tab_with_cwd";
-      "cmd+ctrl+shift+[" = "move_tab_backward";
-      "cmd+ctrl+shift+]" = "move_tab_forward";
-    };
-    settings = {
-      shell_integration = true;
-      disable_ligatures = "cursor";
-      macos_option_as_alt = "left";
-      enable_audio_bell = false;
-      term = "xterm-256color";
-      resize_in_steps = true;
-      tab_title_template = "\" {fmt.fg.red}{bell_symbol}{activity_symbol}{fmt.fg.tab}{title} \"";
-      tab_separator = "\" \"";
-      tab_bar_style = "separator";
-      active_tab_foreground = "#fafafa";
-      active_tab_background = "#0184bc";
-      active_tab_font_style = "bold";
-      inactive_tab_foreground = "#383a42";
-      inactive_tab_background = "#dadada";
-      inactive_tab_font_style = "normal";
-      include = "themes/edge-dark.theme.conf";
-    };
-  };
-
-  home.file.".config/kitty/themes" = {
-    source = ../kitty/themes;
   };
 
   programs.lesspipe = {
@@ -354,6 +330,31 @@ in {
     enable = true;
   };
 
+  programs.wezterm = {
+    enable = true;
+    extraConfig = ''
+      function scheme_for_appearance(appearance)
+        if appearance:find "Dark" then
+          return "Catppuccin Frappe"
+        else
+          return "Catppuccin Latte"
+        end
+      end
+
+      return {
+        font = wezterm.font("Berkeley Mono"),
+        font_size = 14.0,
+        color_scheme = scheme_for_appearance(wezterm.gui.get_appearance()),
+        hide_tab_bar_if_only_one_tab = false,
+        use_fancy_tab_bar = false;
+        tab_bar_at_bottom = true;
+        keys = {
+          {key="n", mods="SHIFT|CTRL", action="ToggleFullScreen"},
+        }
+      }
+    '';
+  };
+
   programs.zsh = {
     enable = true;
     defaultKeymap = "viins";
@@ -373,5 +374,8 @@ in {
         . ~/.zlocal
       fi
     '';
+    shellAliases = {
+      ssh = "TERM=xterm-256color ssh";
+    };
   };
 }
