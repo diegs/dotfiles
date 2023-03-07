@@ -215,7 +215,7 @@ in {
       }
     ];
     settings = {
-      theme = "catppuccin_latte";
+      theme = "current";
       editor = {
         color-modes = true;
         cursorline = true;
@@ -247,6 +247,18 @@ in {
         ";" = "repeat_last_motion";
       };
     };
+  };
+
+  home.file.".config/helix/themes/dark.toml" = {
+    source = "${pkgs.helix}/lib/runtime/themes/catppuccin_macchiato.toml";
+  };
+
+  home.file.".config/helix/themes/light.toml" = {
+    source = "${pkgs.helix}/lib/runtime/themes/catppuccin_latte.toml";
+  };
+
+  home.file.".config/helix/update-theme.sh" = {
+    source = ../helix/update-theme.sh;
   };
 
   programs.home-manager = {
@@ -334,8 +346,9 @@ in {
     enable = true;
     extraConfig = ''
       function scheme_for_appearance(appearance)
+        os.execute(os.getenv("HOME") .. "/.config/helix/update-theme.sh")
         if appearance:find "Dark" then
-          return "Catppuccin Frappe"
+          return "Catppuccin Macchiato"
         else
           return "Catppuccin Latte"
         end
@@ -359,6 +372,7 @@ in {
     enable = true;
     defaultKeymap = "viins";
     enableSyntaxHighlighting = true;
+    enableVteIntegration = false;
     history = {
       expireDuplicatesFirst = true;
       save = 100000;
