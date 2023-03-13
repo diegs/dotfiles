@@ -56,6 +56,7 @@ in {
       stable.awscli2
       pkgs.nomad
       pkgs.nomad-pack
+      pkgs.vault
 
       # data
       pkgs.kafkactl
