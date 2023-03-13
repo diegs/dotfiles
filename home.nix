@@ -1,18 +1,15 @@
-{ config, pkgs, lib, ... }:
-let
-  stable = import <nixpkgs-stable> { config = config.nixpkgs.config; };
-in {
-  nixpkgs = {
-    config = {
-      allowUnfree = true;
-      allowUnsupportedSystem = true;
-    };
-    overlays = [ 
-      (self: super: {
-        # awscli2 = stable.awscli2;
-      })
-    ];
-  };
+{ config, pkgs, pkgs-stable, lib,... }:
+{
+  # nixpkgs = {
+  #   config = {
+  #     allowUnfree = true;
+  #   };
+  #   overlays = [ 
+  #     (self: super: {
+  #       # awscli2 = pkgs-stable.awscli2;
+  #     })
+  #   ];
+  # };
 
   manual.manpages.enable = true;
 
@@ -25,10 +22,10 @@ in {
 
     packages = [
       # util
-      stable.buildah
-      stable.graphviz
-      stable.tree
-      stable.watch
+      pkgs-stable.buildah
+      pkgs-stable.graphviz
+      pkgs-stable.tree
+      pkgs-stable.watch
 
       # rust alternates
       # pkgs.delta
@@ -54,7 +51,7 @@ in {
 
       # sysadmin
       pkgs.ansible
-      stable.awscli2
+      pkgs-stable.awscli2
       pkgs.nomad
       pkgs.nomad-pack
       pkgs.vault
@@ -260,16 +257,16 @@ in {
   };
 
   home.file.".config/helix/update-theme.sh" = {
-    source = ../helix/update-theme.sh;
+    source = .config/helix/update-theme.sh;
   };
 
   programs.home-manager = {
     enable = true;
   };
 
-  home.file.".ignore" = {
-    source = ../../.ignore;
-  };
+  # home.file.".ignore" = {
+    # source = ".ignore";
+  # };
 
   programs.java = {
     enable = true;
