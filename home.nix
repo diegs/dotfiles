@@ -1,17 +1,6 @@
 { config, pkgs, pkgs-stable, lib,... }:
 {
-  # nixpkgs = {
-  #   config = {
-  #     allowUnfree = true;
-  #   };
-  #   overlays = [ 
-  #     (self: super: {
-  #       # awscli2 = pkgs-stable.awscli2;
-  #     })
-  #   ];
-  # };
-
-  manual.manpages.enable = true;
+  # manual.manpages.enable = true;
 
   home = {
     username = "diegs";
@@ -248,25 +237,38 @@
     };
   };
 
-  home.file.".config/helix/themes/dark.toml" = {
-    source = "${pkgs.helix}/lib/runtime/themes/catppuccin_macchiato.toml";
-  };
+  home.file = {
+    ".config/helix/update-theme.sh" = {
+      executable = true;
+      text = ''
+        #!/usr/bin/env bash
 
-  home.file.".config/helix/themes/light.toml" = {
-    source = "${pkgs.helix}/lib/runtime/themes/catppuccin_latte.toml";
-  };
+        set -eu -o pipefail
 
-  home.file.".config/helix/update-theme.sh" = {
-    source = .config/helix/update-theme.sh;
+        THEME=$(defaults read -g AppleInterfaceStyle || echo "Light")
+
+        if [[ "$THEME" == "Dark" ]]; then
+          ln -sf $''\{HOME}/.config/helix/themes/dark.toml $''\{HOME}/.config/helix/themes/current.toml
+        else
+          ln -sf $''\{HOME}/.config/helix/themes/light.toml $''\{HOME}/.config/helix/themes/current.toml
+        fi
+
+        pkill -SIGUSR1 hx
+      '';
+    };
+
+    ".config/helix/themes/dark.toml" = {
+      source = "${pkgs.helix}/lib/runtime/themes/catppuccin_macchiato.toml";
+    };
+
+    ".config/helix/themes/light.toml" = {
+      source = "${pkgs.helix}/lib/runtime/themes/catppuccin_latte.toml";
+    };
   };
 
   programs.home-manager = {
     enable = true;
   };
-
-  # home.file.".ignore" = {
-    # source = ".ignore";
-  # };
 
   programs.java = {
     enable = true;
