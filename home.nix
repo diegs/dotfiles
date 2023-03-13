@@ -1,13 +1,11 @@
-{ config, pkgs, pkgs-stable, lib,... }:
+{ pkgs, pkgs-stable, ... }:
 {
-  # manual.manpages.enable = true;
-
   home = {
     username = "diegs";
     homeDirectory = "/Users/diegs";
     stateVersion = "23.05";
-    language = { base = "en_US.UTF-8"; };
-    extraOutputsToInstall = [ "man" ];
+    # language = { base = "en_US.UTF-8"; };
+    # extraOutputsToInstall = [ "man" ];
 
     packages = [
       # util
