@@ -221,13 +221,13 @@
           display-messages = false;
         };
         mouse = false;
-        whitespace = {
-          render = {
-            space = "all";
-            tab = "all";
-            newline = "none";
-          };
-        };
+        # whitespace = {
+        #   render = {
+        #     space = "all";
+        #     tab = "all";
+        #     newline = "none";
+        #   };
+        # };
       };
       keys.normal = {
         ";" = "repeat_last_motion";
@@ -270,7 +270,7 @@
 
   programs.java = {
     enable = true;
-    package = pkgs.jdk11_headless; 
+    package = pkgs.jdk_headless; 
   };
 
   programs.jq = {
