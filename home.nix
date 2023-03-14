@@ -4,8 +4,6 @@
     username = "diegs";
     homeDirectory = "/Users/diegs";
     stateVersion = "23.05";
-    # language = { base = "en_US.UTF-8"; };
-    # extraOutputsToInstall = [ "man" ];
 
     packages = [
       # util
@@ -221,13 +219,6 @@
           display-messages = false;
         };
         mouse = false;
-        # whitespace = {
-        #   render = {
-        #     space = "all";
-        #     tab = "all";
-        #     newline = "none";
-        #   };
-        # };
       };
       keys.normal = {
         ";" = "repeat_last_motion";
