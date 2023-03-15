@@ -234,6 +234,11 @@
 
         set -eu -o pipefail
 
+        # DARK_THEME_PATH="${pkgs.helix}/lib/runtime/themes/catppuccin_macchiato.toml"
+        # LIGHT_THEME_PATH="${pkgs.helix}/lib/runtime/themes/catppuccin_latte.toml"
+        DARK_THEME_PATH="/Users/diegs/.config/helix/themes/edge_default.toml"
+        LIGHT_THEME_PATH="/Users/diegs/.config/helix/themes/edge_light.toml"
+
         THEME=$(defaults read -g AppleInterfaceStyle || echo "Light")
 
         if [[ "$THEME" == "Dark" ]]; then
@@ -246,13 +251,17 @@
       '';
     };
 
-    ".config/helix/themes/dark.toml" = {
-      source = "${pkgs.helix}/lib/runtime/themes/catppuccin_macchiato.toml";
+    ".config/helix/themes" = {
+      source = ./helix/themes;
     };
 
-    ".config/helix/themes/light.toml" = {
-      source = "${pkgs.helix}/lib/runtime/themes/catppuccin_latte.toml";
-    };
+    # ".config/helix/themes/dark.toml" = {
+    #   source = "${pkgs.helix}/lib/runtime/themes/catppuccin_macchiato.toml";
+    # };
+
+    # ".config/helix/themes/light.toml" = {
+    #   source = "${pkgs.helix}/lib/runtime/themes/catppuccin_latte.toml";
+    # };
   };
 
   programs.home-manager = {
@@ -338,9 +347,11 @@
       function scheme_for_appearance(appearance)
         os.execute(os.getenv("HOME") .. "/.config/helix/update-theme.sh")
         if appearance:find "Dark" then
-          return "Catppuccin Macchiato"
+          return "Edge Dark (base16)"
+          -- return "Catppuccin Macchiato"
         else
-          return "Catppuccin Latte"
+          return "Edge Light (base16)"
+          -- return "Catppuccin Latte"
         end
       end
 
