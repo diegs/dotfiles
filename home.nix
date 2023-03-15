@@ -352,8 +352,11 @@
         use_fancy_tab_bar = false,
         tab_bar_at_bottom = true,
         audible_bell = "Disabled",
+        initial_rows = 48,
+        initial_cols = 140,
         keys = {
-          {key="n", mods="SHIFT|CTRL", action="ToggleFullScreen"},
+          { key= "{", mods = "SHIFT|CTRL|CMD", action = wezterm.action.MoveTabRelative(-1) },
+          { key= "}", mods = "SHIFT|CTRL|CMD", action = wezterm.action.MoveTabRelative(1) },
         }
       }
     '';
@@ -369,6 +372,7 @@
       save = 100000;
     };
     initExtra = ''
+      source ${pkgs.wezterm}/etc/profile.d/wezterm.sh
       autoload -U edit-command-line
       zle -N edit-command-line
       bindkey -M vicmd v edit-command-line
