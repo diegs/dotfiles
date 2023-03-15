@@ -199,7 +199,7 @@
       }
     ];
     settings = {
-      theme = "current";
+      theme = "wezterm";
       editor = {
         color-modes = true;
         cursorline = true;
@@ -236,22 +236,22 @@
 
         # DARK_THEME_PATH="${pkgs.helix}/lib/runtime/themes/catppuccin_macchiato.toml"
         # LIGHT_THEME_PATH="${pkgs.helix}/lib/runtime/themes/catppuccin_latte.toml"
-        DARK_THEME_PATH="/Users/diegs/.config/helix/themes/edge_default.toml"
-        LIGHT_THEME_PATH="/Users/diegs/.config/helix/themes/edge_light.toml"
+        DARK_THEME_PATH="/Users/diegs/.config/helix/extra-themes/edge_default.toml"
+        LIGHT_THEME_PATH="/Users/diegs/.config/helix/extra-themes/edge_light.toml"
 
         THEME=$(defaults read -g AppleInterfaceStyle || echo "Light")
 
         if [[ "$THEME" == "Dark" ]]; then
-          ln -sf $''\{HOME}/.config/helix/themes/dark.toml $''\{HOME}/.config/helix/themes/current.toml
+          ln -sf $''\{DARK_THEME_PATH} $''\{HOME}/.config/helix/themes/wezterm.toml
         else
-          ln -sf $''\{HOME}/.config/helix/themes/light.toml $''\{HOME}/.config/helix/themes/current.toml
+          ln -sf $''\{LIGHT_THEME_PATH} $''\{HOME}/.config/helix/themes/wezterm.toml
         fi
 
         pkill -SIGUSR1 hx
       '';
     };
 
-    ".config/helix/themes" = {
+    ".config/helix/extra-themes" = {
       source = ./helix/themes;
     };
 
