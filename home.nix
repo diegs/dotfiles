@@ -1,8 +1,11 @@
 { pkgs, pkgs-stable, ... }:
-{
+let
+  username = "diegs";
+  homeDir = "/Users/${username}";
+in {
   home = {
-    username = "diegs";
-    homeDirectory = "/Users/diegs";
+    username = username;
+    homeDirectory = homeDir;
     stateVersion = "23.05";
 
     packages = [
@@ -188,8 +191,8 @@
         language-server = {
           command = "jdt-language-server";
           args = [
-            "-configuration" "/Users/diegs/.cache/jdtls/config"
-            "-data" "/Users/diegs/.cache/jdtls/workspace"
+            "-configuration" "${homeDir}/.cache/jdtls/config"
+            "-data" "${homeDir}/.cache/jdtls/workspace"
           ];
         };
       }
@@ -236,8 +239,8 @@
 
         # DARK_THEME_PATH="${pkgs.helix}/lib/runtime/themes/catppuccin_macchiato.toml"
         # LIGHT_THEME_PATH="${pkgs.helix}/lib/runtime/themes/catppuccin_latte.toml"
-        DARK_THEME_PATH="/Users/diegs/.config/helix/extra-themes/edge_default.toml"
-        LIGHT_THEME_PATH="/Users/diegs/.config/helix/extra-themes/edge_light.toml"
+        DARK_THEME_PATH="${homeDir}/.config/helix/extra-themes/edge_default.toml"
+        LIGHT_THEME_PATH="${homeDir}/.config/helix/extra-themes/edge_light.toml"
 
         THEME=$(defaults read -g AppleInterfaceStyle || echo "Light")
 
