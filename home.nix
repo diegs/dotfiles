@@ -16,7 +16,6 @@ in {
       pkgs-stable.watch
 
       # rust alternates
-      # pkgs.delta
       pkgs.du-dust
       pkgs.fd
       pkgs.hexyl
@@ -154,10 +153,10 @@ in {
       options = {
         navigate = true;
         syntax-theme = "terminal-ansi16";
-        minus-style = "syntax 52";
-        minus-emph-style = "syntax 88";
-        plus-style = "syntax 22";
-        plus-emph-style = "syntax 28";
+        minus-style = "reverse red";
+        minus-emph-style = "reverse bold red";
+        plus-style = "reverse green";
+        plus-emph-style = "reverse bold green";
       };
     };
     extraConfig = {
