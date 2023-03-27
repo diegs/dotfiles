@@ -82,6 +82,10 @@ in {
       pkgs.rust-analyzer
       pkgs.rustc
       pkgs.rustfmt
+
+      # blockchain
+      pkgs.nodePackages.ganache
+      pkgs.solc
     ];
     sessionVariables = {
       EDITOR = "hx";
