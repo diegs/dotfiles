@@ -10,10 +10,11 @@ in {
 
     packages = [
       # util
-      pkgs-stable.buildah
+      pkgs.buildah
       pkgs-stable.graphviz
       pkgs-stable.tree
       pkgs-stable.watch
+      pkgs.zk
 
       # rust alternates
       pkgs.du-dust
