@@ -366,6 +366,7 @@ in {
         font = wezterm.font("Berkeley Mono"),
         font_size = 14.0,
         color_scheme = scheme_for_appearance(wezterm.gui.get_appearance()),
+        quit_when_all_windows_are_closed = false,
         hide_tab_bar_if_only_one_tab = false,
         use_fancy_tab_bar = false,
         tab_bar_at_bottom = true,
