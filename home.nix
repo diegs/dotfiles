@@ -12,6 +12,7 @@ in {
       # util
       pkgs.buildah
       pkgs-stable.graphviz
+      pkgs.pure-prompt
       pkgs-stable.tree
       pkgs-stable.watch
       pkgs.zk
@@ -109,11 +110,18 @@ in {
     };
   };
 
+  programs.atuin = {
+    enable = true;
+    settings = {
+      update_check = false;
+    };
+  };
+
   programs.bottom = {
     enable = true;
     settings = {
       flags = {
-        color = "default";  # default-light
+        color = "default";
       };
     };
   };
@@ -138,15 +146,6 @@ in {
   programs.exa = {
     enable = true;
     enableAliases = true;
-  };
-
-  programs.fzf = {
-    enable = true;
-    changeDirWidgetCommand = "fd --type d";
-    changeDirWidgetOptions = ["--preview 'tree -C {} | head -200'"];
-    defaultCommand = "fd --type f";
-    fileWidgetCommand = "fd --type f";
-    fileWidgetOptions = ["--preview 'bat -f --style=numbers {}'"];
   };
 
   programs.git = {
@@ -302,48 +301,16 @@ in {
     };
   };
 
-  programs.starship = {
+  programs.skim = {
     enable = true;
-    settings = {
-      aws = {
-        disabled = true;
-      };
-      battery = {
-        disabled = true;
-      };
-      buf = {
-        disabled = true;
-      };
-      cmd_duration = {
-        disabled = true;
-      };
-      directory = {
-        style = "bold blue";
-        truncate_to_repo = false;
-        truncation_length = 20;
-      };
-      git_branch = {
-        format = "[$symbol$branch]($style) ";
-        symbol = "";
-      };
-      golang = {
-        disabled = true;
-      };
-      java = {
-        disabled = true;
-      };
-      nodejs = {
-        disabled = true;
-      };
-      python = {
-        disabled = true;
-      };
-      rust = {
-        disabled = true;
-      };
-    };
+    changeDirWidgetCommand = "fd --type d";
+    changeDirWidgetOptions = ["--preview 'tree -C {} | head -200'"];
+    defaultCommand = "fd --type f";
+    fileWidgetCommand = "fd --type f";
+    fileWidgetOptions = ["--preview 'bat -f --style=numbers {}'"];
+    historyWidgetOptions = [];
   };
-  
+
   programs.tealdeer = {
     enable = true;
   };
@@ -385,13 +352,19 @@ in {
     enable = true;
     defaultKeymap = "viins";
     enableSyntaxHighlighting = true;
-    enableVteIntegration = false;
-    history = {
-      expireDuplicatesFirst = true;
-      save = 100000;
-    };
+    # enableVteIntegration = false;
+    # history = {
+    #   expireDuplicatesFirst = true;
+    #   save = 100000;
+    # };
     initExtra = ''
       source ${pkgs.wezterm}/etc/profile.d/wezterm.sh
+
+      autoload -U promptinit; promptinit
+      zstyle :prompt:pure:git:stash show yes
+      zstyle :prompt:pure:prompt:success color green
+      prompt pure
+
       autoload -U edit-command-line
       zle -N edit-command-line
       bindkey -M vicmd v edit-command-line
@@ -402,8 +375,8 @@ in {
         . ~/.zlocal
       fi
     '';
-    shellAliases = {
-      ssh = "TERM=xterm-256color ssh";
-    };
+    # shellAliases = {
+    #   ssh = "TERM=xterm-256color ssh";
+    # };
   };
 }
