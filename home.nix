@@ -95,6 +95,13 @@ in {
     };
   };
 
+  programs.atuin = {
+    enable = true;
+    settings = {
+      update_check = false;
+    };
+  };
+
   programs.bat = {
     enable = true;
     config = {
@@ -107,13 +114,6 @@ in {
         rev = "f8c8948008a5773a96bd736aa05cfff77fcfed71";
         sha256 = "sha256-tgu6wjaDFB/hCaoXkJHat0H7Ps3xNfK9Obb+3HxBGzA=";
       } + "/terminal-ansi16.tmTheme");
-    };
-  };
-
-  programs.atuin = {
-    enable = true;
-    settings = {
-      update_check = false;
     };
   };
 
@@ -370,6 +370,12 @@ in {
       bindkey -M vicmd v edit-command-line
     '';
     profileExtra = ''
+      # Nix
+      if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+          . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+      fi
+      # End Nix
+
       # Local
       if [ -f ~/.zlocal ]; then
         . ~/.zlocal
