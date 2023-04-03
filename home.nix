@@ -98,6 +98,9 @@ in {
   programs.atuin = {
     enable = true;
     settings = {
+      inline_height = 40;
+      search_mode = "skim";
+      show_preview = true;
       update_check = false;
     };
   };
@@ -123,6 +126,13 @@ in {
       flags = {
         color = "default";
       };
+    };
+  };
+
+  programs.broot = {
+    enable = true;
+    settings = {
+      modal = true;
     };
   };
 
@@ -283,15 +293,6 @@ in {
     enable = true;
   };
 
-  programs.lesspipe = {
-    enable = true;
-  };
-
-  programs.man = {
-    enable = true;
-    generateCaches = true;
-  };
-
   programs.readline = {
     enable = true;
     variables = {
@@ -309,10 +310,6 @@ in {
     fileWidgetCommand = "fd --type f";
     fileWidgetOptions = ["--preview 'bat -f --style=numbers {}'"];
     historyWidgetOptions = [];
-  };
-
-  programs.tealdeer = {
-    enable = true;
   };
 
   programs.wezterm = {
