@@ -235,6 +235,12 @@ in {
           display-messages = false;
         };
         mouse = false;
+        soft-wrap = {
+          enable = true;
+        };
+        statusline = {
+          right = [ "version-control" "diagnostics" "selections" "position" "file-encoding" ];
+        };
       };
       keys.normal = {
         ";" = "repeat_last_motion";
