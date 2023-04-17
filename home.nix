@@ -10,6 +10,8 @@ in {
 
     packages = [
       # util
+      pkgs.asciinema
+      pkgs.asciinema-agg
       pkgs.buildah
       pkgs-stable.graphviz
       pkgs.pure-prompt
