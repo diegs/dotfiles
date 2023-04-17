@@ -29,14 +29,7 @@ in {
       pkgs.bazelisk
       pkgs.cachix
       pkgs.nodePackages.graphite-cli
-
-      # c++
-      # pkgs.clang-tools
-      pkgs.cmake
-      # pkgs.jemalloc
-      # pkgs.gmp
-      # pkgs.prometheus-cpp
-      # pkgs.rdkafka
+      pkgs.python3Packages.grip
 
       # sysadmin
       pkgs.ansible
@@ -98,9 +91,10 @@ in {
   programs.atuin = {
     enable = true;
     settings = {
-      inline_height = 40;
+      filter_mode_shell_up_key_binding = "session";
       search_mode = "skim";
       show_preview = true;
+      style = "compact";
       update_check = false;
     };
   };
@@ -232,7 +226,7 @@ in {
         };
         line-number = "relative";
         lsp = {
-          display-messages = false;
+          display-messages = true;
         };
         mouse = false;
         soft-wrap = {
@@ -353,6 +347,7 @@ in {
 
   programs.zsh = {
     enable = true;
+    enableAutosuggestions = true;
     defaultKeymap = "viins";
     enableSyntaxHighlighting = true;
     # enableVteIntegration = false;
