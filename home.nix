@@ -372,8 +372,12 @@ in {
       # zle -N edit-command-line
       # bindkey -M vicmd v edit-command-line
 
+      _zsh_autosuggest_strategy_atuin() {
+        suggestion=$(atuin search --limit 1 --search-mode prefix --filter-mode global --cmd-only $1)
+      }
+
       ZSH_AUTOSUGGEST_STRATEGY=(completion)
-      bindkey '^ ' autosuggest-accept
+      bindkey '^E' autosuggest-accept
     '';
     profileExtra = ''
       # Nix
