@@ -93,6 +93,11 @@ in {
   programs.atuin = {
     enable = true;
     settings = {
+      history_filter = [
+        "^cd "
+        "^ls$"
+        "^ll$"
+      ];
       filter_mode_shell_up_key_binding = "session";
       search_mode = "skim";
       show_preview = true;
@@ -227,9 +232,6 @@ in {
           render = true;
         };
         line-number = "relative";
-        lsp = {
-          display-messages = true;
-        };
         mouse = false;
         soft-wrap = {
           enable = true;
@@ -365,9 +367,13 @@ in {
       zstyle :prompt:pure:prompt:success color green
       prompt pure
 
-      autoload -U edit-command-line
-      zle -N edit-command-line
-      bindkey -M vicmd v edit-command-line
+      # Re-enable once hx can handle this
+      # autoload -U edit-command-line
+      # zle -N edit-command-line
+      # bindkey -M vicmd v edit-command-line
+
+      ZSH_AUTOSUGGEST_STRATEGY=(completion)
+      bindkey '^ ' autosuggest-accept
     '';
     profileExtra = ''
       # Nix
@@ -381,8 +387,5 @@ in {
         . ~/.zlocal
       fi
     '';
-    # shellAliases = {
-    #   ssh = "TERM=xterm-256color ssh";
-    # };
   };
 }
