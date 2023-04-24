@@ -17,6 +17,7 @@ in {
       pkgs.pure-prompt
       pkgs-stable.tree
       pkgs-stable.watch
+      pkgs.zsh-nix-shell
       pkgs.zk
 
       # rust alternates
@@ -30,6 +31,7 @@ in {
       # dev tools
       pkgs.bazelisk
       pkgs.cachix
+      pkgs.cmake
       pkgs.nodePackages.graphite-cli
       pkgs.python3Packages.grip
 
@@ -180,7 +182,7 @@ in {
       init = { defaultBranch = "main"; };
       pull = { rebase = true; };
       push = { default = "current"; autoSetupRemote = true; };
-      url."git@github.com:comitylabs".insteadOf = "https://github.com/comitylabs";
+      url."ssh://git@github.com/".insteadOf = "https://github.com/";
     };
     ignores = [
       ".envrc"
@@ -349,16 +351,15 @@ in {
     '';
   };
 
+  programs.bash = {
+    enable = true;
+  };
+
   programs.zsh = {
     enable = true;
     enableAutosuggestions = true;
     defaultKeymap = "viins";
     enableSyntaxHighlighting = true;
-    # enableVteIntegration = false;
-    # history = {
-    #   expireDuplicatesFirst = true;
-    #   save = 100000;
-    # };
     initExtra = ''
       source ${pkgs.wezterm}/etc/profile.d/wezterm.sh
 
