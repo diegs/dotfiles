@@ -86,6 +86,7 @@ in {
       (pkgs.gradle.override {
         javaToolchains = [ pkgs.jdk8 pkgs.jdk11 pkgs.jdk17 ];
       })
+      pkgs.kotlin-language-server
       pkgs.maven
 
       # scala
@@ -234,7 +235,7 @@ in {
     languages = [
       {
         name = "java";
-        indent = { tab-width = 2; unit = "    "; };
+        indent = { tab-width = 4; unit = "    "; };
         roots = ["pom.xml" "build.gradle" "build.gradle.kts"];
         language-server = {
           # command = "${java-language-server}/share/java/java-language-server/lang_server_mac.sh";
