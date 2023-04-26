@@ -348,10 +348,10 @@ in {
 
   programs.skim = {
     enable = true;
-    changeDirWidgetCommand = "fd --type d";
+    changeDirWidgetCommand = "fd -H --type d";
     changeDirWidgetOptions = ["--preview 'tree -C {} | head -200'"];
-    defaultCommand = "fd --type f";
-    fileWidgetCommand = "fd --type f";
+    defaultCommand = "fd -H --type f";
+    fileWidgetCommand = "fd -H --type f";
     fileWidgetOptions = ["--preview 'bat -f --style=numbers {}'"];
     historyWidgetOptions = [];
   };
