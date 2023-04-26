@@ -2,6 +2,34 @@
 let
   username = "diegs";
   homeDir = "/Users/${username}";
+  java-language-server = pkgs.java-language-server.overrideAttrs (final: old: rec {
+    version = "0.2.45";
+    src = pkgs.fetchFromGitHub {
+      owner = "georgewfraser";
+      repo = old.pname;
+      rev = "cab093b40fc736e82e86c356b062f2da67797e79";
+      sha256 = "sha256-uzcqpR3sfDLh7a4KYUBIjO3n0XmQWRL0PPe9ALtvHjs=";
+    };
+    fetchedMavenDeps = old.fetchedMavenDeps.overrideAttrs (oldMaven: {
+      inherit src;
+      name = "java-language-server-${version}-maven-deps";
+      outputHash = "sha256-YqYXtFeDByhqkPytkRakj85pkoi5UKD9/SkSqSJ1XBA=";
+    });
+      buildPhase = ''
+        runHook preBuild
+
+        jlink \
+          --add-modules java.base,java.compiler,java.logging,java.sql,java.xml,jdk.compiler,jdk.jdi,jdk.unsupported,jdk.zipfs \
+          --output dist/mac \
+          --no-header-files \
+          --no-man-pages \
+          --compress 2
+
+        mvn package --offline -Dmaven.repo.local=${fetchedMavenDeps} -DskipTests
+
+        runHook postBuild
+    '';
+  });
 in {
   home = {
     username = username;
@@ -34,6 +62,7 @@ in {
       pkgs.cmake
       pkgs.nodePackages.graphite-cli
       pkgs.python3Packages.grip
+      pkgs.python3Packages.yq
 
       # sysadmin
       pkgs.ansible
@@ -54,11 +83,14 @@ in {
       
       # java
       pkgs.jdt-language-server
-      pkgs.gradle
+      java-language-server
+      (pkgs.gradle.override {
+        javaToolchains = [ pkgs.jdk8 pkgs.jdk11 pkgs.jdk17 ];
+      })
       pkgs.maven
 
       # scala
-      pkgs.scala
+      pkgs.scala_3
       pkgs.metals
 
       # go
@@ -203,14 +235,20 @@ in {
     languages = [
       {
         name = "java";
-        indent = { tab-width = 2; unit = "  "; };
+        indent = { tab-width = 2; unit = "    "; };
+        roots = ["pom.xml" "build.gradle" "build.gradle.kts"];
         language-server = {
-          command = "jdt-language-server";
-          args = [
-            "-configuration" "${homeDir}/.cache/jdtls/config"
-            "-data" "${homeDir}/.cache/jdtls/workspace"
-          ];
+          command = "${java-language-server}/share/java/java-language-server/lang_server_mac.sh";
+          # command = "jdt-language-server";
+          # args = [
+          #   "-configuration" "${homeDir}/.cache/jdtls/config"
+          #   "-data" "${homeDir}/.cache/jdtls/workspace"
+          # ];
         };
+      }
+      {
+        name = "scala";
+        roots = ["build.sbt" "build.sc" "build.gradle" "build.gradle.kts" "pom.xml" ".scala-build"];
       }
       {
         name = "go";
@@ -355,6 +393,10 @@ in {
     enable = true;
   };
 
+  programs.fish = {
+    enable = true;
+  };
+
   programs.zsh = {
     enable = true;
     enableAutosuggestions = true;
@@ -362,6 +404,7 @@ in {
     enableSyntaxHighlighting = true;
     initExtra = ''
       source ${pkgs.wezterm}/etc/profile.d/wezterm.sh
+      # source ${pkgs.zsh-vi-mode}/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
 
       autoload -U promptinit; promptinit
       zstyle :prompt:pure:git:stash show yes
