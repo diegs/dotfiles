@@ -217,10 +217,6 @@ in {
       url."ssh://git@github.com/".insteadOf = "https://github.com/";
     };
     ignores = [
-      ".envrc"
-      ".mypy_cache/"
-      "**/.settings/org.eclipse.*"
-      "**/.idea"
     ];
   };
 
@@ -349,10 +345,10 @@ in {
   programs.skim = {
     enable = true;
     changeDirWidgetCommand = "fd -H --type d";
-    changeDirWidgetOptions = ["--preview 'tree -C {} | head -200'"];
+    changeDirWidgetOptions = ["--height 100% --preview 'tree -C {} | head -200'"];
     defaultCommand = "fd -H --type f";
     fileWidgetCommand = "fd -H --type f";
-    fileWidgetOptions = ["--preview 'bat -f --style=numbers {}'"];
+    fileWidgetOptions = ["--height 100% --preview 'bat -f --style=numbers {}'"];
     historyWidgetOptions = [];
   };
 
@@ -371,8 +367,9 @@ in {
       end
 
       return {
-        font = wezterm.font("Berkeley Mono"),
-        font_size = 14.0,
+        font = wezterm.font("SF Mono", { weight = "Medium" }),
+        bold_brightens_ansi_colors = false,
+        font_size = 13,
         color_scheme = scheme_for_appearance(wezterm.gui.get_appearance()),
         quit_when_all_windows_are_closed = false,
         hide_tab_bar_if_only_one_tab = false,
