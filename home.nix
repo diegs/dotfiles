@@ -62,8 +62,9 @@ in {
       pkgs.maven
 
       # scala
-      pkgs.scala_3
+      pkgs.ammonite
       pkgs.metals
+      pkgs.scala_3
 
       # go
       pkgs.golangci-lint
