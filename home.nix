@@ -262,10 +262,12 @@ in {
 
         set -eu -o pipefail
 
-        # DARK_THEME_PATH="${pkgs.helix}/lib/runtime/themes/catppuccin_macchiato.toml"
-        # LIGHT_THEME_PATH="${pkgs.helix}/lib/runtime/themes/catppuccin_latte.toml"
-        DARK_THEME_PATH="${homeDir}/.config/helix/extra-themes/edge_default.toml"
-        LIGHT_THEME_PATH="${homeDir}/.config/helix/extra-themes/edge_light.toml"
+        # DARK_THEME_PATH="${pkgs.helix}/lib/runtime/themes/onedark.toml"
+        DARK_THEME_PATH="${homeDir}/.config/helix/extra-themes/gruvbox_original_dark_medium.toml"
+        # DARK_THEME_PATH="${homeDir}/.config/helix/extra-themes/onedark_custom.toml"
+        # LIGHT_THEME_PATH="${pkgs.helix}/lib/runtime/themes/onelight.toml"
+        LIGHT_THEME_PATH="${homeDir}/.config/helix/extra-themes/gruvbox_original_light_custom.toml"
+        # LIGHT_THEME_PATH="${homeDir}/.config/helix/extra-themes/onelight_custom.toml"
 
         THEME=$(defaults read -g AppleInterfaceStyle || echo "Light")
 
@@ -282,14 +284,6 @@ in {
     ".config/helix/extra-themes" = {
       source = ./helix/themes;
     };
-
-    # ".config/helix/themes/dark.toml" = {
-    #   source = "${pkgs.helix}/lib/runtime/themes/catppuccin_macchiato.toml";
-    # };
-
-    # ".config/helix/themes/light.toml" = {
-    #   source = "${pkgs.helix}/lib/runtime/themes/catppuccin_latte.toml";
-    # };
   };
 
   programs.home-manager = {
@@ -330,18 +324,24 @@ in {
       function scheme_for_appearance(appearance)
         os.execute(os.getenv("HOME") .. "/.config/helix/update-theme.sh")
         if appearance:find "Dark" then
-          return "Edge Dark (base16)"
-          -- return "Catppuccin Macchiato"
+          return "Dark"
         else
-          return "Edge Light (base16)"
-          -- return "Catppuccin Latte"
+          return "Light"
         end
       end
+
+      local light_theme = wezterm.color.get_builtin_schemes()['Gruvbox (Gogh)']
+      light_theme.background = "#fafafa"
+      local dark_theme = wezterm.color.get_builtin_schemes()['Gruvbox Dark (Gogh)']
 
       return {
         font = wezterm.font("Berkeley Mono"),
         bold_brightens_ansi_colors = false,
         font_size = 13,
+        color_schemes = {
+          ['Light'] = light_theme,
+          ['Dark'] = dark_theme,
+        },
         color_scheme = scheme_for_appearance(wezterm.gui.get_appearance()),
         quit_when_all_windows_are_closed = false,
         hide_tab_bar_if_only_one_tab = false,
