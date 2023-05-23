@@ -1,4 +1,4 @@
-{ pkgs, pkgs-stable, ... }:
+{ pkgs, pkgs-stable, emacs-overlay, ... }:
 let
   username = "diegs";
   homeDir = "/Users/${username}";
@@ -65,6 +65,7 @@ in {
       pkgs.ammonite
       pkgs.metals
       pkgs.scala_3
+      pkgs.scalafix
 
       # go
       pkgs.golangci-lint
@@ -190,6 +191,8 @@ in {
       url."ssh://git@github.com/".insteadOf = "https://github.com/";
     };
     ignores = [
+      ".direnv/"
+      ".DS_Store"
     ];
   };
 
@@ -206,13 +209,13 @@ in {
         name = "java";
         indent = { tab-width = 4; unit = "    "; };
         roots = ["pom.xml" "build.gradle" "build.gradle.kts"];
-        language-server = {
-          command = "${pkgs.jdt-language-server}/bin/jdt-language-server";
-          args = [
-            "-configuration" "${homeDir}/.cache/jdtls/config"
-            "-data" "${homeDir}/.cache/jdtls/workspace"
-          ];
-        };
+        # language-server = {
+        #   command = "${pkgs.jdt-language-server}/bin/jdt-language-server";
+        #   args = [
+        #     "-configuration" "${homeDir}/.cache/jdtls/config"
+        #     "-data" "${homeDir}/.cache/jdtls/workspace"
+        #   ];
+        # };
       }
       {
         name = "scala";
@@ -371,6 +374,7 @@ in {
     enableAutosuggestions = true;
     defaultKeymap = "viins";
     enableSyntaxHighlighting = true;
+    enableVteIntegration = true;
     initExtra = ''
       source ${pkgs.wezterm}/etc/profile.d/wezterm.sh
       # source ${pkgs.zsh-vi-mode}/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
@@ -404,5 +408,20 @@ in {
         . ~/.zlocal
       fi
     '';
+  };
+
+  programs.emacs = {
+    enable = false;
+    package = pkgs.emacsUnstable-nox;
+    extraConfig = builtins.readFile ./default.el;
+    extraPackages = epkgs: [
+      epkgs.company
+      # epkgs.eglot
+      epkgs.meow
+      epkgs.treesit-auto
+
+      epkgs.go-mode
+      epkgs.scala-mode
+    ];
   };
 }
