@@ -204,28 +204,18 @@ in {
 
   programs.helix  = {
     enable = true;
-    languages = [
-      {
-        name = "java";
-        indent = { tab-width = 4; unit = "    "; };
-        roots = ["pom.xml" "build.gradle" "build.gradle.kts"];
-        # language-server = {
-        #   command = "${pkgs.jdt-language-server}/bin/jdt-language-server";
-        #   args = [
-        #     "-configuration" "${homeDir}/.cache/jdtls/config"
-        #     "-data" "${homeDir}/.cache/jdtls/workspace"
-        #   ];
-        # };
-      }
-      {
-        name = "scala";
-        roots = ["build.sbt" "build.sc" "build.gradle" "build.gradle.kts" "pom.xml" ".scala-build"];
-      }
-      {
-        name = "go";
-        indent = { tab-width = 2; unit = "\t"; };
-      }
-    ];
+    languages = {
+      language = [
+        {
+          name = "java";
+          indent = { tab-width = 4; unit = "    "; };
+        }
+        {
+          name = "go";
+          indent = { tab-width = 2; unit = "\t"; };
+        }
+      ];
+    };
     settings = {
       theme = "wezterm";
       editor = {
