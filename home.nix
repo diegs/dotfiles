@@ -17,7 +17,7 @@ in {
       pkgs.pure-prompt
       pkgs-stable.tree
       pkgs-stable.watch
-      pkgs.zsh-nix-shell
+      pkgs.rclone
       pkgs.zk
 
       # rust alternates
