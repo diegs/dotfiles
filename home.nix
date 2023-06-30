@@ -14,10 +14,12 @@ in {
       pkgs.asciinema-agg
       pkgs.buildah
       pkgs-stable.graphviz
+      pkgs.inetutils
       pkgs.pure-prompt
+      pkgs.rclone
+      pkgs.speedtest-cli
       pkgs-stable.tree
       pkgs-stable.watch
-      pkgs.rclone
       pkgs.zk
 
       # rust alternates
