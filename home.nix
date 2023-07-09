@@ -42,9 +42,9 @@ in {
       # sysadmin
       pkgs.ansible
       pkgs-stable.awscli2
-      pkgs.nomad
+      pkgs-stable.nomad
       pkgs.nomad-pack
-      pkgs.vault
+      pkgs-stable.vault
 
       # data
       pkgs.kafkactl
@@ -400,6 +400,9 @@ in {
         . ~/.zlocal
       fi
     '';
+    syntaxHighlighting = {
+      enable = true;
+    };
   };
 
   programs.emacs = {
