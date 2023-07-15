@@ -1,4 +1,5 @@
-{ pkgs, pkgs-stable, emacs-overlay, ... }:
+{ config, pkgs, pkgo, ... }:
+
 let
   username = "diegs";
   homeDir = "/Users/${username}";
@@ -10,46 +11,51 @@ in {
 
     packages = [
       # util
-      pkgs.asciinema
-      pkgs.asciinema-agg
-      pkgs.buildah
-      pkgs-stable.graphviz
-      pkgs.inetutils
+      pkgo.asciinema
+      pkgo.asciinema-agg
+      pkgo.graphviz
+      pkgo.inetutils
+      pkgo.tree
+      pkgo.watch
+
       pkgs.pure-prompt
-      pkgs.rclone
-      pkgs.speedtest-cli
-      pkgs-stable.tree
-      pkgs-stable.watch
       pkgs.zk
 
       # rust alternates
-      pkgs.du-dust
+      # pkgs.du-dust
       pkgs.fd
       pkgs.hexyl
-      pkgs.procs
+      # pkgs.procs
       pkgs.ripgrep
       pkgs.sd
 
       # dev tools
       pkgs.bazelisk
+      pkgs.buildah
       pkgs.cachix
       pkgs.cmake
-      pkgs.marksman
+      # pkgs.conan
       pkgs.nodePackages.graphite-cli
       pkgs.python3Packages.grip
       pkgs.python3Packages.yq
 
+      # markdown
+      pkgs.marksman
+
       # sysadmin
-      pkgs.ansible
-      pkgs-stable.awscli2
-      pkgs-stable.nomad
+      pkgo.ansible
+      pkgo.kubectl
+      pkgs.talosctl
+      # pkgs-stable.awscli2
+      pkgo.nomad
       pkgs.nomad-pack
-      pkgs-stable.vault
+      pkgo.rclone
+      pkgo.vault
 
       # data
-      pkgs.kafkactl
-      pkgs.mysql-client
-      pkgs.redpanda
+      pkgo.kafkactl
+      pkgo.mysql-client
+      pkgo.redpanda
       
       # haskell
       # pkgs.cabal-install
@@ -57,17 +63,17 @@ in {
       # pkgs.nix-prefetch-git
       
       # java
-      (pkgs.gradle.override {
+      (pkgo.gradle.override {
         javaToolchains = [ pkgs.jdk8 pkgs.jdk11 pkgs.jdk17 ];
       })
       pkgs.kotlin-language-server
-      pkgs.maven
+      # pkgs.maven
 
       # scala
-      pkgs.ammonite
-      pkgs.metals
-      pkgs.scala_3
-      pkgs.scalafix
+      # pkgs.ammonite
+      # pkgs.metals
+      # pkgs.scala_3
+      # pkgs.scalafix
 
       # go
       pkgs.golangci-lint
@@ -78,10 +84,10 @@ in {
       
       # protobuf
       pkgs.buf
-      pkgs.protobuf
+      pkgo.protobuf
 
       # python
-      pkgs.pyright
+      # pkgs.pyright
 
       # rust
       # pkgs.rustup
@@ -93,10 +99,30 @@ in {
       # blockchain
       pkgs.nodePackages.ganache
       pkgs.solc
+
+      # (pkgs.writeShellScriptBin "my-hello" ''
+      #   echo "Hello, ${config.home.username}!"
+      # '')
     ];
+
+    # Home Manager is pretty good at managing dotfiles. The primary way to manage
+    # plain files is through 'home.file'.
+    file = {
+      # # Building this configuration will create a copy of 'dotfiles/screenrc' in
+      # # the Nix store. Activating the configuration will then make '~/.screenrc' a
+      # # symlink to the Nix store copy.
+      # ".screenrc".source = dotfiles/screenrc;
+  
+      # # You can also set the file content immediately.
+      # ".gradle/gradle.properties".text = ''
+      #   org.gradle.console=verbose
+      #   org.gradle.daemon.idletimeout=3600000
+      # '';
+    };
+  
     sessionVariables = {
       EDITOR = "hx";
-      VISUAL = "hx";
+      VISUAL = "vi";
     };
   };
 
@@ -128,22 +154,6 @@ in {
         rev = "f8c8948008a5773a96bd736aa05cfff77fcfed71";
         sha256 = "sha256-tgu6wjaDFB/hCaoXkJHat0H7Ps3xNfK9Obb+3HxBGzA=";
       } + "/terminal-ansi16.tmTheme");
-    };
-  };
-
-  programs.bottom = {
-    enable = true;
-    settings = {
-      flags = {
-        color = "default";
-      };
-    };
-  };
-
-  programs.broot = {
-    enable = true;
-    settings = {
-      modal = true;
     };
   };
 
@@ -204,7 +214,7 @@ in {
     package = pkgs.go;
   };
 
-  programs.helix  = {
+  programs.helix = {
     enable = true;
     languages = {
       language = [
@@ -219,7 +229,7 @@ in {
       ];
     };
     settings = {
-      theme = "wezterm";
+      theme = "base16_default";
       editor = {
         color-modes = true;
         cursorline = true;
@@ -249,41 +259,7 @@ in {
     };
   };
 
-  home.file = {
-    ".config/helix/update-theme.sh" = {
-      executable = true;
-      text = ''
-        #!/usr/bin/env bash
-
-        set -eu -o pipefail
-
-        # DARK_THEME_PATH="${pkgs.helix}/lib/runtime/themes/onedark.toml"
-        DARK_THEME_PATH="${homeDir}/.config/helix/extra-themes/gruvbox_original_dark_medium.toml"
-        # DARK_THEME_PATH="${homeDir}/.config/helix/extra-themes/onedark_custom.toml"
-        # LIGHT_THEME_PATH="${pkgs.helix}/lib/runtime/themes/onelight.toml"
-        LIGHT_THEME_PATH="${homeDir}/.config/helix/extra-themes/gruvbox_original_light_custom.toml"
-        # LIGHT_THEME_PATH="${homeDir}/.config/helix/extra-themes/onelight_custom.toml"
-
-        THEME=$(defaults read -g AppleInterfaceStyle || echo "Light")
-
-        if [[ "$THEME" == "Dark" ]]; then
-          ln -sf $''\{DARK_THEME_PATH} $''\{HOME}/.config/helix/themes/wezterm.toml
-        else
-          ln -sf $''\{LIGHT_THEME_PATH} $''\{HOME}/.config/helix/themes/wezterm.toml
-        fi
-
-        pkill -SIGUSR1 hx
-      '';
-    };
-
-    ".config/helix/extra-themes" = {
-      source = ./helix/themes;
-    };
-  };
-
-  programs.home-manager = {
-    enable = true;
-  };
+  programs.home-manager.enable = true;
 
   programs.java = {
     enable = true;
@@ -313,62 +289,38 @@ in {
     historyWidgetOptions = [];
   };
 
-  programs.wezterm = {
+  programs.neovim = {
     enable = true;
-    extraConfig = ''
-      function scheme_for_appearance(appearance)
-        os.execute(os.getenv("HOME") .. "/.config/helix/update-theme.sh")
-        if appearance:find "Dark" then
-          return "Dark"
-        else
-          return "Light"
-        end
-      end
-
-      local light_theme = wezterm.color.get_builtin_schemes()['Gruvbox (Gogh)']
-      light_theme.background = "#fafafa"
-      local dark_theme = wezterm.color.get_builtin_schemes()['Gruvbox Dark (Gogh)']
-
-      return {
-        font = wezterm.font("Berkeley Mono"),
-        bold_brightens_ansi_colors = false,
-        font_size = 13,
-        color_schemes = {
-          ['Light'] = light_theme,
-          ['Dark'] = dark_theme,
-        },
-        color_scheme = scheme_for_appearance(wezterm.gui.get_appearance()),
-        quit_when_all_windows_are_closed = false,
-        hide_tab_bar_if_only_one_tab = false,
-        use_fancy_tab_bar = false,
-        tab_bar_at_bottom = true,
-        audible_bell = "Disabled",
-        initial_rows = 48,
-        initial_cols = 140,
-        keys = {
-          { key= "{", mods = "SHIFT|CTRL|CMD", action = wezterm.action.MoveTabRelative(-1) },
-          { key= "}", mods = "SHIFT|CTRL|CMD", action = wezterm.action.MoveTabRelative(1) },
-        }
-      }
-    '';
+    viAlias = true;
+    vimAlias = true;
+    vimdiffAlias = true;
+    plugins = with pkgs.vimPlugins; [
+       vim-polyglot
+    ];
   };
 
-  programs.bash = {
-    enable = true;
-  };
+  programs.emacs = {
+    enable = false;
+    package = pkgs.emacsUnstable-nox;
+    extraConfig = builtins.readFile ./default.el;
+    extraPackages = epkgs: [
+      epkgs.company
+      # epkgs.eglot
+      epkgs.meow
+      epkgs.treesit-auto
 
-  programs.fish = {
-    enable = true;
+      epkgs.go-mode
+      epkgs.scala-mode
+    ];
   };
 
   programs.zsh = {
     enable = true;
     enableAutosuggestions = true;
     defaultKeymap = "viins";
-    enableSyntaxHighlighting = true;
     enableVteIntegration = true;
     initExtra = ''
-      source ${pkgs.wezterm}/etc/profile.d/wezterm.sh
+      # source ${pkgs.wezterm}/etc/profile.d/wezterm.sh
       # source ${pkgs.zsh-vi-mode}/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
 
       autoload -U promptinit; promptinit
@@ -403,20 +355,5 @@ in {
     syntaxHighlighting = {
       enable = true;
     };
-  };
-
-  programs.emacs = {
-    enable = false;
-    package = pkgs.emacsUnstable-nox;
-    extraConfig = builtins.readFile ./default.el;
-    extraPackages = epkgs: [
-      epkgs.company
-      # epkgs.eglot
-      epkgs.meow
-      epkgs.treesit-auto
-
-      epkgs.go-mode
-      epkgs.scala-mode
-    ];
   };
 }
