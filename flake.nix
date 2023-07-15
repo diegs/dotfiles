@@ -9,11 +9,11 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    emacs-overlay = {
-      url = "github:nix-community/emacs-overlay";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.follows = "flake-utils";
-    };
+#    emacs-overlay = {
+#      url = "github:nix-community/emacs-overlay";
+#      inputs.nixpkgs.follows = "nixpkgs";
+#      inputs.flake-utils.follows = "flake-utils";
+#    };
   };
 
   outputs = {self, nixpkgs, nixpkgs-stable, home-manager, emacs-overlay, ...}:
@@ -31,12 +31,8 @@
     in {
       homeConfigurations.diegs = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
-        modules = [ 
-          ./home.nix 
-        ];
-        extraSpecialArgs = {
-          inherit pkgs-stable;
-        };
+        modules = [ ./home.nix ];
+        extraSpecialArgs = { inherit pkgs-stable; };
       };
     };
 }
