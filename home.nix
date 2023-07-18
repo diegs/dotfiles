@@ -344,14 +344,12 @@ in {
 
   programs.ssh = {
     enable = true;
+    extraOptionOverrides = {
+      AddKeysToAgent = "yes";
+      UseKeychain = "yes";
+      IdentityAgent = "'~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock'";
+    };
     matchBlocks = {
-      "*" = {
-        extraOptions = {
-          AddKeysToAgent = "yes";
-          UseKeychain = "yes";
-          IdentityAgent = "'~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock'";
-        };
-      };
       "192.168.*" = {
         extraOptions = {
           HostKeyAlgorithms = "+ssh-rsa";
