@@ -195,12 +195,40 @@ in {
       };
     };
     extraConfig = {
-      advice = { addIgnoredFile = false; };
-      fetch = { prune = true; tags = true; };
-      init = { defaultBranch = "main"; };
-      pull = { rebase = true; };
-      push = { default = "current"; autoSetupRemote = true; };
-      url."ssh://git@github.com/".insteadOf = "https://github.com/";
+      advice = {
+        addIgnoredFile = false;
+      };
+      commit = {
+        gpgsign = true;
+      };
+      fetch = {
+        prune = true;
+        tags = true;
+      };
+      gpg = { 
+        format = "ssh";
+        ssh = {
+          program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign";
+        };
+      };
+      init = {
+       defaultBranch = "main";
+      };
+      pull = {
+        rebase = true;
+      };
+      push = { 
+        autoSetupRemote = true;
+        default = "current";
+      };
+      url = {
+        "ssh://git@github.com/" = {
+          insteadOf = "https://github.com/";
+        };
+      };
+      user = { 
+        signingkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILJasnFrDOljlqzQUCWT34ci8fp5/QgYh2QWvJM2l942";
+      };
     };
     ignores = [
       ".direnv/"
@@ -312,6 +340,37 @@ in {
       epkgs.go-mode
       epkgs.scala-mode
     ];
+  };
+
+  programs.ssh = {
+    enable = true;
+    matchBlocks = {
+      "*" = {
+        extraOptions = {
+          AddKeysToAgent = "yes";
+          UseKeychain = "yes";
+          IdentityAgent = "'~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock'";
+        };
+      };
+      "192.168.*" = {
+        extraOptions = {
+          HostKeyAlgorithms = "+ssh-rsa";
+          PubkeyAcceptedKeyTypes = "+ssh-rsa";
+          KexAlgorithms = "+diffie-hellman-group1-sha1";
+        };
+      };
+      "172.17.*" = {
+        extraOptions = {
+          HostKeyAlgorithms = "+ssh-rsa";
+          PubkeyAcceptedKeyTypes = "+ssh-rsa";
+          KexAlgorithms = "+diffie-hellman-group1-sha1";
+        };
+      };
+      "github.com" = {
+        hostname = "ssh.github.com";
+        port = 443;
+      };
+    };
   };
 
   programs.zsh = {
