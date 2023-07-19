@@ -45,6 +45,7 @@ in {
       # sysadmin
       pkgo.ansible
       pkgo.kubectl
+      pkgs.k0sctl
       pkgs.talosctl
       # pkgs-stable.awscli2
       pkgo.nomad
@@ -278,9 +279,6 @@ in {
           right = [ "version-control" "diagnostics" "selections" "position" "file-encoding" ];
         };
       };
-      keys.normal = {
-        ";" = "repeat_last_motion";
-      };
     };
   };
 
@@ -343,8 +341,9 @@ in {
     enable = true;
     extraOptionOverrides = {
       AddKeysToAgent = "yes";
-      UseKeychain = "yes";
       IdentityAgent = "'~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock'";
+      StrictHostKeyChecking = "no";
+      UseKeychain = "yes";
     };
     matchBlocks = {
       "192.168.*" = {
