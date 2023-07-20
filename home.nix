@@ -107,7 +107,7 @@ in {
     ];
 
     file = {
-      # ".screenrc".source = dotfiles/screenrc;
+      ".config/helix/themes".source = config/helix/themes;
 
       ".config/1Password/ssh/agent.toml".text = ''
         [[ssh-keys]]
@@ -255,7 +255,7 @@ in {
       ];
     };
     settings = {
-      theme = "base16_default";
+      theme = "ansi16";
       editor = {
         color-modes = true;
         cursorline = true;

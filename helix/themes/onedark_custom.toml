@@ -1,6 +1,0 @@
-inherits = "onedark"
-
-"comment" = { fg = "white" }
-
-[palette]
-black = "#282828"
