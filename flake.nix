@@ -15,7 +15,7 @@
 #    };
   };
 
-  outputs = {self, nixpkgs, nixpkgs-stable, home-manager, emacs-overlay, ...}:
+  outputs = {self, nixpkgs, nixpkgs-stable, home-manager, ...}:
     let
       system = "aarch64-darwin";
       pkgs = import nixpkgs {

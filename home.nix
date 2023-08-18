@@ -46,7 +46,8 @@ in {
       pkgo.ansible
       pkgo.kubectl
       pkgs.k0sctl
-      pkgs.talosctl
+      pkgs.damon
+      pkgs.k9s
       # pkgs-stable.awscli2
       pkgo.nomad
       pkgs.nomad-pack
@@ -275,9 +276,9 @@ in {
         soft-wrap = {
           enable = true;
         };
-        statusline = {
-          right = [ "version-control" "diagnostics" "selections" "position" "file-encoding" ];
-        };
+        #statusline = {
+        #  right = [ "diagnostics" "selections" "position" "file-encoding" ];
+        #};
       };
     };
   };
@@ -286,7 +287,7 @@ in {
 
   programs.java = {
     enable = true;
-    package = pkgs.jdk_headless; 
+    package = pkgs.jdk11_headless;
   };
 
   programs.jq = {
@@ -359,6 +360,17 @@ in {
           PubkeyAcceptedKeyTypes = "+ssh-rsa";
           KexAlgorithms = "+diffie-hellman-group1-sha1";
         };
+      };
+      "*.home.arpa" = {
+        user = "admin";
+        extraOptions = {
+          HostKeyAlgorithms = "+ssh-rsa";
+          PubkeyAcceptedKeyTypes = "+ssh-rsa";
+          KexAlgorithms = "+diffie-hellman-group1-sha1";
+        };
+      };
+      "*.node.consul" = {
+        forwardAgent = true;
       };
       "github.com" = {
         hostname = "ssh.github.com";
