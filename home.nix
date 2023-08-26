@@ -34,6 +34,7 @@ in {
       pkgs.buildah
       pkgs.cachix
       pkgs.cmake
+      pkgs.go-migrate
       # pkgs.conan
       pkgs.nodePackages.graphite-cli
       pkgs.python3Packages.grip
@@ -121,7 +122,7 @@ in {
   
     sessionVariables = {
       EDITOR = "hx";
-      VISUAL = "vi";
+      VISUAL = "hx";
     };
   };
 
