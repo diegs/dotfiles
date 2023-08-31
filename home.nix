@@ -17,7 +17,6 @@ in {
       pkgo.inetutils
       pkgo.tree
       pkgo.watch
-
       pkgs.pure-prompt
       pkgs.zk
 
