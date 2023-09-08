@@ -9,17 +9,7 @@ in {
     homeDirectory = homeDir;
     stateVersion = "23.05";
 
-    packages = let
-      graphite-cli = pkgs.nodePackages.graphite-cli.overrideAttrs (oldAttrs: rec {
-        inherit (oldAttrs) name;
-        version = "0.22.13";
-        src = pkgs.fetchurl {
-          url = "https://registry.npmjs.org/@withgraphite/graphite-cli/-/graphite-cli-0.22.13.tgz";
-          # sha512 = lib.fakeSha512;
-          sha512 = "h8f1zDFum/uQWsMq3P7k2i7La50dGN8pogMda4UlwaRyf/fmqp0DIxGxv2CeU/QiS81XVu3B4qKwYSG6DL+P5w==";
-        };
-      });
-    in [
+    packages = [
       # util
       pkgo.asciinema
       pkgo.asciinema-agg
@@ -45,8 +35,13 @@ in {
       pkgs.cmake
       pkgs.go-migrate
       # pkgs.conan
-      # pkgs.nodePackages.graphite-cli
-      graphite-cli
+      (pkgs.nodePackages.graphite-cli.override (_: {
+        version = "0.22.15";
+        src = pkgs.fetchurl {
+          url = "https://registry.npmjs.org/@withgraphite/graphite-cli/-/graphite-cli-0.22.15.tgz";
+          sha512 = "LshB8BhJrlLUhFG5H4gvpVca5R8p7UM8CSKVrIbYiRQ5y+9ASZ2st1zhITl0FwAQ6o4ZDN6vFK/1CCXy/OKPmw==";
+        };
+      }))
       pkgs.python3Packages.grip
       pkgs.python3Packages.yq
 
