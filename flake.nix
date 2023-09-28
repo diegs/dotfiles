@@ -21,11 +21,13 @@
       pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
+        # config.allowUnsupportedSystem = true;
         # overlays = [ emacs-overlay.overlay ];
       };
       pkgo = import nixpkgs-stable {
         inherit system;
         config.allowUnfree = true;
+        # config.allowUnsupportedSystem = true;
       };
     in {
       homeConfigurations.diegs = home-manager.lib.homeManagerConfiguration {

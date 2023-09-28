@@ -44,6 +44,7 @@ in {
       }))
       pkgs.python3Packages.grip
       pkgs.python3Packages.yq
+      pkgs.openfortivpn
 
       # markdown
       pkgs.marksman
@@ -53,6 +54,7 @@ in {
       pkgo.kubectl
       pkgs.k0sctl
       pkgs.damon
+      pkgs.kubernetes-helm
       pkgs.k9s
       # pkgs-stable.awscli2
       pkgo.nomad
@@ -128,6 +130,7 @@ in {
     sessionVariables = {
       EDITOR = "hx";
       VISUAL = "hx";
+      SSH_AUTH_SOCK = "$HOME/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock";
     };
   };
 
@@ -300,6 +303,19 @@ in {
     enable = true;
   };
 
+  programs.jujutsu = {
+    enable = true;
+    settings = {
+      ui = {
+        default-command = "log";
+      };
+      user = {
+        name = "Diego Pontoriero";
+        email = "74719+diegs@users.noreply.github.com";
+      };
+    };
+  };
+
   programs.readline = {
     enable = true;
     variables = {
@@ -346,6 +362,7 @@ in {
 
   programs.ssh = {
     enable = true;
+    forwardAgent = true;
     extraOptionOverrides = {
       AddKeysToAgent = "yes";
       IdentityAgent = "'~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock'";
@@ -375,8 +392,8 @@ in {
           KexAlgorithms = "+diffie-hellman-group1-sha1";
         };
       };
-      "*.node.consul" = {
-        forwardAgent = true;
+      "*.smlxl.dev" = {
+        user = "root";
       };
       "github.com" = {
         hostname = "ssh.github.com";
@@ -391,7 +408,6 @@ in {
     defaultKeymap = "viins";
     enableVteIntegration = true;
     initExtra = ''
-      # source ${pkgs.wezterm}/etc/profile.d/wezterm.sh
       # source ${pkgs.zsh-vi-mode}/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
 
       autoload -U promptinit; promptinit
@@ -399,10 +415,9 @@ in {
       zstyle :prompt:pure:prompt:success color green
       prompt pure
 
-      # Re-enable once hx can handle this
-      # autoload -U edit-command-line
-      # zle -N edit-command-line
-      # bindkey -M vicmd v edit-command-line
+      autoload -U edit-command-line
+      zle -N edit-command-line
+      bindkey -M vicmd v edit-command-line
 
       _zsh_autosuggest_strategy_atuin() {
         suggestion=$(atuin search --limit 1 --search-mode prefix --filter-mode global --cmd-only $1)
