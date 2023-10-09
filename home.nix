@@ -156,12 +156,15 @@ in {
       theme = "terminal-ansi16";
     };
     themes = {
-      terminal-ansi16 = builtins.readFile (pkgs.fetchFromGitHub {
-        owner = "chtenb";
-        repo = "ansi16";
-        rev = "f8c8948008a5773a96bd736aa05cfff77fcfed71";
-        sha256 = "sha256-tgu6wjaDFB/hCaoXkJHat0H7Ps3xNfK9Obb+3HxBGzA=";
-      } + "/terminal-ansi16.tmTheme");
+      terminal-ansi16 = {
+        src = pkgs.fetchFromGitHub {
+          owner = "chtenb";
+          repo = "ansi16";
+          rev = "f8c8948008a5773a96bd736aa05cfff77fcfed71";
+          sha256 = "sha256-tgu6wjaDFB/hCaoXkJHat0H7Ps3xNfK9Obb+3HxBGzA=";
+        };
+        file = "/terminal-ansi16.tmTheme";
+      };
     };
   };
 
