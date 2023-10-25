@@ -1,12 +1,33 @@
-(defalias 'yes-or-no-p 'y-or-n-p)
-
-;; (add-to-list 'major-mode-remap-alist
-;;           '(go-mode . go-ts-mode))
-(add-hook 'after-init-hook 'global-company-mode)
+;; https://idiomdrottning.org/bad-emacs-defaults
+(setq auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
+(setq backup-directory-alist `(("." . ,temporary-file-directory)))
+(setq backup-by-copying t)
+(setq sentence-end-double-space nil)
+(setq require-final-newline t)
+(setq show-trailing-whitespace t)
+(setq initial-scratch-message nil)
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(fset 'yes-or-no-p 'y-or-n-p)
+(global-display-line-numbers-mode 1)
+(setq display-line-numbers-type 'relative)
+(setq-default indent-tabs-mode nil
+              tab-width 2
+              standard-indent 2
+              go-ts-mode-indent-offset 2)
 
 (require 'treesit-auto)
 (global-treesit-auto-mode)
-(setq treesit-auto-install 'prompt)
+(treesit-auto-add-to-auto-mode-alist)
+(add-to-list 'auto-mode-alist '("\\.kts\\'" . kotlin-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.nix\\'" . nix-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.proto\\'" . protobuf-ts-mode))
+
+(add-hook 'prog-mode-hook 'eglot-ensure)
+(setq corfu-auto t
+      corfu-quit-no-match 'separator)
+(global-corfu-mode)
+(corfu-terminal-mode 1)
 
 (defun meow-setup ()
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)

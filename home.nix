@@ -18,6 +18,7 @@ in {
       pkgo.tree
       pkgo.watch
       pkgs.pure-prompt
+      pkgo.wget
       pkgs.zk
 
       # rust alternates
@@ -34,14 +35,14 @@ in {
       pkgs.cachix
       pkgs.cmake
       pkgs.go-migrate
-      # pkgs.conan
-      (pkgs.nodePackages.graphite-cli.override (_: {
-        version = "0.22.15";
-        src = pkgs.fetchurl {
-          url = "https://registry.npmjs.org/@withgraphite/graphite-cli/-/graphite-cli-0.22.15.tgz";
-          sha512 = "LshB8BhJrlLUhFG5H4gvpVca5R8p7UM8CSKVrIbYiRQ5y+9ASZ2st1zhITl0FwAQ6o4ZDN6vFK/1CCXy/OKPmw==";
-        };
-      }))
+      pkgs.graphite-cli
+      # (pkgs.nodePackages.graphite-cli.override (_: {
+      #   version = "0.22.15";
+      #   src = pkgs.fetchurl {
+      #     url = "https://registry.npmjs.org/@withgraphite/graphite-cli/-/graphite-cli-0.22.15.tgz";
+      #     sha512 = "LshB8BhJrlLUhFG5H4gvpVca5R8p7UM8CSKVrIbYiRQ5y+9ASZ2st1zhITl0FwAQ6o4ZDN6vFK/1CCXy/OKPmw==";
+      #   };
+      # }))
       pkgs.python3Packages.grip
       pkgs.python3Packages.yq
       pkgs.openfortivpn
@@ -65,6 +66,7 @@ in {
       # data
       pkgo.kafkactl
       pkgo.mysql-client
+      pkgo.postgresql
       pkgo.redpanda
       
       # haskell
@@ -128,8 +130,8 @@ in {
     };
   
     sessionVariables = {
-      EDITOR = "hx";
-      VISUAL = "hx";
+      EDITOR = "emacsclient -c -a ''";
+      VISUAL = "emacsclient -c -a ''";
       SSH_AUTH_SOCK = "$HOME/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock";
     };
   };
@@ -299,7 +301,7 @@ in {
 
   programs.java = {
     enable = true;
-    package = pkgs.jdk11_headless;
+    package = pkgs.jdk11;
   };
 
   programs.jq = {
@@ -349,17 +351,19 @@ in {
   };
 
   programs.emacs = {
-    enable = false;
-    package = pkgs.emacsUnstable-nox;
+    enable = true;
+    package = pkgs.emacs29-nox;
     extraConfig = builtins.readFile ./default.el;
     extraPackages = epkgs: [
-      epkgs.company
-      # epkgs.eglot
+      epkgs.corfu
+      epkgs.corfu-terminal
+      epkgs.treesit-grammars.with-all-grammars
       epkgs.meow
       epkgs.treesit-auto
-
-      epkgs.go-mode
-      epkgs.scala-mode
+      epkgs.nix-ts-mode
+      epkgs.kotlin-ts-mode
+      epkgs.protobuf-ts-mode
+      epkgs.magit
     ];
   };
 
