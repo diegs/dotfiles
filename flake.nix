@@ -24,7 +24,7 @@
         inherit system;
         config.allowUnfree = true;
         # config.allowUnsupportedSystem = true;
-        overlays = [ emacs-overlay.overlays.package ];
+        overlays = [ emacs-overlay.overlays.default ];
       };
       pkgo = import nixpkgs-stable {
         inherit system;
