@@ -55,7 +55,10 @@
   (global-treesit-auto-mode)
   (treesit-auto-add-to-auto-mode-alist))
 
-(use-package magit)
+(use-package magit
+  :custom
+  (magit-auto-revert-mode t)
+  (magit-define-global-key-bindings 'recommended))
 
 (use-package nix-ts-mode
   :init
@@ -78,10 +81,8 @@
   :init
   (add-hook 'prog-mode-hook 'eglot-ensure))
 
-(use-package corfu-terminal)
-
 (use-package corfu
-  :after (corfu-terminal)
+  ;; :after (corfu-terminal)
   ;; Optional customizations
   ;; :custom
   ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
@@ -103,6 +104,7 @@
   ;; be used globally (M-/).  See also the customization variable
   ;; `global-corfu-modes' to exclude certain modes.
   :init
+  (use-package corfu-terminal)
   (global-corfu-mode)
   (corfu-terminal-mode 1))
 

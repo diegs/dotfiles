@@ -34,6 +34,7 @@ in {
       pkgs.buildah
       pkgs.cachix
       pkgs.cmake
+      pkgo.evans
       pkgs.go-migrate
       pkgs.graphite-cli
       # (pkgs.nodePackages.graphite-cli.override (_: {
@@ -61,6 +62,7 @@ in {
       pkgo.nomad
       pkgs.nomad-pack
       pkgo.rclone
+      pkgo.sshpass
       pkgo.vault
 
       # data
@@ -118,7 +120,7 @@ in {
     ];
 
     file = {
-      ".config/helix/themes".source = config/helix/themes;
+      # ".config/helix/themes".source = config/helix/themes;
 
       ".config/1Password/ssh/agent.toml".text = ''
         [[ssh-keys]]
@@ -130,8 +132,8 @@ in {
     };
 
     sessionVariables = {
-      EDITOR = "emacsclient -c -a ''";
-      VISUAL = "emacsclient -c -a ''";
+      # EDITOR = "emacsclient -c -nw -a ''";
+      # VISUAL = "emacsclient -c -nw -a ''";
       SSH_AUTH_SOCK = "$HOME/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock";
     };
   };
@@ -256,7 +258,7 @@ in {
   };
 
   programs.helix = {
-    enable = true;
+    enable = false;
     languages = {
       language = [
         {
@@ -340,8 +342,244 @@ in {
     historyWidgetOptions = [];
   };
 
-  programs.neovim = {
+  programs.kakoune = {
     enable = true;
+    config = {
+        indentWidth = 2;
+        numberLines = {
+          enable = true;
+          highlightCursor = true;
+          relative = true;
+        };
+        scrollOff = {
+          lines = 10;
+        };
+        showMatching = true;
+        tabStop = 2;
+        wrapLines = {
+          enable = true;
+          indent = true;
+          marker = "⏎";
+          word = true;
+        };
+        hooks = [
+          {
+            name = "KakBegin";
+            option = ".*";
+            commands = "eval %sh{kak-lsp --kakoune -s $kak_session}";
+          }
+          {
+            name = "WinSetOption";
+            option = "filetype=(rust|python|go|c|cpp|java|scala)";
+            commands = ''
+              lsp-enable-window
+              lsp-auto-hover-enable
+              lsp-auto-signature-help-enable
+              set-option global lsp_auto_show_code_actions true
+            '';
+          }
+          {
+            name = "WinCreate";
+            option = ".*";
+            commands = ''
+            	kakboard-enable
+            	set-face global MenuForeground black,bright-blue
+            	set-face global MenuBackground black,bright-white
+            '';
+          }
+          {
+            name = "WinSetOption";
+            option = "filetype=go";
+            commands = ''
+              set-option window indentwidth 0
+              hook window BufWritePre .* %{
+                try %{ lsp-code-action-sync '^Organize Imports$' }
+                lsp-formatting-sync
+              }
+            '';
+          }
+          {
+            name = "BufCreate";
+            option = "go\.(mod|sum)";
+            commands = "set-option buffer indentwidth 0";
+          }
+          {
+            name = "BufCreate";
+            option = "Makefile";
+            commands = "set-option buffer indentwidth 0";
+          }
+          {
+            name = "WinSetOption";
+            option = "filetype=rust";
+            commands = "hook window BufWritePre .* lsp-formatting-sync";
+          }
+          {
+            name = "InsertChar";
+            option = "\\t";
+            commands = "try %{ execute-keys -draft 'h<a-h><a-k>\A\h+\z<ret><a-;>;%opt{indentwidth}@' }";
+          }
+          {
+            name = "InsertDelete";
+            option = "' '";
+            commands = "try %{ execute-keys -draft 'h<a-h><a-k>\A\h+\z<ret>i<space><esc><lt>' }";
+          }
+        ];
+        keyMappings = [
+          {
+            mode = "normal";
+            key = "<a-c>";
+            effect = ":comment-line<ret>";
+            docstring = "(un)comment selected lines using line comments";
+          }
+          {
+            mode = "user";
+            key = "l";
+            effect = ":enter-user-mode lsp<ret>";
+            docstring = "LSP mode";
+          }
+          {
+            mode = "insert";
+            key = "<tab>";
+            effect = "<a-;>:try lsp-snippets-select-next-placeholders catch %{ execute-keys -with-hooks <lt>tab> }<ret>";
+            docstring = "select next snippet placeholder";
+          }
+          {
+            mode = "object";
+            key = "a";
+            effect = "<a-semicolon>lsp-object<ret>";
+            docstring = "LSP any symbol";
+          }
+          {
+            mode = "object";
+            key = "<a-a>";
+            effect = "<a-semicolon>lsp-object<ret>";
+            docstring = "LSP any symbol";
+          }
+          {
+            mode = "object";
+            key = "e";
+            effect = "<a-semicolon>lsp-object Function Method<ret>";
+            docstring = "LSP function or method";
+          }
+          {
+            mode = "object";
+            key = "k";
+            effect = "<a-semicolon>lsp-object Class Interface Struct<ret>";
+            docstring = "LSP class interface or struct";
+          }
+          {
+            mode = "object";
+            key = "d";
+            effect = "<a-semicolon>lsp-diagnostic-object --include-warnings<ret>";
+            docstring = "LSP errors and warnings";
+          }
+          {
+            mode = "object";
+            key = "D";
+            effect = "<a-semicolon>lsp-diagnostic-object<ret>";
+            docstring = "LSP errors";
+          }
+          {
+            mode = "window";
+            key = "h";
+            effect = ":nop %sh{wezterm cli activate-pane-direction Left}<ret>";
+            docstring = "select pane left";
+          }
+          {
+            mode = "window";
+            key = "j";
+            effect = ":nop %sh{wezterm cli activate-pane-direction Down}<ret>";
+            docstring = "select pane down";
+          }
+          {
+            mode = "window";
+            key = "k";
+            effect = ":nop %sh{wezterm cli activate-pane-direction Up}<ret>";
+            docstring = "select pane up";
+          }
+          {
+            mode = "window";
+            key = "l";
+            effect = ":nop %sh{wezterm cli activate-pane-direction Right}<ret>";
+            docstring = "select pane right";
+          }
+          {
+            mode = "window";
+            key = "o";
+            effect = ":nop %sh{wezterm cli activate-pane-direction Next}<ret>";
+            docstring = "select pane next";
+          }
+          {
+            mode = "window";
+            key = "p";
+            effect = ":nop %sh{wezterm cli activate-pane-direction Prev}<ret>";
+            docstring = "select pane prev";
+          }
+          {
+            mode = "window";
+            key = "s";
+            effect = ":new-below<ret>";
+            docstring = "create horizontal pane";
+          }
+          {
+            mode = "window";
+            key = "v";
+            effect = ":new-right<ret>";
+            docstring = "create vertical pane";
+          }
+          {
+            mode = "user";
+            key = "w";
+            effect = ":enter-user-mode window<ret>";
+            docstring = "window mode";
+          }
+          {
+            mode = "normal";
+            key = "<c-w>";
+            effect = ":enter-user-mode window<ret>";
+            docstring = "window mode";
+          }
+          {
+            mode = "normal";
+            key = "<c-a>";
+            effect = ":lsp-code-actions<ret>";
+            docstring = "LSP code actions";
+          }
+        ];
+    };
+    defaultEditor = true;
+    extraConfig = ''
+    	define-command new-right -docstring "create a new kakoune client on the right" -params .. %{ wezterm-terminal-horizontal kak -c %val{session} -e "%arg{@}" }
+    	alias global new-below new
+
+    	define-command wezterm-terminal-vertical -params 1.. -docstring '
+      wezterm-terminal-vertical <program> [<arguments>] [<arguments>]: create a new terminal as a wezterm pane
+      The current pane is split into two, top and bottom
+      The program passed as argument will be executed in the new terminal' \
+      %{
+        wezterm-terminal-impl split-pane --cwd "%val{client_env_PWD}" --pane-id "%val{client_env_WEZTERM_PANE}" --bottom -- %arg{@}
+      }
+      complete-command wezterm-terminal-vertical shell
+
+      define-command wezterm-terminal-horizontal -params 1.. -docstring '
+      wezterm-terminal-horizontal <program> [<arguments>]: create a new terminal as a wezterm pane
+      The current pane is split into two, left and right
+      The program passed as argument will be executed in the new terminal' \
+      %{
+          wezterm-terminal-impl split-pane --cwd "%val{client_env_PWD}" --pane-id "%val{client_env_WEZTERM_PANE}" --right -- %arg{@}
+      }
+      complete-command wezterm-terminal-horizontal shell
+      
+      alias global terminal wezterm-terminal-vertical
+    '';
+    plugins = [
+        pkgs.kakounePlugins.kak-lsp
+        pkgs.kakounePlugins.kakboard
+    ];
+  };
+
+  programs.neovim = {
+    enable = false;
     viAlias = true;
     vimAlias = true;
     vimdiffAlias = true;
@@ -351,59 +589,15 @@ in {
   };
 
   programs.emacs = {
-    enable = true;
+    enable = false;
     package = (pkgs.emacsWithPackagesFromUsePackage {
-      # Your Emacs config file. Org mode babel files are also
-      # supported.
-      # NB: Config files cannot contain unicode characters, since
-      #     they're being parsed in nix, which lacks unicode
-      #     support.
-      # config = ./emacs.org;
-      config = ./default.el;
-
-      # Whether to include your config as a default init file.
-      # If being bool, the value of config is used.
-      # Its value can also be a derivation like this if you want to do some
-      # substitution:
-      #   defaultInitFile = pkgs.substituteAll {
-      #     name = "default.el";
-      #     src = ./emacs.el;
-      #     inherit (config.xdg) configHome dataHome;
-      #   };
+      config = ./emacs/default.el;
       defaultInitFile = true;
-
-      # Package is optional, defaults to pkgs.emacs
-      package = pkgs.emacs-unstable-nox;
-
-      # By default emacsWithPackagesFromUsePackage will only pull in
-      # packages with `:ensure`, `:ensure t` or `:ensure <package name>`.
-      # Setting `alwaysEnsure` to `true` emulates `use-package-always-ensure`
-      # and pulls in all use-package references not explicitly disabled via
-      # `:ensure nil` or `:disabled`.
-      # Note that this is NOT recommended unless you've actually set
-      # `use-package-always-ensure` to `t` in your config.
+      package = pkgs.emacs-unstable;
       alwaysEnsure = true;
-
-      # For Org mode babel files, by default only code blocks with
-      # `:tangle yes` are considered. Setting `alwaysTangle` to `true`
-      # will include all code blocks missing the `:tangle` argument,
-      # defaulting it to `yes`.
-      # Note that this is NOT recommended unless you have something like
-      # `#+PROPERTY: header-args:emacs-lisp :tangle yes` in your config,
-      # which defaults `:tangle` to `yes`.
-      # alwaysTangle = true;
-
-      # Optionally provide extra packages not in the configuration file.
       extraEmacsPackages = epkgs: [
         epkgs.treesit-grammars.with-all-grammars
       ];
-
-      # Optionally override derivations.
-      # override = final: prev: {
-      #  weechat = prev.melpaPackages.weechat.overrideAttrs(old: {
-      #    patches = [ ./weechat-el.patch ];
-      #  });
-      # };
     });
   };
 
@@ -486,7 +680,8 @@ in {
       fi
     '';
     shellAliases = {
-      e = "emacsclient -c -a ''";
+      # e = "emacsclient -c -nw -a ''";
+      kak = "wezterm cli spawn --cwd $PWD -- kak > /dev/null";
     };
     syntaxHighlighting = {
       enable = true;
