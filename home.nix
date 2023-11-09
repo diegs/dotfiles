@@ -643,6 +643,11 @@ in {
     };
   };
 
+	programs.wezterm = {
+  	enable = true;
+  	extraConfig = builtins.readFile ./config/wezterm/wezterm.lua;
+	};
+
   programs.zsh = {
     enable = true;
     enableAutosuggestions = true;
