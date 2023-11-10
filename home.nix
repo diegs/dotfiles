@@ -34,7 +34,6 @@ in {
       pkgs.buildah
       pkgs.cachix
       pkgs.cmake
-      pkgo.evans
       pkgs.go-migrate
       pkgs.graphite-cli
       # (pkgs.nodePackages.graphite-cli.override (_: {
@@ -129,11 +128,11 @@ in {
         [[ssh-keys]]
         vault = "DevOps"
       '';
+
+      ".editrc".text = "bind -v";
     };
 
     sessionVariables = {
-      # EDITOR = "emacsclient -c -nw -a ''";
-      # VISUAL = "emacsclient -c -nw -a ''";
       SSH_AUTH_SOCK = "$HOME/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock";
     };
   };
@@ -141,15 +140,12 @@ in {
   programs.atuin = {
     enable = true;
     settings = {
-      history_filter = [
-        "^cd "
-        "^ls$"
-        "^ll$"
-      ];
+      auto_sync = false;
       filter_mode_shell_up_key_binding = "session";
-      search_mode = "skim";
+      search_mode = "fulltext";
       show_preview = true;
       style = "compact";
+      secrets_filter = false;
       update_check = false;
     };
   };
@@ -157,18 +153,7 @@ in {
   programs.bat = {
     enable = true;
     config = {
-      theme = "terminal-ansi16";
-    };
-    themes = {
-      terminal-ansi16 = {
-        src = pkgs.fetchFromGitHub {
-          owner = "chtenb";
-          repo = "ansi16";
-          rev = "f8c8948008a5773a96bd736aa05cfff77fcfed71";
-          sha256 = "sha256-tgu6wjaDFB/hCaoXkJHat0H7Ps3xNfK9Obb+3HxBGzA=";
-        };
-        file = "/terminal-ansi16.tmTheme";
-      };
+      theme = "ansi";
     };
   };
 
@@ -177,16 +162,16 @@ in {
     nix-direnv = {
       enable = true;
     };
-    config = {
-      load_direnv = false;
-    };
-    stdlib = ''
-      layout_virtualenv() {
-        local venv_path="venv"
-        source ''${venv_path}/bin/activate
-        unset PS1
-      }
-    '';
+    # config = {
+    #   load_direnv = false;
+    # };
+    # stdlib = ''
+    #   layout_virtualenv() {
+    #     local venv_path="venv"
+    #     source ''${venv_path}/bin/activate
+    #     unset PS1
+    #   }
+    # '';
   };
 
   programs.eza = {
@@ -202,7 +187,7 @@ in {
       enable = true;
       options = {
         navigate = true;
-        syntax-theme = "terminal-ansi16";
+        syntax-theme = "ansi";
         minus-style = "reverse red";
         minus-emph-style = "reverse bold red";
         plus-style = "reverse green";
@@ -279,25 +264,6 @@ in {
         email = "74719+diegs@users.noreply.github.com";
       };
     };
-  };
-
-  programs.readline = {
-    enable = true;
-    variables = {
-      editing-mode = "vi";
-      show-all-if-ambiguous = true;
-      page-completions = false;
-    };
-  };
-
-  programs.skim = {
-    enable = true;
-    changeDirWidgetCommand = "fd -H --type d";
-    changeDirWidgetOptions = ["--height 100% --preview 'tree -C {} | head -200'"];
-    defaultCommand = "fd -H --type f";
-    fileWidgetCommand = "fd -H --type f";
-    fileWidgetOptions = ["--height 100% --preview 'bat -f --style=numbers {}'"];
-    historyWidgetOptions = [];
   };
 
   programs.kakoune = {
@@ -379,7 +345,24 @@ in {
           {
             name = "InsertDelete";
             option = "' '";
-            commands = ''execute-keys -draft "h<a-h><a-k>\A\h+\z<ret>i<space><esc><lt>"'';
+            commands = ''try %{ execute-keys -draft "h<a-h><a-k>\A\h+\z<ret>i<space><esc><lt>" }'';
+          }
+          {
+            name = "InsertCompletionShow";
+            option = ".*";
+            commands = ''
+              try %{
+                  # this command temporarily removes cursors preceded by whitespace;
+                  # if there are no cursors left, it raises an error, does not
+                  # continue to execute the mapping commands, and the error is eaten
+                  # by the `try` command so no warning appears.
+                  execute-keys -draft 'h<a-K>\h<ret>'
+                  map window insert <tab> <c-o>
+                  hook -once -always window InsertCompletionHide .* %{
+                    unmap window insert <tab> <c-o>
+                  }
+              }
+            '';
           }
         ];
         keyMappings = [
@@ -395,12 +378,12 @@ in {
             effect = ":enter-user-mode lsp<ret>";
             docstring = "LSP mode";
           }
-          # {
-          #   mode = "insert";
-          #   key = "<tab>";
-          #   effect = "<a-;>:try lsp-snippets-select-next-placeholders catch %{ execute-keys -with-hooks <lt>tab> }<ret>";
-          #   docstring = "select next snippet placeholder";
-          # }
+          {
+            mode = "insert";
+            key = "<tab>";
+            effect = "<a-;>:try lsp-snippets-select-next-placeholders catch %{ execute-keys -with-hooks <lt>tab> }<ret>";
+            docstring = "select next snippet placeholder";
+          }
           {
             mode = "object";
             key = "a";
@@ -536,6 +519,25 @@ in {
     ];
   };
 
+  programs.readline = {
+    enable = true;
+    variables = {
+      editing-mode = "vi";
+      show-all-if-ambiguous = true;
+      page-completions = false;
+    };
+  };
+
+  programs.skim = {
+    enable = true;
+    changeDirWidgetCommand = "fd -H --type d";
+    changeDirWidgetOptions = ["--height 100% --preview 'tree -C {} | head -200'"];
+    defaultCommand = "fd -H --type f";
+    fileWidgetCommand = "fd -H --type f";
+    fileWidgetOptions = ["--height 100% --preview 'bat -f --style=numbers {}'"];
+    historyWidgetOptions = [];
+  };
+
   programs.ssh = {
     enable = true;
     forwardAgent = true;
@@ -593,7 +595,7 @@ in {
 
       autoload -U promptinit; promptinit
       zstyle :prompt:pure:git:stash show yes
-      zstyle :prompt:pure:prompt:success color green
+      # zstyle :prompt:pure:prompt:success color green
       prompt pure
 
       autoload -U edit-command-line
@@ -620,6 +622,7 @@ in {
       fi
     '';
     shellAliases = {
+      cat = "bat";
       kak = "wezterm cli spawn --cwd $PWD -- kakw $WEZTERM_PANE > /dev/null";
     };
     syntaxHighlighting = {
