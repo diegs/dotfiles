@@ -114,14 +114,14 @@ in {
       pkgs.nodePackages.ganache
       pkgs.solc
 
-      # (pkgs.writeShellScriptBin "my-hello" ''
-      #   echo "Hello, ${config.home.username}!"
-      # '')
+      (pkgs.writeShellScriptBin "kakw" ''
+        set -euo pipefail
+        kak "''${@:2}"
+        wezterm cli activate-pane --pane-id $1
+      '')
     ];
 
     file = {
-      # ".config/helix/themes".source = config/helix/themes;
-
       ".config/1Password/ssh/agent.toml".text = ''
         [[ssh-keys]]
         vault = "Private"
@@ -183,7 +183,7 @@ in {
     stdlib = ''
       layout_virtualenv() {
         local venv_path="venv"
-        source $''\{venv_path}/bin/activate
+        source ''${venv_path}/bin/activate
         unset PS1
       }
     '';
@@ -255,48 +255,6 @@ in {
     enable = true;
     goPath = ".go";
     package = pkgs.go;
-  };
-
-  programs.helix = {
-    enable = false;
-    languages = {
-      language = [
-        {
-          name = "java";
-          indent = { tab-width = 4; unit = "    "; };
-        }
-        {
-          name = "go";
-          indent = { tab-width = 2; unit = "\t"; };
-        }
-      ];
-    };
-    settings = {
-      theme = "ansi16";
-      editor = {
-        color-modes = true;
-        cursorline = true;
-        cursor-shape = {
-          insert = "bar";
-          normal = "block";
-          select = "underline";
-        };
-        file-picker = {
-          hidden = false;
-        };
-        indent-guides = {
-          render = true;
-        };
-        line-number = "relative";
-        mouse = false;
-        soft-wrap = {
-          enable = true;
-        };
-        #statusline = {
-        #  right = [ "diagnostics" "selections" "position" "file-encoding" ];
-        #};
-      };
-    };
   };
 
   programs.home-manager.enable = true;
@@ -382,9 +340,9 @@ in {
             name = "WinCreate";
             option = ".*";
             commands = ''
-            	kakboard-enable
-            	set-face global MenuForeground black,bright-blue
-            	set-face global MenuBackground black,bright-white
+              kakboard-enable
+              set-face global MenuForeground black,bright-blue
+              set-face global MenuBackground black,bright-white
             '';
           }
           {
@@ -416,12 +374,12 @@ in {
           {
             name = "InsertChar";
             option = "\\t";
-            commands = "try %{ execute-keys -draft 'h<a-h><a-k>\A\h+\z<ret><a-;>;%opt{indentwidth}@' }";
+            commands = ''try %{ execute-keys -draft "h<a-h><a-k>\A\h+\z<ret><a-;>;%opt{indentwidth}@" }'';
           }
           {
             name = "InsertDelete";
             option = "' '";
-            commands = "try %{ execute-keys -draft 'h<a-h><a-k>\A\h+\z<ret>i<space><esc><lt>' }";
+            commands = ''execute-keys -draft "h<a-h><a-k>\A\h+\z<ret>i<space><esc><lt>"'';
           }
         ];
         keyMappings = [
@@ -437,12 +395,12 @@ in {
             effect = ":enter-user-mode lsp<ret>";
             docstring = "LSP mode";
           }
-          {
-            mode = "insert";
-            key = "<tab>";
-            effect = "<a-;>:try lsp-snippets-select-next-placeholders catch %{ execute-keys -with-hooks <lt>tab> }<ret>";
-            docstring = "select next snippet placeholder";
-          }
+          # {
+          #   mode = "insert";
+          #   key = "<tab>";
+          #   effect = "<a-;>:try lsp-snippets-select-next-placeholders catch %{ execute-keys -with-hooks <lt>tab> }<ret>";
+          #   docstring = "select next snippet placeholder";
+          # }
           {
             mode = "object";
             key = "a";
@@ -549,10 +507,10 @@ in {
     };
     defaultEditor = true;
     extraConfig = ''
-    	define-command new-right -docstring "create a new kakoune client on the right" -params .. %{ wezterm-terminal-horizontal kak -c %val{session} -e "%arg{@}" }
-    	alias global new-below new
+      define-command new-right -docstring "create a new kakoune client on the right" -params .. %{ wezterm-terminal-horizontal kak -c %val{session} -e "%arg{@}" }
+      alias global new-below new
 
-    	define-command wezterm-terminal-vertical -params 1.. -docstring '
+      define-command wezterm-terminal-vertical -params 1.. -docstring '
       wezterm-terminal-vertical <program> [<arguments>] [<arguments>]: create a new terminal as a wezterm pane
       The current pane is split into two, top and bottom
       The program passed as argument will be executed in the new terminal' \
@@ -576,29 +534,6 @@ in {
         pkgs.kakounePlugins.kak-lsp
         pkgs.kakounePlugins.kakboard
     ];
-  };
-
-  programs.neovim = {
-    enable = false;
-    viAlias = true;
-    vimAlias = true;
-    vimdiffAlias = true;
-    plugins = with pkgs.vimPlugins; [
-       vim-polyglot
-    ];
-  };
-
-  programs.emacs = {
-    enable = false;
-    package = (pkgs.emacsWithPackagesFromUsePackage {
-      config = ./emacs/default.el;
-      defaultInitFile = true;
-      package = pkgs.emacs-unstable;
-      alwaysEnsure = true;
-      extraEmacsPackages = epkgs: [
-        epkgs.treesit-grammars.with-all-grammars
-      ];
-    });
   };
 
   programs.ssh = {
@@ -643,10 +578,10 @@ in {
     };
   };
 
-	programs.wezterm = {
-  	enable = true;
-  	extraConfig = builtins.readFile ./config/wezterm/wezterm.lua;
-	};
+  programs.wezterm = {
+    enable = true;
+    extraConfig = builtins.readFile ./config/wezterm/wezterm.lua;
+  };
 
   programs.zsh = {
     enable = true;
@@ -685,8 +620,7 @@ in {
       fi
     '';
     shellAliases = {
-      # e = "emacsclient -c -nw -a ''";
-      kak = "wezterm cli spawn --cwd $PWD -- kak > /dev/null";
+      kak = "wezterm cli spawn --cwd $PWD -- kakw $WEZTERM_PANE > /dev/null";
     };
     syntaxHighlighting = {
       enable = true;
