@@ -157,6 +157,10 @@ in {
     };
   };
 
+  programs.dircolors = {
+    enable = true;
+  };
+
   programs.direnv = {
     enable = true;
     nix-direnv = {
@@ -530,11 +534,12 @@ in {
 
   programs.skim = {
     enable = true;
-    changeDirWidgetCommand = "fd -H --type d";
-    changeDirWidgetOptions = ["--height 100% --preview 'tree -C {} | head -200'"];
-    defaultCommand = "fd -H --type f";
-    fileWidgetCommand = "fd -H --type f";
-    fileWidgetOptions = ["--height 100% --preview 'bat -f --style=numbers {}'"];
+    changeDirWidgetCommand = "fd -H --type d --color=always";
+    changeDirWidgetOptions = ["--ansi" "--height 100%" "--preview 'tree -C {} | head -200'"];
+    defaultCommand = "fd -H --type f --color=always";
+    defaultOptions = ["--ansi"];
+    fileWidgetCommand = "fd -H --type f --color=always";
+    fileWidgetOptions = ["--ansi" "--height 100%" "--preview 'bat -f --style=numbers {}'"];
     historyWidgetOptions = [];
   };
 
@@ -637,13 +642,10 @@ in {
     enable = true;
     enableAutosuggestions = true;
     defaultKeymap = "viins";
-    enableVteIntegration = true;
+    enableVteIntegration = false;
     initExtra = ''
-      # source ${pkgs.zsh-vi-mode}/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
-
       autoload -U promptinit; promptinit
       zstyle :prompt:pure:git:stash show yes
-      # zstyle :prompt:pure:prompt:success color green
       prompt pure
 
       autoload -U edit-command-line
@@ -655,7 +657,8 @@ in {
       }
 
       ZSH_AUTOSUGGEST_STRATEGY=(completion)
-      bindkey '^E' autosuggest-accept
+      bindkey -M viins '^O' autosuggest-accept
+      bindkey -M viins '^[[Z' reverse-menu-complete
     '';
     profileExtra = ''
       # Nix
