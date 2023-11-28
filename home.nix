@@ -17,7 +17,9 @@ in {
       pkgo.inetutils
       pkgo.tree
       pkgo.watch
-      pkgs.pure-prompt
+      # (pkgs.fishPlugins.pure.overrideAttrs(o: {
+      #   doCheck = false;
+      # }))
       pkgo.wget
       pkgs.zk
 
@@ -36,13 +38,6 @@ in {
       pkgs.cmake
       pkgs.go-migrate
       pkgs.graphite-cli
-      # (pkgs.nodePackages.graphite-cli.override (_: {
-      #   version = "0.22.15";
-      #   src = pkgs.fetchurl {
-      #     url = "https://registry.npmjs.org/@withgraphite/graphite-cli/-/graphite-cli-0.22.15.tgz";
-      #     sha512 = "LshB8BhJrlLUhFG5H4gvpVca5R8p7UM8CSKVrIbYiRQ5y+9ASZ2st1zhITl0FwAQ6o4ZDN6vFK/1CCXy/OKPmw==";
-      #   };
-      # }))
       pkgs.python3Packages.grip
       pkgs.python3Packages.yq
       pkgs.openfortivpn
@@ -80,7 +75,6 @@ in {
         javaToolchains = [ pkgs.jdk8 pkgs.jdk11 pkgs.jdk17 ];
       })
       pkgs.kotlin-language-server
-      # pkgs.maven
 
       # scala
       # pkgs.ammonite
@@ -112,12 +106,6 @@ in {
       # blockchain
       pkgs.nodePackages.ganache
       pkgs.solc
-
-      (pkgs.writeShellScriptBin "kakw" ''
-        set -euo pipefail
-        kak "''${@:2}"
-        wezterm cli activate-pane --pane-id $1
-      '')
     ];
 
     file = {
@@ -129,7 +117,9 @@ in {
         vault = "DevOps"
       '';
 
-      ".editrc".text = "bind -v";
+      ".config/kak-lsp/kak-lsp.toml".source = config/kak-lsp/kak-lsp.toml;
+      ".hushlogin".text = "";
+      ".ignore".text = ".git/";
     };
 
     sessionVariables = {
@@ -166,21 +156,54 @@ in {
     nix-direnv = {
       enable = true;
     };
-    # config = {
-    #   load_direnv = false;
-    # };
-    # stdlib = ''
-    #   layout_virtualenv() {
-    #     local venv_path="venv"
-    #     source ''${venv_path}/bin/activate
-    #     unset PS1
-    #   }
-    # '';
   };
 
   programs.eza = {
     enable = true;
     enableAliases = true;
+  };
+
+  programs.fish = {
+    enable = true;
+    functions = {
+      fish_title = {
+        argumentNames = "last_command";
+        description = "Set title to current folder and shell name";
+        body = ''
+          set --local prompt
+          if test -z "$last_command"
+            set prompt (fish_prompt_pwd_dir_length=$pure_shorten_window_title_current_directory_length prompt_pwd)
+          else
+            set prompt (status current-command 2>/dev/null; or echo $_)
+          end
+          echo $prompt
+        '';
+      };
+      gitignore = "curl -sL https://www.gitignore.io/api/$argv";
+    };
+    plugins = [
+      {
+        name = "pure";
+        src = pkgs.fetchFromGitHub {
+          owner = "pure-fish";
+          repo = "pure";
+          rev = "v4.8.1";
+          sha256 = "sha256-MnlqKRmMNVp6g9tet8sr5Vd8LmJAbZqLIGoDE5rlu8E=";
+        };
+      }
+    ];
+    shellAliases = {
+      cat = "bat";
+      kakw = "kitten @ launch --type tab --cwd current --location after --no-response kak";
+      light_mode = "ln -sf ~/.config/kitty/tango_light.conf ~/.config/kitty/current-theme.conf && pkill -USR1 -a kitty";
+      dark_mode = "ln -sf ~/.config/kitty/space_gray_eighties.conf ~/.config/kitty/current-theme.conf && pkill -USR1 -a kitty";
+    };
+    shellInit = ''
+      # Nix
+      source '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.fish'
+      # End Nix
+      source ~/.local.fish
+    '';
   };
 
   programs.git = {
@@ -284,6 +307,9 @@ in {
         };
         showMatching = true;
         tabStop = 2;
+        ui = {
+          enableMouse = false;
+        };
         wrapLines = {
           enable = true;
           indent = true;
@@ -306,15 +332,13 @@ in {
               set-option global lsp_auto_show_code_actions true
             '';
           }
-          {
-            name = "WinCreate";
-            option = ".*";
-            commands = ''
-              kakboard-enable
-            '';
-              # set-face global MenuForeground white,cyan
-              # set-face global MenuBackground bright-white,cyan
-          }
+          # {
+          #   name = "WinCreate";
+          #   option = ".*";
+          #   commands = ''
+          #     kakboard-enable
+          #   '';
+          # }
           {
             name = "WinSetOption";
             option = "filetype=go";
@@ -361,9 +385,11 @@ in {
                   # continue to execute the mapping commands, and the error is eaten
                   # by the `try` command so no warning appears.
                   execute-keys -draft 'h<a-K>\h<ret>'
-                  map window insert <tab> <c-o>
+                  map window insert <tab> <c-n>
+                  map window insert <s-tab> <c-p>
                   hook -once -always window InsertCompletionHide .* %{
-                    unmap window insert <tab> <c-o>
+                    unmap window insert <tab> <c-n>
+                    unmap window insert <s-tab> <c-p>
                   }
               }
             '';
@@ -427,50 +453,38 @@ in {
           {
             mode = "window";
             key = "h";
-            effect = ":nop %sh{wezterm cli activate-pane-direction Left}<ret>";
+            effect = ":nop %sh{kitten @ select-window --match=neighbor:left}<ret>";
             docstring = "select pane left";
           }
           {
             mode = "window";
             key = "j";
-            effect = ":nop %sh{wezterm cli activate-pane-direction Down}<ret>";
+            effect = ":nop %sh{kitten @ select-window --match=neighbor:bottom}<ret>";
             docstring = "select pane down";
           }
           {
             mode = "window";
             key = "k";
-            effect = ":nop %sh{wezterm cli activate-pane-direction Up}<ret>";
+            effect = ":nop %sh{kitten @ select-window --match=neighbor:top}<ret>";
             docstring = "select pane up";
           }
           {
             mode = "window";
             key = "l";
-            effect = ":nop %sh{wezterm cli activate-pane-direction Right}<ret>";
+            effect = ":nop %sh{kitten @ select-window --match=neighbor:right}<ret>";
             docstring = "select pane right";
           }
           {
             mode = "window";
-            key = "o";
-            effect = ":nop %sh{wezterm cli activate-pane-direction Next}<ret>";
-            docstring = "select pane next";
-          }
-          {
-            mode = "window";
             key = "p";
-            effect = ":nop %sh{wezterm cli activate-pane-direction Prev}<ret>";
-            docstring = "select pane prev";
+            effect = ":nop %sh{kitten @ select-window --match=recent:1}<ret>";
+            docstring = "select previous pane";
           }
           {
             mode = "window";
             key = "s";
-            effect = ":new-below<ret>";
-            docstring = "create horizontal pane";
-          }
-          {
-            mode = "window";
-            key = "v";
-            effect = ":new-right<ret>";
-            docstring = "create vertical pane";
+            effect = ":new<ret>";
+            docstring = "split window";
           }
           {
             mode = "user";
@@ -490,32 +504,39 @@ in {
             effect = ":lsp-code-actions<ret>";
             docstring = "LSP code actions";
           }
+          {
+            mode = "user";
+            key = "f";
+            effect = ":find<ret>";
+            docstring = "find file";
+          }
         ];
     };
     defaultEditor = true;
     extraConfig = ''
-      define-command new-right -docstring "create a new kakoune client on the right" -params .. %{ wezterm-terminal-horizontal kak -c %val{session} -e "%arg{@}" }
-      alias global new-below new
+      define-command find -docstring "find file" -params .. %{
+        kitty-overlay --copy-env sk --bind %exp{enter:execute(echo eval -verbatim -client %val{client} edit '"{}"' | kak -p %val{session})+abort}
+      }
 
-      define-command wezterm-terminal-vertical -params 1.. -docstring '
-      wezterm-terminal-vertical <program> [<arguments>] [<arguments>]: create a new terminal as a wezterm pane
-      The current pane is split into two, top and bottom
+      define-command kitty-overlay -params 1.. -docstring '
+      kitty-overlay <program> [<arguments>]: create a new terminal as a kitty overlay
       The program passed as argument will be executed in the new terminal' \
       %{
-        wezterm-terminal-impl split-pane --cwd "%val{client_env_PWD}" --pane-id "%val{client_env_WEZTERM_PANE}" --bottom -- %arg{@}
-      }
-      complete-command wezterm-terminal-vertical shell
+          nop %sh{
+              match=""
+              if [ -n "$kak_client_env_KITTY_WINDOW_ID" ]; then
+                  match="--match=window_id:$kak_client_env_KITTY_WINDOW_ID"
+              fi
 
-      define-command wezterm-terminal-horizontal -params 1.. -docstring '
-      wezterm-terminal-horizontal <program> [<arguments>]: create a new terminal as a wezterm pane
-      The current pane is split into two, left and right
-      The program passed as argument will be executed in the new terminal' \
-      %{
-          wezterm-terminal-impl split-pane --cwd "%val{client_env_PWD}" --pane-id "%val{client_env_WEZTERM_PANE}" --right -- %arg{@}
+              listen=""
+              if [ -n "$kak_client_env_KITTY_LISTEN_ON" ]; then
+                  listen="--to=$kak_client_env_KITTY_LISTEN_ON"
+              fi
+
+              kitty @ $listen launch --no-response --type="overlay" --cwd="$PWD" $match "$@"
+          }
       }
-      complete-command wezterm-terminal-horizontal shell
-      
-      alias global terminal wezterm-terminal-vertical
+      complete-command kitty-overlay shell
     '';
     plugins = [
       pkgs.kakounePlugins.kak-lsp
@@ -523,10 +544,39 @@ in {
     ];
   };
 
+  programs.kitty = {
+    enable = true;
+    darwinLaunchOptions = [
+      "--single-instance"
+    ];
+    extraConfig = ''
+      include current-theme.conf
+    '';
+    font = {
+      name = "SF Mono";
+      size = 14;
+    };
+    keybindings = {
+      "cmd+t" = "new_tab_with_cwd";
+    };
+    settings = {
+      allow_remote_control = true;
+      update_check_interval = 0;
+      macos_option_as_alt = true;
+      tab_bar_style = "separator";
+      tab_bar_min_tabs = 1;
+      tab_separator = "''";
+      active_tab_font_style = "normal";
+      inactive_tab_font_style = "normal";
+      tab_title_max_length = 0;
+      tab_title_template = "' {fmt.fg.red}{bell_symbol}{activity_symbol}{fmt.fg.tab}{index}: {title:^15.15} '";
+      shell = "$HOME/.nix-profile/bin/fish --interactive --login";
+    };
+  };
+
   programs.readline = {
     enable = true;
     variables = {
-      editing-mode = "vi";
       show-all-if-ambiguous = true;
       page-completions = false;
     };
@@ -537,7 +587,7 @@ in {
     changeDirWidgetCommand = "fd -H --type d --color=always";
     changeDirWidgetOptions = ["--ansi" "--height 100%" "--preview 'tree -C {} | head -200'"];
     defaultCommand = "fd -H --type f --color=always";
-    defaultOptions = ["--ansi"];
+    defaultOptions = ["--ansi" "--height 100%" "--preview 'bat -f --style=numbers {}'"];
     fileWidgetCommand = "fd -H --type f --color=always";
     fileWidgetOptions = ["--ansi" "--height 100%" "--preview 'bat -f --style=numbers {}'"];
     historyWidgetOptions = [];
@@ -582,102 +632,6 @@ in {
         hostname = "ssh.github.com";
         port = 443;
       };
-    };
-  };
-
-  programs.wezterm = {
-    enable = true;
-    extraConfig = ''
-      function get_appearance()
-        if wezterm.gui then
-          return wezterm.gui.get_appearance()
-        end
-        return 'Dark'
-      end
-
-      function scheme_for_appearance(appearance)
-        if appearance:find 'Dark' then
-          return 'Spacegray Eighties (Gogh)'
-        else
-          return 'Terminal Basic'
-          -- return 'Borland'
-        end
-      end
-
-      return {
-        color_scheme = scheme_for_appearance(get_appearance()),
-        font = wezterm.font 'SF Mono',
-        font_size = 14.0,
-        use_fancy_tab_bar = false,
-        hide_tab_bar_if_only_one_tab = false,
-        tab_bar_at_bottom = true,
-        switch_to_last_active_tab_when_closing_tab = true,
-        tab_max_width = 32,
-        quit_when_all_windows_are_closed = false,
-        audible_bell = "Disabled",
-        initial_rows = 48,
-        initial_cols = 140,
-        use_resize_increments = true,
-        leader = { key = "W", mods = "SHIFT|CMD" },
-        keys = {
-          { key = "{", mods = "SHIFT|CTRL|CMD", action = wezterm.action.MoveTabRelative(-1) },
-          { key = "}", mods = "SHIFT|CTRL|CMD", action = wezterm.action.MoveTabRelative(1) },
-          { key = "s", mods = "LEADER", action = wezterm.action.SplitVertical },
-          { key = "v", mods = "LEADER", action = wezterm.action.SplitHorizontal },
-          { key = "z", mods = "LEADER", action = wezterm.action.TogglePaneZoomState },
-          { key = "h", mods = "LEADER", action = wezterm.action.ActivatePaneDirection("Left") },
-          { key = "j", mods = "LEADER", action = wezterm.action.ActivatePaneDirection("Down") },
-          { key = "k", mods = "LEADER", action = wezterm.action.ActivatePaneDirection("Up") },
-          { key = "l", mods = "LEADER", action = wezterm.action.ActivatePaneDirection("Right") },
-          { key = "h", mods = "LEADER|SHIFT", action = wezterm.action.AdjustPaneSize { 'Left', 5 } },
-          { key = "j", mods = "LEADER|SHIFT", action = wezterm.action.AdjustPaneSize { 'Down', 5 } },
-          { key = "k", mods = "LEADER|SHIFT", action = wezterm.action.AdjustPaneSize { 'Up', 5 } },
-          { key = "l", mods = "LEADER|SHIFT", action = wezterm.action.AdjustPaneSize { 'Right', 5 } },
-        },
-      }
-    '';
-  };
-
-  programs.zsh = {
-    enable = true;
-    enableAutosuggestions = true;
-    defaultKeymap = "viins";
-    enableVteIntegration = false;
-    initExtra = ''
-      autoload -U promptinit; promptinit
-      zstyle :prompt:pure:git:stash show yes
-      prompt pure
-
-      autoload -U edit-command-line
-      zle -N edit-command-line
-      bindkey -M vicmd v edit-command-line
-
-      _zsh_autosuggest_strategy_atuin() {
-        suggestion=$(atuin search --limit 1 --search-mode prefix --filter-mode global --cmd-only $1)
-      }
-
-      ZSH_AUTOSUGGEST_STRATEGY=(completion)
-      bindkey -M viins '^O' autosuggest-accept
-      bindkey -M viins '^[[Z' reverse-menu-complete
-    '';
-    profileExtra = ''
-      # Nix
-      if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
-          . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
-      fi
-      # End Nix
-
-      # Local
-      if [ -f ~/.zlocal ]; then
-        . ~/.zlocal
-      fi
-    '';
-    shellAliases = {
-      cat = "bat";
-      kak = "wezterm cli spawn --cwd $PWD -- kakw $WEZTERM_PANE > /dev/null";
-    };
-    syntaxHighlighting = {
-      enable = true;
     };
   };
 }
