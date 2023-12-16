@@ -41,7 +41,7 @@ in {
 
       # dev tools
       pkgs.bazelisk
-      pkgs.buildah
+      # pkgs.buildah
       pkgs.cachix
       pkgs.cmake
       pkgs.go-migrate
@@ -72,6 +72,7 @@ in {
       pkgo.mysql-client
       pkgo.postgresql
       pkgo.redpanda
+      pkgs.duckdb
 
       # haskell
       # pkgs.cabal-install
@@ -83,10 +84,16 @@ in {
         javaToolchains = [ pkgs.jdk8 pkgs.jdk11 pkgs.jdk17 ];
       })
       pkgs.kotlin-language-server
+      pkgo.maven
 
       # scala
       # pkgs.ammonite
-      # pkgs.metals
+      (pkgs.metals.override {
+        jre = pkgs.jdk11;
+      })
+      (pkgs.sbt.override {
+        jre = pkgs.jdk11;
+      })
       # pkgs.scala_3
       # pkgs.scalafix
 
@@ -213,6 +220,15 @@ in {
       };
       plugins = [
         {
+          name = "fish-async-prompt";
+          src = pkgs.fetchFromGitHub {
+            owner = "acomagu";
+            repo = "fish-async-prompt";
+            rev = "v1.2.0";
+            sha256 = "sha256-B7Ze0a5Zp+5JVsQUOv97mKHh5wiv3ejsDhJMrK7YOx4=";
+          };
+        }
+        {
           name = "pure";
           src = pkgs.fetchFromGitHub {
             owner = "pure-fish";
@@ -228,12 +244,18 @@ in {
         kakw = "kitten @ launch --type tab --cwd current --location after --no-response --title kak --copy-env kak-kitty-tab $KITTY_WINDOW_ID";
         light_mode = "ln -sf ~/.config/kitty/tango_light.conf ~/.config/kitty/current-theme.conf && pkill -USR1 -a kitty";
         dark_mode = "ln -sf ~/.config/kitty/space_gray_eighties.conf ~/.config/kitty/current-theme.conf && pkill -USR1 -a kitty";
+        k = "kubectl";
+        kns = "kubectl config set-context --current --namespace";
       };
       shellInit = ''
         # Nix
         source '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.fish'
         # End Nix
         source ~/.local.fish
+      '';
+      interactiveShellInit = ''
+        set -g async_prompt_functions _pure_prompt_git
+        set -g pure_shorten_window_title_current_directory_length 1
       '';
     };
 
@@ -348,11 +370,11 @@ in {
             word = true;
           };
           hooks = [
-            {
-              name = "KakBegin";
-              option = ".*";
-              commands = "eval %sh{kak-lsp --kakoune -s $kak_session}";
-            }
+      #       {
+      #         name = "KakBegin";
+      #         option = ".*";
+      #         commands = "eval %sh{kak-lsp --kakoune -s $kak_session}";
+      #       }
             {
               name = "WinSetOption";
               option = "filetype=(rust|python|go|c|cpp|java|scala)";
@@ -383,8 +405,13 @@ in {
             }
             {
               name = "BufCreate";
+              option = ".*\.sbt";
+              commands = "set buffer filetype scala";
+            }
+            {
+              name = "BufCreate";
               option = "go\.(mod|sum)";
-              commands = "set-option buffer indentwidth 0";
+              commands = "set buffer filetype go";
             }
             {
               name = "BufCreate";
@@ -394,6 +421,11 @@ in {
             {
               name = "WinSetOption";
               option = "filetype=rust";
+              commands = "hook window BufWritePre .* lsp-formatting-sync";
+            }
+            {
+              name = "WinSetOption";
+              option = "filetype=scala";
               commands = "hook window BufWritePre .* lsp-formatting-sync";
             }
             {
@@ -545,6 +577,8 @@ in {
       };
       defaultEditor = true;
       extraConfig = ''
+        eval %sh{kak-lsp --kakoune -s $kak_session}
+
         define-command find -docstring "find file" -params .. %{
           kitty-overlay --copy-env sk --bind %exp{enter:execute(echo eval -verbatim -client %val{client} edit '"{}"' | kak -p %val{session})+abort}
         }
@@ -571,7 +605,7 @@ in {
       '';
       plugins = [
         pkgs.kakounePlugins.kak-lsp
-        pkgs.kakounePlugins.kakboard
+      #   pkgs.kakounePlugins.kakboard
       ];
     };
 
@@ -584,7 +618,7 @@ in {
         include current-theme.conf
       '';
       font = {
-        name = "SF Mono";
+        name = "Berkeley Mono";
         size = 14;
       };
       # keybindings = {
@@ -592,7 +626,7 @@ in {
       # };
       settings = {
         allow_remote_control = true;
-        inactive_text_alpha = "0.5";
+        inactive_text_alpha = "0.85";
         update_check_interval = 0;
         macos_option_as_alt = true;
         tab_bar_style = "separator";
@@ -602,6 +636,7 @@ in {
         inactive_tab_font_style = "normal";
         tab_title_max_length = 0;
         tab_title_template = "' {fmt.fg.red}{bell_symbol}{activity_symbol}{fmt.fg.tab}{index}: {title:^15.15} '";
+        shell = "/Users/diegs/.nix-profile/bin/fish --login --interactive";
       };
     };
 

@@ -216,6 +216,11 @@ args = [
 # Other options, see https://github.com/julia-vscode/LanguageServer.jl/blob/master/src/requests/workspace.jl
 # "julia.lint.run" = "true"
 
+[language.kotlin]
+filetypes = ["kotlin"]
+roots = ["pom.xml", "gradlew"]
+command = "kotlin-language-server"
+
 [language.latex]
 filetypes = ["latex"]
 roots = [".git", ".hg"]
@@ -355,6 +360,19 @@ settings_section = "rust-analyzer"
 # See https://rust-analyzer.github.io/manual.html#configuration
 hoverActions.enable = false # kak-lsp doesn't support this at the moment
 # cargo.features = []
+
+[language.scala]
+filetypes = ["scala"]
+roots = ["build.sbt", "build.sc", "build.gradle", "pom.xml", ".scala-build", "bleep.yaml", ".git"]
+command = "metals"
+# args = ["-Dmetals.http=true", "-Dmetals.verbose=true", "-Dmetals.loglevel=debug"]
+settings_section = "metals"
+[language.scala.settings.metals]
+isHttpEnabled = true
+superMethodLensesEnabled = true
+sbtScript = "/Users/diegs/.nix-profile/bin/sbt"
+# verbose = true
+# loglevel = "debug"
 
 [language.terraform]
 filetypes = ["terraform"]
