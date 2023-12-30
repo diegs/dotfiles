@@ -127,12 +127,18 @@ roots = ["package.json"]
 command = "vscode-html-languageserver"
 args = ["--stdio"]
 
-# # Commented out by default because you still need to set the paths in the JDT
-# # Language Server arguments below before this can become a valid configuration.
-# [language.java]
-# filetypes = ["java"]
-# roots = [".git", "mvnw", "gradlew"]
-# command = "java"
+# Commented out by default because you still need to set the paths in the JDT
+# Language Server arguments below before this can become a valid configuration.
+[language.java]
+filetypes = ["java"]
+roots = [".git", "mvnw", "gradlew"]
+command = "java-language-server"
+args = [
+    "-configuration",
+    "~/.cache/jdtls",
+	  "-data",
+	  "/Users/diegs/src/pinot/.jdtls",
+]
 # args = [
 #     "-Declipse.application=org.eclipse.jdt.ls.core.id1",
 #     "-Dosgi.bundles.defaultStartLevel=4",
@@ -151,11 +157,11 @@ args = ["--stdio"]
 #     "-configuration",
 #     "/path/to/eclipse.jdt.ls/repository/config_linux",
 #     "-data",
-#     "/path/to/eclipse-workspace",
+#     "/Users/diegs/pinot",
 # ]
-# [language.java.settings]
-# # See https://github.dev/eclipse/eclipse.jdt.ls
-# # "java.format.insertSpaces" = true
+[language.java.settings]
+# See https://github.dev/eclipse/eclipse.jdt.ls
+"java.format.insertSpaces" = true
 
 [language.jsx] # works for javascript as well
 filetypes = ["javascript"]

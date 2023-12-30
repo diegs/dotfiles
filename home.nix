@@ -83,16 +83,17 @@ in {
       (pkgo.gradle.override {
         javaToolchains = [ pkgs.jdk8 pkgs.jdk11 pkgs.jdk17 ];
       })
-      pkgs.kotlin-language-server
       pkgo.maven
+      pkgs.kotlin-language-server
+      pkgs.java-language-server
 
       # scala
       # pkgs.ammonite
       (pkgs.metals.override {
-        jre = pkgs.jdk11;
+        jre = pkgs.jdk17;
       })
       (pkgs.sbt.override {
-        jre = pkgs.jdk11;
+        jre = pkgs.jdk17;
       })
       # pkgs.scala_3
       # pkgs.scalafix
@@ -245,6 +246,7 @@ in {
         light_mode = "ln -sf ~/.config/kitty/tango_light.conf ~/.config/kitty/current-theme.conf && pkill -USR1 -a kitty";
         dark_mode = "ln -sf ~/.config/kitty/space_gray_eighties.conf ~/.config/kitty/current-theme.conf && pkill -USR1 -a kitty";
         k = "kubectl";
+        kg = "kubectl get";
         kns = "kubectl config set-context --current --namespace";
       };
       shellInit = ''
@@ -326,7 +328,7 @@ in {
 
     java = {
       enable = true;
-      package = pkgs.jdk11;
+      package = pkgs.jdk17;
     };
 
     jq = {
@@ -370,11 +372,16 @@ in {
             word = true;
           };
           hooks = [
-      #       {
-      #         name = "KakBegin";
-      #         option = ".*";
-      #         commands = "eval %sh{kak-lsp --kakoune -s $kak_session}";
-      #       }
+            {
+              name = "KakBegin";
+              option = ".*";
+              commands = "eval %sh{kak-lsp --kakoune -s $kak_session}";
+            }
+            {
+              name = "KakEnd";
+              option = ".*";
+              commands = "eval %sh{pkill -f 'kak-lsp -s $kak_session'}";
+            }
             {
               name = "WinSetOption";
               option = "filetype=(rust|python|go|c|cpp|java|scala)";
@@ -577,7 +584,7 @@ in {
       };
       defaultEditor = true;
       extraConfig = ''
-        eval %sh{kak-lsp --kakoune -s $kak_session}
+        # eval %sh{kak-lsp --kakoune -s $kak_session}
 
         define-command find -docstring "find file" -params .. %{
           kitty-overlay --copy-env sk --bind %exp{enter:execute(echo eval -verbatim -client %val{client} edit '"{}"' | kak -p %val{session})+abort}
@@ -618,7 +625,8 @@ in {
         include current-theme.conf
       '';
       font = {
-        name = "Berkeley Mono";
+        # name = "Berkeley Mono";
+        name = "Monaspace Neon Regular";
         size = 14;
       };
       # keybindings = {
