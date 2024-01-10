@@ -49,6 +49,8 @@ in {
       pkgs.python3Packages.grip
       pkgs.python3Packages.yq
       pkgs.openfortivpn
+      pkgs.colima
+      pkgs.docker-client
 
       # markdown
       pkgs.marksman
@@ -58,6 +60,7 @@ in {
       pkgo.kubectl
       pkgs.k0sctl
       pkgs.damon
+      pkgs.fluxcd
       pkgs.kubernetes-helm
       pkgs.k9s
       # pkgs-stable.awscli2
@@ -430,11 +433,11 @@ in {
               option = "filetype=rust";
               commands = "hook window BufWritePre .* lsp-formatting-sync";
             }
-            {
-              name = "WinSetOption";
-              option = "filetype=scala";
-              commands = "hook window BufWritePre .* lsp-formatting-sync";
-            }
+            # {
+            #   name = "WinSetOption";
+            #   option = "filetype=scala";
+            #   commands = "hook window BufWritePre .* lsp-formatting-sync";
+            # }
             {
               name = "InsertChar";
               option = "\\t";
@@ -629,9 +632,11 @@ in {
         name = "Monaspace Neon Regular";
         size = 14;
       };
-      # keybindings = {
-      #   "cmd+t" = "new_tab_with_cwd";
-      # };
+      keybindings = {
+        "cmd+ctrl+shift+[" = "move_tab_backward";
+        "cmd+ctrl+shift+]" = "move_tab_forward";
+        "cmd+ctrl+enter" = "next_layout";
+      };
       settings = {
         allow_remote_control = true;
         inactive_text_alpha = "0.85";

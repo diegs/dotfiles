@@ -369,7 +369,7 @@ hoverActions.enable = false # kak-lsp doesn't support this at the moment
 
 [language.scala]
 filetypes = ["scala"]
-roots = ["build.sbt", "build.sc", "build.gradle", "pom.xml", ".scala-build", "bleep.yaml", ".git"]
+roots = [".git", "build.sbt", "build.sc", "build.gradle", "pom.xml", ".scala-build", "bleep.yaml"]
 command = "metals"
 # args = ["-Dmetals.http=true", "-Dmetals.verbose=true", "-Dmetals.loglevel=debug"]
 settings_section = "metals"
