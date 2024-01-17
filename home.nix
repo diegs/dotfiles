@@ -51,6 +51,7 @@ in {
       pkgs.openfortivpn
       pkgs.colima
       pkgs.docker-client
+      pkgs.docker-buildx
 
       # markdown
       pkgs.marksman
