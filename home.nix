@@ -62,6 +62,7 @@ in {
       pkgs.k0sctl
       pkgs.damon
       pkgs.fluxcd
+      pkgs.weave-gitops
       pkgs.kubernetes-helm
       pkgs.k9s
       # pkgs-stable.awscli2
