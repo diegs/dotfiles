@@ -47,22 +47,29 @@ in {
       pkgs.go-migrate
       pkgs.graphite-cli
       pkgs.python3Packages.grip
-      pkgs.python3Packages.yq
+      # pkgs.python3Packages.yq
+      pkgs.yq-go
       pkgs.openfortivpn
       pkgs.colima
       pkgs.docker-client
       pkgs.docker-buildx
+      pkgs.age
+      pkgs.sops
 
       # markdown
       pkgs.marksman
 
       # sysadmin
       pkgo.ansible
+      pkgs.cloudflared
       pkgo.kubectl
       pkgs.k0sctl
       pkgs.damon
+      pkgs.kubeseal
       pkgs.fluxcd
       pkgs.weave-gitops
+      pkgs.kubeconform
+      pkgs.kustomize
       pkgs.kubernetes-helm
       pkgs.k9s
       # pkgs-stable.awscli2
@@ -248,8 +255,8 @@ in {
         cat = "bat";
         ssh = "kitten ssh";
         kakw = "kitten @ launch --type tab --cwd current --location after --no-response --title kak --copy-env kak-kitty-tab $KITTY_WINDOW_ID";
-        light_mode = "ln -sf ~/.config/kitty/tango_light.conf ~/.config/kitty/current-theme.conf && pkill -USR1 -a kitty";
-        dark_mode = "ln -sf ~/.config/kitty/space_gray_eighties.conf ~/.config/kitty/current-theme.conf && pkill -USR1 -a kitty";
+        lm = "ln -sf ~/.config/kitty/tango_light.conf ~/.config/kitty/current-theme.conf && pkill -USR1 -a kitty";
+        dm = "ln -sf ~/.config/kitty/space_gray_eighties.conf ~/.config/kitty/current-theme.conf && pkill -USR1 -a kitty";
         k = "kubectl";
         kg = "kubectl get";
         kns = "kubectl config set-context --current --namespace";
