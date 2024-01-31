@@ -41,11 +41,19 @@ in {
 
       # dev tools
       pkgs.bazelisk
-      # pkgs.buildah
+      # pkgo.buildah
       pkgs.cachix
       pkgs.cmake
       pkgs.go-migrate
-      pkgs.graphite-cli
+      # pkgs.graphite-cli
+      (pkgs.nodePackages.graphite-cli.override (_: {
+        version = "1.1.2";
+        src = pkgs.fetchurl {
+          url = "https://registry.npmjs.org/@withgraphite/graphite-cli/-/graphite-cli-0.22.15.tgz";
+          sha512 = "sha512-LshB8BhJrlLUhFG5H4gvpVca5R8p7UM8CSKVrIbYiRQ5y+9ASZ2st1zhITl0FwAQ6o4ZDN6vFK/1CCXy/OKPmw==";
+          # sha512 = lib.fakeSha512;
+        };
+      }))
       pkgs.python3Packages.grip
       # pkgs.python3Packages.yq
       pkgs.yq-go
