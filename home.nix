@@ -7,7 +7,7 @@ in {
   home = {
     username = username;
     homeDirectory = homeDir;
-    stateVersion = "23.05";
+    stateVersion = "23.11";
 
     packages = [
       # util
@@ -159,6 +159,7 @@ in {
     };
 
     sessionVariables = {
+      XDG_DATA_DIRS = "$HOME/.nix-profile/share:$XDG_DATA_DIRS";
       SSH_AUTH_SOCK = "$HOME/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock";
     };
   };
@@ -273,6 +274,8 @@ in {
         # Nix
         source '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.fish'
         # End Nix
+        set --prepend fish_complete_path /Users/diegs/.nix-profile/share/fish/completions
+        set --prepend fish_complete_path /Users/diegs/.nix-profile/share/fish/vendor_completions.d
         source ~/.local.fish
       '';
       interactiveShellInit = ''
@@ -666,7 +669,7 @@ in {
         inactive_tab_font_style = "normal";
         tab_title_max_length = 0;
         tab_title_template = "' {fmt.fg.red}{bell_symbol}{activity_symbol}{fmt.fg.tab}{index}: {title:^15.15} '";
-        shell = "/Users/diegs/.nix-profile/bin/fish --login --interactive";
+        # shell = "/Users/diegs/.nix-profile/bin/fish --login --interactive";
       };
     };
 
@@ -734,5 +737,9 @@ in {
     zoxide = {
       enable = true;
     };
+  };
+
+  xdg = {
+    enable = true;
   };
 }
