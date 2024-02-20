@@ -54,7 +54,7 @@ in {
       #     sha512 = lib.fakeSha512;
       #   };
       # }))
-      pkgs.python3Packages.grip
+      pkgo.python3Packages.grip
       # pkgs.python3Packages.yq
       pkgs.yq-go
       pkgs.openfortivpn
