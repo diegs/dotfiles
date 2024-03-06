@@ -410,10 +410,10 @@ in {
               option = "filetype=(rust|python|go|c|cpp|java|scala)";
               commands = ''
                 lsp-enable-window
-                lsp-auto-hover-enable
                 lsp-auto-signature-help-enable
                 set-option global lsp_auto_show_code_actions true
               '';
+                # lsp-auto-hover-enable
             }
             # {
             #   name = "WinCreate";
