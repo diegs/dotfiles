@@ -198,7 +198,6 @@ in {
 
     eza = {
       enable = true;
-      enableAliases = true;
     };
 
     fish = {
