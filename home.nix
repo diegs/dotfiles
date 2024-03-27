@@ -73,9 +73,9 @@ in {
       pkgo.kubectl
       pkgs.k0sctl
       pkgs.damon
-      pkgs.kubeseal
-      pkgs.fluxcd
-      pkgs.weave-gitops
+      # pkgs.kubeseal
+      # pkgs.fluxcd
+      # pkgs.weave-gitops
       pkgs.kubeconform
       pkgs.kustomize
       pkgs.kubernetes-helm
