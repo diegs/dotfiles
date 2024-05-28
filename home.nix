@@ -23,10 +23,10 @@ in {
       pkgo.wget
       pkgs.zk
 
-      (pkgs.writeShellScriptBin "kak-kitty-tab" ''
-        kak "''${@:2}"
-        kitten @ focus-tab --match=id:$1
-      '')
+      # (pkgs.writeShellScriptBin "kak-kitty-tab" ''
+      #   kak "''${@:2}"
+      #   kitten @ focus-tab --match=id:$1
+      # '')
       (pkgs.writeShellScriptBin "fzf" ''
         SK_DEFAULT_OPTS="$FZF_DEFAULT_OPTS" sk "$@"
       '')
@@ -70,8 +70,7 @@ in {
       # sysadmin
       pkgo.ansible
       pkgs.cloudflared
-      pkgo.kubectl
-      pkgs.k0sctl
+      pkgs.kubectl
       pkgs.damon
       # pkgs.kubeseal
       # pkgs.fluxcd
@@ -82,10 +81,10 @@ in {
       pkgs.k9s
       # pkgs-stable.awscli2
       pkgo.nomad
-      pkgs.nomad-pack
+      pkgo.nomad-pack
       pkgo.rclone
       pkgo.sshpass
-      pkgo.vault
+      pkgs.vault
 
       # data
       pkgo.kafkactl
@@ -127,7 +126,7 @@ in {
 
       # protobuf
       pkgs.buf
-      pkgo.protobuf
+      pkgs.protobuf_26
 
       # python
       # pkgs.pyright
@@ -165,6 +164,23 @@ in {
   };
 
   programs = {
+    alacritty = {
+      enable = true;
+      settings = {
+        import = [
+            "~/.config/alacritty/themes/themes/alabaster.toml"
+        ];
+        window = {
+          resize_increments = true;
+          option_as_alt = "OnlyLeft";
+        };
+        font = {
+          normal = { family = "Monaspace Neon"; style = "Regular"; };
+          size = 14;
+        };
+      };
+    };
+
     atuin = {
       enable = true;
       settings = {
@@ -261,10 +277,10 @@ in {
       ];
       shellAliases = {
         cat = "bat";
-        ssh = "kitten ssh";
-        kakw = "kitten @ launch --type tab --cwd current --location after --no-response --title kak --copy-env kak-kitty-tab $KITTY_WINDOW_ID";
-        lm = "ln -sf ~/.config/kitty/tango_light.conf ~/.config/kitty/current-theme.conf && pkill -USR1 -a kitty";
-        dm = "ln -sf ~/.config/kitty/space_gray_eighties.conf ~/.config/kitty/current-theme.conf && pkill -USR1 -a kitty";
+        ssh = "TERM=xterm-256color /usr/bin/ssh";
+        # kakw = "kitten @ launch --type tab --cwd current --location after --no-response --title kak --copy-env kak-kitty-tab $KITTY_WINDOW_ID";
+        # lm = "ln -sf ~/.config/kitty/tango_light.conf ~/.config/kitty/current-theme.conf && pkill -USR1 -a kitty";
+        # dm = "ln -sf ~/.config/kitty/space_gray_eighties.conf ~/.config/kitty/current-theme.conf && pkill -USR1 -a kitty";
         k = "kubectl";
         kg = "kubectl get";
         kns = "kubectl config set-context --current --namespace";
@@ -542,36 +558,36 @@ in {
               effect = "<a-semicolon>lsp-diagnostic-object<ret>";
               docstring = "LSP errors";
             }
-            {
-              mode = "window";
-              key = "h";
-              effect = ":nop %sh{kitten @ focus-window --no-response --match=neighbor:left}<ret>";
-              docstring = "select pane left";
-            }
-            {
-              mode = "window";
-              key = "j";
-              effect = ":nop %sh{kitten @ focus-window --no-response --match=neighbor:bottom}<ret>";
-              docstring = "select pane down";
-            }
-            {
-              mode = "window";
-              key = "k";
-              effect = ":nop %sh{kitten @ focus-window --no-response --match=neighbor:top}<ret>";
-              docstring = "select pane up";
-            }
-            {
-              mode = "window";
-              key = "l";
-              effect = ":nop %sh{kitten @ focus-window --no-response --match=neighbor:right}<ret>";
-              docstring = "select pane right";
-            }
-            {
-              mode = "window";
-              key = "p";
-              effect = ":nop %sh{kitten @ focus-window --no-response --match=recent:1}<ret>";
-              docstring = "select previous pane";
-            }
+            # {
+            #   mode = "window";
+            #   key = "h";
+            #   effect = ":nop %sh{kitten @ focus-window --no-response --match=neighbor:left}<ret>";
+            #   docstring = "select pane left";
+            # }
+            # {
+            #   mode = "window";
+            #   key = "j";
+            #   effect = ":nop %sh{kitten @ focus-window --no-response --match=neighbor:bottom}<ret>";
+            #   docstring = "select pane down";
+            # }
+            # {
+            #   mode = "window";
+            #   key = "k";
+            #   effect = ":nop %sh{kitten @ focus-window --no-response --match=neighbor:top}<ret>";
+            #   docstring = "select pane up";
+            # }
+            # {
+            #   mode = "window";
+            #   key = "l";
+            #   effect = ":nop %sh{kitten @ focus-window --no-response --match=neighbor:right}<ret>";
+            #   docstring = "select pane right";
+            # }
+            # {
+            #   mode = "window";
+            #   key = "p";
+            #   effect = ":nop %sh{kitten @ focus-window --no-response --match=recent:1}<ret>";
+            #   docstring = "select previous pane";
+            # }
             {
               mode = "window";
               key = "s";
@@ -605,72 +621,72 @@ in {
           ];
       };
       defaultEditor = true;
-      extraConfig = ''
-        # eval %sh{kak-lsp --kakoune -s $kak_session}
+      # extraConfig = ''
+      #   # eval %sh{kak-lsp --kakoune -s $kak_session}
 
-        define-command find -docstring "find file" -params .. %{
-          kitty-overlay --copy-env sk --bind %exp{enter:execute(echo eval -verbatim -client %val{client} edit '"{}"' | kak -p %val{session})+abort}
-        }
+      #   define-command find -docstring "find file" -params .. %{
+      #     kitty-overlay --copy-env sk --bind %exp{enter:execute(echo eval -verbatim -client %val{client} edit '"{}"' | kak -p %val{session})+abort}
+      #   }
 
-        define-command kitty-overlay -params 1.. -docstring '
-        kitty-overlay <program> [<arguments>]: create a new terminal as a kitty overlay
-        The program passed as argument will be executed in the new terminal' \
-        %{
-            nop %sh{
-                match=""
-                if [ -n "$kak_client_env_KITTY_WINDOW_ID" ]; then
-                    match="--match=window_id:$kak_client_env_KITTY_WINDOW_ID"
-                fi
+      #   define-command kitty-overlay -params 1.. -docstring '
+      #   kitty-overlay <program> [<arguments>]: create a new terminal as a kitty overlay
+      #   The program passed as argument will be executed in the new terminal' \
+      #   %{
+      #       nop %sh{
+      #           match=""
+      #           if [ -n "$kak_client_env_KITTY_WINDOW_ID" ]; then
+      #               match="--match=window_id:$kak_client_env_KITTY_WINDOW_ID"
+      #           fi
 
-                listen=""
-                if [ -n "$kak_client_env_KITTY_LISTEN_ON" ]; then
-                    listen="--to=$kak_client_env_KITTY_LISTEN_ON"
-                fi
+      #           listen=""
+      #           if [ -n "$kak_client_env_KITTY_LISTEN_ON" ]; then
+      #               listen="--to=$kak_client_env_KITTY_LISTEN_ON"
+      #           fi
 
-                kitty @ $listen launch --no-response --type="overlay" --cwd="$PWD" $match "$@"
-            }
-        }
-        complete-command kitty-overlay shell
-      '';
+      #           kitty @ $listen launch --no-response --type="overlay" --cwd="$PWD" $match "$@"
+      #       }
+      #   }
+      #   complete-command kitty-overlay shell
+      # '';
       plugins = [
-        pkgs.kakounePlugins.kak-lsp
+        pkgs.kakounePlugins.kakoune-lsp
       #   pkgs.kakounePlugins.kakboard
       ];
     };
 
-    kitty = {
-      enable = true;
-      darwinLaunchOptions = [
-        "--single-instance"
-      ];
-      extraConfig = ''
-        include current-theme.conf
-      '';
-      font = {
-        # name = "Berkeley Mono";
-        name = "Monaspace Neon Regular";
-        size = 14;
-      };
-      keybindings = {
-        "cmd+ctrl+shift+[" = "move_tab_backward";
-        "cmd+ctrl+shift+]" = "move_tab_forward";
-        "cmd+ctrl+enter" = "next_layout";
-      };
-      settings = {
-        allow_remote_control = true;
-        inactive_text_alpha = "0.85";
-        update_check_interval = 0;
-        macos_option_as_alt = true;
-        tab_bar_style = "separator";
-        tab_bar_min_tabs = 1;
-        tab_separator = "''";
-        active_tab_font_style = "normal";
-        inactive_tab_font_style = "normal";
-        tab_title_max_length = 0;
-        tab_title_template = "' {fmt.fg.red}{bell_symbol}{activity_symbol}{fmt.fg.tab}{index}: {title:^15.15} '";
-        # shell = "/Users/diegs/.nix-profile/bin/fish --login --interactive";
-      };
-    };
+    # kitty = {
+    #   enable = true;
+    #   darwinLaunchOptions = [
+    #     "--single-instance"
+    #   ];
+    #   extraConfig = ''
+    #     include current-theme.conf
+    #   '';
+    #   font = {
+    #     # name = "Berkeley Mono";
+    #     name = "Monaspace Neon Regular";
+    #     size = 14;
+    #   };
+    #   keybindings = {
+    #     "cmd+ctrl+shift+[" = "move_tab_backward";
+    #     "cmd+ctrl+shift+]" = "move_tab_forward";
+    #     "cmd+ctrl+enter" = "next_layout";
+    #   };
+    #   settings = {
+    #     allow_remote_control = true;
+    #     inactive_text_alpha = "0.85";
+    #     update_check_interval = 0;
+    #     macos_option_as_alt = true;
+    #     tab_bar_style = "separator";
+    #     tab_bar_min_tabs = 1;
+    #     tab_separator = "''";
+    #     active_tab_font_style = "normal";
+    #     inactive_tab_font_style = "normal";
+    #     tab_title_max_length = 0;
+    #     tab_title_template = "' {fmt.fg.red}{bell_symbol}{activity_symbol}{fmt.fg.tab}{index}: {title:^15.15} '";
+    #     # shell = "/Users/diegs/.nix-profile/bin/fish --login --interactive";
+    #   };
+    # };
 
     readline = {
       enable = true;
@@ -733,6 +749,10 @@ in {
       };
     };
 
+    zellij = {
+      enable = true;
+    };
+
     zoxide = {
       enable = true;
     };
@@ -741,4 +761,5 @@ in {
   xdg = {
     enable = true;
   };
+
 }
