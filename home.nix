@@ -168,7 +168,7 @@ in {
       enable = true;
       settings = {
         import = [
-            "~/.config/alacritty/themes/themes/alabaster.toml"
+            "~/.config/alacritty/theme.toml"
         ];
         window = {
           resize_increments = true;
@@ -197,6 +197,8 @@ in {
     bat = {
       enable = true;
       config = {
+        decorations = "never";
+        pager = "";
         theme = "ansi";
       };
     };
@@ -279,8 +281,8 @@ in {
         cat = "bat";
         ssh = "TERM=xterm-256color /usr/bin/ssh";
         # kakw = "kitten @ launch --type tab --cwd current --location after --no-response --title kak --copy-env kak-kitty-tab $KITTY_WINDOW_ID";
-        # lm = "ln -sf ~/.config/kitty/tango_light.conf ~/.config/kitty/current-theme.conf && pkill -USR1 -a kitty";
-        # dm = "ln -sf ~/.config/kitty/space_gray_eighties.conf ~/.config/kitty/current-theme.conf && pkill -USR1 -a kitty";
+        lm = "ln -sf ${pkgs.alacritty-theme}/alabaster.toml ~/.config/alacritty/theme.toml";
+        dm = "ln -sf ${pkgs.alacritty-theme}/alabaster_dark.toml ~/.config/alacritty/theme.toml";
         k = "kubectl";
         kg = "kubectl get";
         kns = "kubectl config set-context --current --namespace";
@@ -653,40 +655,6 @@ in {
       #   pkgs.kakounePlugins.kakboard
       ];
     };
-
-    # kitty = {
-    #   enable = true;
-    #   darwinLaunchOptions = [
-    #     "--single-instance"
-    #   ];
-    #   extraConfig = ''
-    #     include current-theme.conf
-    #   '';
-    #   font = {
-    #     # name = "Berkeley Mono";
-    #     name = "Monaspace Neon Regular";
-    #     size = 14;
-    #   };
-    #   keybindings = {
-    #     "cmd+ctrl+shift+[" = "move_tab_backward";
-    #     "cmd+ctrl+shift+]" = "move_tab_forward";
-    #     "cmd+ctrl+enter" = "next_layout";
-    #   };
-    #   settings = {
-    #     allow_remote_control = true;
-    #     inactive_text_alpha = "0.85";
-    #     update_check_interval = 0;
-    #     macos_option_as_alt = true;
-    #     tab_bar_style = "separator";
-    #     tab_bar_min_tabs = 1;
-    #     tab_separator = "''";
-    #     active_tab_font_style = "normal";
-    #     inactive_tab_font_style = "normal";
-    #     tab_title_max_length = 0;
-    #     tab_title_template = "' {fmt.fg.red}{bell_symbol}{activity_symbol}{fmt.fg.tab}{index}: {title:^15.15} '";
-    #     # shell = "/Users/diegs/.nix-profile/bin/fish --login --interactive";
-    #   };
-    # };
 
     readline = {
       enable = true;
