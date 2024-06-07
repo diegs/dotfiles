@@ -279,7 +279,6 @@ in {
       ];
       shellAliases = {
         cat = "bat";
-        ssh = "TERM=xterm-256color /usr/bin/ssh";
         # kakw = "kitten @ launch --type tab --cwd current --location after --no-response --title kak --copy-env kak-kitty-tab $KITTY_WINDOW_ID";
         lm = "ln -sf ${pkgs.alacritty-theme}/alabaster.toml ~/.config/alacritty/theme.toml";
         dm = "ln -sf ${pkgs.alacritty-theme}/alabaster_dark.toml ~/.config/alacritty/theme.toml";
