@@ -176,6 +176,8 @@ in {
         };
         font = {
           normal = { family = "Monaspace Neon"; style = "Regular"; };
+          italic = { style = "Regular"; };
+          bold_italic = { style = "Bold"; };
           size = 14;
         };
       };
@@ -668,9 +670,9 @@ in {
       changeDirWidgetCommand = "fd -H --type d --color=always";
       changeDirWidgetOptions = ["--ansi" "--height 100%" "--preview 'tree -C {} | head -200'"];
       defaultCommand = "fd -H --type f --color=always";
-      defaultOptions = ["--ansi" "--height 100%" "--preview 'bat -f --style=numbers {}'"];
+      defaultOptions = ["--ansi" "--height 100%" "--preview 'bat --decorations=always --color=always --style=numbers {}'"];
       fileWidgetCommand = "fd -H --type f --color=always";
-      fileWidgetOptions = ["--ansi" "--height 100%" "--preview 'bat -f --style=numbers {}'"];
+      fileWidgetOptions = ["--ansi" "--height 100%" "--preview 'bat --decorations=always --color=always --style=numbers {}'"];
       historyWidgetOptions = [];
     };
 
