@@ -1,34 +1,43 @@
 {
-  description = "diegs home-manager flake";
+  description = "Darwin system flake";
 
   inputs = {
-    flake-utils.url = "github:numtide/flake-utils";
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixpkgs-24.05-darwin";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    darwin = {
+      url = "github:LnL7/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    emacs = {
+      url = "github:nix-community/emacs-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    emacs-darwin = {
+      url = "github:c4710n/nix-darwin-emacs";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
   };
 
-  outputs = {self, nixpkgs, nixpkgs-stable, home-manager, ...}:
-    let
-      system = "aarch64-darwin";
-      pkgs = import nixpkgs {
-        inherit system;
-        config.allowUnfree = true;
-        config.allowUnsupportedSystem = true;
-      };
-      pkgo = import nixpkgs-stable {
-        inherit system;
-        config.allowUnfree = true;
-        config.allowUnsupportedSystem = true;
-      };
-    in {
-      homeConfigurations.diegs = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-        modules = [ ./home.nix ];
-        extraSpecialArgs = { inherit pkgo; };
-      };
+  outputs = inputs@{ self, darwin, home-manager, nixpkgs, emacs, emacs-darwin }:
+  {
+    # Build darwin flake using:
+    # $ darwin-rebuild build --flake .#dpontoriero-mlt
+    darwinConfigurations."dpontoriero-mlt" = darwin.lib.darwinSystem {
+      modules = [
+        ./darwin.nix
+        home-manager.darwinModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.dpontoriero = import ./home.nix;
+            users.users.dpontoriero.home = "/Users/dpontoriero";
+          }
+      ];
+      specialArgs = { inherit inputs; };
     };
+  };
 }

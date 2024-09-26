@@ -1,188 +1,97 @@
-{ config, lib, pkgs, pkgo, ... }:
-
-let
-  username = "diegs";
-  homeDir = "/Users/${username}";
-in {
+{ config, lib, pkgs, ... }:
+{
   home = {
-    username = username;
-    homeDirectory = homeDir;
     stateVersion = "23.11";
+
+    sessionPath = [ "$HOME/.go/bin" ]; # "/opt/homebrew/bin" ];
 
     packages = [
       # util
-      pkgo.asciinema
-      pkgo.asciinema-agg
-      pkgo.graphviz
-      pkgo.inetutils
-      pkgo.tree
-      pkgo.watch
-      # (pkgs.fishPlugins.pure.overrideAttrs(o: {
-      #   doCheck = false;
-      # }))
-      pkgo.wget
-      pkgs.zk
-
-      # (pkgs.writeShellScriptBin "kak-kitty-tab" ''
-      #   kak "''${@:2}"
-      #   kitten @ focus-tab --match=id:$1
-      # '')
-      (pkgs.writeShellScriptBin "fzf" ''
-        SK_DEFAULT_OPTS="$FZF_DEFAULT_OPTS" sk "$@"
-      '')
-
-      # rust alternates
-      # pkgs.du-dust
       pkgs.fd
       pkgs.hexyl
-      # pkgs.procs
+      pkgs.pure-prompt
       pkgs.ripgrep
       pkgs.sd
+      pkgs.tree
+      pkgs.watch
+      pkgs.wget
+
+      # ui
+      # pkgs.monaspace
 
       # dev tools
-      pkgs.bazelisk
-      # pkgo.buildah
       pkgs.cachix
-      pkgs.cmake
-      pkgs.go-migrate
-      pkgs.graphite-cli
-      # (pkgs.nodePackages.graphite-cli.override (_: {
-      #   version = "1.1.4";
-      #   src = pkgs.fetchurl {
-      #     url = "https://registry.npmjs.org/@withgraphite/graphite-cli/-/graphite-cli-1.1.4.tgz";
-      #     # sha512 = "sha512-LshB8BhJrlLUhFG5H4gvpVca5R8p7UM8CSKVrIbYiRQ5y+9ASZ2st1zhITl0FwAQ6o4ZDN6vFK/1CCXy/OKPmw==";
-      #     sha512 = lib.fakeSha512;
-      #   };
-      # }))
-      pkgo.python3Packages.grip
-      # pkgs.python3Packages.yq
-      pkgs.yq-go
-      pkgs.openfortivpn
-      pkgs.colima
-      pkgs.docker-client
-      pkgs.docker-buildx
-      pkgs.age
-      pkgs.sops
+      pkgs.nil
+      pkgs.jq
+      pkgs.yq
+      # pkgs.yq-go
+      # pkgs.colima
+      # pkgs.docker-client
+      # pkgs.docker-buildx
 
       # markdown
       pkgs.marksman
 
-      # sysadmin
-      pkgo.ansible
-      pkgs.cloudflared
+      # k8s
+      pkgs.awscli2
+      (pkgs.google-cloud-sdk.withExtraComponents(with pkgs.google-cloud-sdk.components; [
+        beta
+        gke-gcloud-auth-plugin
+      ]))
+      pkgs.packer
       pkgs.kubectl
-      pkgs.damon
-      # pkgs.kubeseal
-      # pkgs.fluxcd
-      # pkgs.weave-gitops
-      pkgs.kubeconform
       pkgs.kustomize
       pkgs.kubernetes-helm
-      pkgs.k9s
-      # pkgs-stable.awscli2
-      pkgo.nomad
-      pkgo.nomad-pack
-      pkgo.rclone
-      pkgo.sshpass
-      pkgs.vault
+      # pkgs.setup-envtest
+      # pkgs.kubernetes-controller-tools
 
-      # data
-      pkgo.kafkactl
-      pkgo.mysql-client
-      pkgo.postgresql
-      pkgo.redpanda
-      pkgs.duckdb
-
-      # haskell
-      # pkgs.cabal-install
-      # pkgs.cabal2nix
-      # pkgs.nix-prefetch-git
-
-      # java
-      (pkgo.gradle.override {
-        javaToolchains = [ pkgs.jdk8 pkgs.jdk11 pkgs.jdk17 ];
-      })
-      pkgo.maven
-      pkgs.kotlin-language-server
-      pkgs.java-language-server
-
-      # scala
-      # pkgs.ammonite
-      (pkgs.metals.override {
-        jre = pkgs.jdk17;
-      })
-      (pkgs.sbt.override {
-        jre = pkgs.jdk17;
-      })
-      # pkgs.scala_3
-      # pkgs.scalafix
+      pkgs.go-task
+      pkgs.yamllint
+      pkgs.terraform
+      pkgs.tflint
+      pkgs.terraform-docs
+      pkgs.glab
+      pkgs.kind
 
       # go
       pkgs.golangci-lint
       pkgs.gopls
-      pkgs.gotools
-      pkgs.grpcurl
-      pkgs.grpcui
+      pkgs.gocover-cobertura
+      # pkgs.gotools
 
+      (pkgs.writeShellScriptBin "e" ''
+        emacsclient -n -e "(> (length (frame-list)) 1)" | grep -q t
+        if [ "$?" = "1" ]; then
+          emacsclient -c -n -a "" "$@"
+        else
+          emacsclient -n -a "" "$@"
+        fi
+      '')
       # protobuf
-      pkgs.buf
-      pkgs.protobuf_26
+      # pkgs.protobuf_26
 
       # python
       # pkgs.pyright
-
-      # rust
-      # pkgs.rustup
-      pkgs.cargo
-      pkgs.rust-analyzer
-      pkgs.rustc
-      pkgs.rustfmt
-
-      # blockchain
-      pkgs.nodePackages.ganache
-      pkgs.solc
     ];
 
     file = {
       ".config/1Password/ssh/agent.toml".text = ''
         [[ssh-keys]]
         vault = "Private"
-
-        [[ssh-keys]]
-        vault = "DevOps"
       '';
-
-      ".config/kak-lsp/kak-lsp.toml".source = config/kak-lsp/kak-lsp.toml;
       ".hushlogin".text = "";
       ".ignore".text = ".git/";
     };
 
     sessionVariables = {
-      XDG_DATA_DIRS = "$HOME/.nix-profile/share:$XDG_DATA_DIRS";
-      SSH_AUTH_SOCK = "$HOME/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock";
+      # XDG_DATA_DIRS = "$HOME/.nix-profile/share:$XDG_DATA_DIRS";
+      # SSH_AUTH_SOCK = "$HOME/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock";
     };
   };
 
-  programs = {
-    alacritty = {
-      enable = true;
-      settings = {
-        import = [
-            "~/.config/alacritty/theme.toml"
-        ];
-        window = {
-          resize_increments = true;
-          option_as_alt = "OnlyLeft";
-        };
-        font = {
-          normal = { family = "Monaspace Neon"; style = "Regular"; };
-          italic = { style = "Regular"; };
-          bold_italic = { style = "Bold"; };
-          size = 14;
-        };
-      };
-    };
+  fonts.fontconfig.enable = false;
 
+  programs = {
     atuin = {
       enable = true;
       settings = {
@@ -216,96 +125,26 @@ in {
       };
     };
 
-    eza = {
+    emacs = {
       enable = true;
+      package = (pkgs.emacsWithPackagesFromUsePackage {
+        config = ./emacs.el;
+        defaultInitFile = true;
+        package = pkgs.emacs-30;
+        alwaysEnsure = true;
+        extraEmacsPackages = epkgs: [
+          epkgs.treesit-grammars.with-all-grammars
+        ];
+      });
     };
 
-    fish = {
+    eza = {
       enable = true;
-      functions = {
-        # fish_title = ''
-        #   # emacs' "term" is basically the only term that can't handle it.
-        #   if not set -q INSIDE_EMACS; or string match -vq '*,term:*' -- $INSIDE_EMACS
-        #       # If we're connected via ssh, we print the hostname.
-        #       set -l ssh
-        #       set -q SSH_TTY
-        #       and set ssh "["(prompt_hostname | string sub -l 10 | string collect)"]"
-        #       # An override for the current command is passed as the first parameter.
-        #       # This is used by `fg` to show the true process name, among others.
-        #       if set -q argv[1]
-        #           echo -- $ssh (string sub -l 20 -- $argv[1]) (prompt_pwd -d 1 -D 1)
-        #       else
-        #           # Don't print "fish" because it's redundant
-        #           set -l command (status current-command)
-        #           if test "$command" = fish
-        #               set command
-        #           end
-        #           echo -- $ssh (string sub -l 20 -- $command) (prompt_pwd -d 1 -D 1)
-        #       end
-        #   end
-        # '';
-        fish_title = {
-          argumentNames = "last_command";
-          description = "Set title to current folder and shell name";
-          body = ''
-            set --local prompt
-            if test -z "$last_command"
-              set prompt (fish_prompt_pwd_dir_length=$pure_shorten_window_title_current_directory_length prompt_pwd)
-            else
-              set prompt (status current-command 2>/dev/null; or echo $_)
-            end
-            echo $prompt
-          '';
-        };
-        gitignore = "curl -sL https://www.gitignore.io/api/$argv";
-      };
-      plugins = [
-        {
-          name = "fish-async-prompt";
-          src = pkgs.fetchFromGitHub {
-            owner = "acomagu";
-            repo = "fish-async-prompt";
-            rev = "v1.2.0";
-            sha256 = "sha256-B7Ze0a5Zp+5JVsQUOv97mKHh5wiv3ejsDhJMrK7YOx4=";
-          };
-        }
-        {
-          name = "pure";
-          src = pkgs.fetchFromGitHub {
-            owner = "pure-fish";
-            repo = "pure";
-            rev = "v4.8.1";
-            sha256 = "sha256-MnlqKRmMNVp6g9tet8sr5Vd8LmJAbZqLIGoDE5rlu8E=";
-          };
-        }
-      ];
-      shellAliases = {
-        cat = "bat";
-        # kakw = "kitten @ launch --type tab --cwd current --location after --no-response --title kak --copy-env kak-kitty-tab $KITTY_WINDOW_ID";
-        lm = "ln -sf ${pkgs.alacritty-theme}/alabaster.toml ~/.config/alacritty/theme.toml";
-        dm = "ln -sf ${pkgs.alacritty-theme}/alabaster_dark.toml ~/.config/alacritty/theme.toml";
-        k = "kubectl";
-        kg = "kubectl get";
-        kns = "kubectl config set-context --current --namespace";
-      };
-      shellInit = ''
-        # Nix
-        source '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.fish'
-        # End Nix
-        set --prepend fish_complete_path /Users/diegs/.nix-profile/share/fish/completions
-        set --prepend fish_complete_path /Users/diegs/.nix-profile/share/fish/vendor_completions.d
-        source ~/.local.fish
-      '';
-      interactiveShellInit = ''
-        set -g async_prompt_functions _pure_prompt_git
-        set -g pure_shorten_window_title_current_directory_length 1
-      '';
     };
 
     git = {
       enable = true;
       userName = "Diego Pontoriero";
-      userEmail = "74719+diegs@users.noreply.github.com";
       delta = {
         enable = true;
         options = {
@@ -353,6 +192,9 @@ in {
           signingkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILJasnFrDOljlqzQUCWT34ci8fp5/QgYh2QWvJM2l942";
         };
       };
+      aliases = {
+        mr = "!sh -c 'git fetch $1 merge-requests/$2/head:mr-$1-$2 && git checkout mr-$1-$2' -";
+      };
       ignores = [
         ".direnv/"
         ".DS_Store"
@@ -365,296 +207,20 @@ in {
       package = pkgs.go;
     };
 
-    home-manager.enable = true;
-
-    java = {
-      enable = true;
-      package = pkgs.jdk17;
-    };
-
-    jq = {
-      enable = true;
+    home-manager = {
+      enable = false;
     };
 
     jujutsu = {
-      enable = true;
+      enable = false;
       settings = {
         ui = {
           default-command = "log";
         };
         user = {
           name = "Diego Pontoriero";
-          email = "74719+diegs@users.noreply.github.com";
         };
       };
-    };
-
-    kakoune = {
-      enable = true;
-      config = {
-          indentWidth = 2;
-          numberLines = {
-            enable = true;
-            highlightCursor = true;
-            relative = true;
-          };
-          scrollOff = {
-            lines = 10;
-          };
-          showMatching = true;
-          tabStop = 2;
-          ui = {
-            enableMouse = false;
-          };
-          wrapLines = {
-            enable = true;
-            indent = true;
-            marker = "⏎";
-            word = true;
-          };
-          hooks = [
-            {
-              name = "KakBegin";
-              option = ".*";
-              commands = "eval %sh{kak-lsp --kakoune -s $kak_session}";
-            }
-            {
-              name = "KakEnd";
-              option = ".*";
-              commands = "eval %sh{pkill -f 'kak-lsp -s $kak_session'}";
-            }
-            {
-              name = "WinSetOption";
-              option = "filetype=(rust|python|go|c|cpp|java|scala)";
-              commands = ''
-                lsp-enable-window
-                lsp-auto-signature-help-enable
-                set-option global lsp_auto_show_code_actions true
-              '';
-                # lsp-auto-hover-enable
-            }
-            # {
-            #   name = "WinCreate";
-            #   option = ".*";
-            #   commands = ''
-            #     kakboard-enable
-            #   '';
-            # }
-            {
-              name = "WinSetOption";
-              option = "filetype=go";
-              commands = ''
-                set-option window indentwidth 0
-                hook window BufWritePre .* %{
-                  try %{ lsp-code-action-sync '^Organize Imports$' }
-                  lsp-formatting-sync
-                }
-              '';
-            }
-            {
-              name = "BufCreate";
-              option = ".*\.sbt";
-              commands = "set buffer filetype scala";
-            }
-            {
-              name = "BufCreate";
-              option = "go\.(mod|sum)";
-              commands = "set buffer filetype go";
-            }
-            {
-              name = "BufCreate";
-              option = "Makefile";
-              commands = "set-option buffer indentwidth 0";
-            }
-            {
-              name = "WinSetOption";
-              option = "filetype=rust";
-              commands = "hook window BufWritePre .* lsp-formatting-sync";
-            }
-            # {
-            #   name = "WinSetOption";
-            #   option = "filetype=scala";
-            #   commands = "hook window BufWritePre .* lsp-formatting-sync";
-            # }
-            {
-              name = "InsertChar";
-              option = "\\t";
-              commands = ''try %{ execute-keys -draft "h<a-h><a-k>\A\h+\z<ret><a-;>;%opt{indentwidth}@" }'';
-            }
-            {
-              name = "InsertDelete";
-              option = "' '";
-              commands = ''try %{ execute-keys -draft "h<a-h><a-k>\A\h+\z<ret>i<space><esc><lt>" }'';
-            }
-            {
-              name = "InsertCompletionShow";
-              option = ".*";
-              commands = ''
-                try %{
-                    # this command temporarily removes cursors preceded by whitespace;
-                    # if there are no cursors left, it raises an error, does not
-                    # continue to execute the mapping commands, and the error is eaten
-                    # by the `try` command so no warning appears.
-                    execute-keys -draft 'h<a-K>\h<ret>'
-                    map window insert <tab> <c-n>
-                    map window insert <s-tab> <c-p>
-                    hook -once -always window InsertCompletionHide .* %{
-                      unmap window insert <tab> <c-n>
-                      unmap window insert <s-tab> <c-p>
-                    }
-                }
-              '';
-            }
-          ];
-          keyMappings = [
-            {
-              mode = "normal";
-              key = "<a-c>";
-              effect = ":comment-line<ret>";
-              docstring = "(un)comment selected lines using line comments";
-            }
-            {
-              mode = "user";
-              key = "l";
-              effect = ":enter-user-mode lsp<ret>";
-              docstring = "LSP mode";
-            }
-            {
-              mode = "insert";
-              key = "<tab>";
-              effect = "<a-;>:try lsp-snippets-select-next-placeholders catch %{ execute-keys -with-hooks <lt>tab> }<ret>";
-              docstring = "select next snippet placeholder";
-            }
-            {
-              mode = "object";
-              key = "a";
-              effect = "<a-semicolon>lsp-object<ret>";
-              docstring = "LSP any symbol";
-            }
-            {
-              mode = "object";
-              key = "<a-a>";
-              effect = "<a-semicolon>lsp-object<ret>";
-              docstring = "LSP any symbol";
-            }
-            {
-              mode = "object";
-              key = "e";
-              effect = "<a-semicolon>lsp-object Function Method<ret>";
-              docstring = "LSP function or method";
-            }
-            {
-              mode = "object";
-              key = "k";
-              effect = "<a-semicolon>lsp-object Class Interface Struct<ret>";
-              docstring = "LSP class interface or struct";
-            }
-            {
-              mode = "object";
-              key = "d";
-              effect = "<a-semicolon>lsp-diagnostic-object --include-warnings<ret>";
-              docstring = "LSP errors and warnings";
-            }
-            {
-              mode = "object";
-              key = "D";
-              effect = "<a-semicolon>lsp-diagnostic-object<ret>";
-              docstring = "LSP errors";
-            }
-            # {
-            #   mode = "window";
-            #   key = "h";
-            #   effect = ":nop %sh{kitten @ focus-window --no-response --match=neighbor:left}<ret>";
-            #   docstring = "select pane left";
-            # }
-            # {
-            #   mode = "window";
-            #   key = "j";
-            #   effect = ":nop %sh{kitten @ focus-window --no-response --match=neighbor:bottom}<ret>";
-            #   docstring = "select pane down";
-            # }
-            # {
-            #   mode = "window";
-            #   key = "k";
-            #   effect = ":nop %sh{kitten @ focus-window --no-response --match=neighbor:top}<ret>";
-            #   docstring = "select pane up";
-            # }
-            # {
-            #   mode = "window";
-            #   key = "l";
-            #   effect = ":nop %sh{kitten @ focus-window --no-response --match=neighbor:right}<ret>";
-            #   docstring = "select pane right";
-            # }
-            # {
-            #   mode = "window";
-            #   key = "p";
-            #   effect = ":nop %sh{kitten @ focus-window --no-response --match=recent:1}<ret>";
-            #   docstring = "select previous pane";
-            # }
-            {
-              mode = "window";
-              key = "s";
-              effect = ":new<ret>";
-              docstring = "split window";
-            }
-            {
-              mode = "user";
-              key = "w";
-              effect = ":enter-user-mode window<ret>";
-              docstring = "window mode";
-            }
-            {
-              mode = "normal";
-              key = "<c-w>";
-              effect = ":enter-user-mode window<ret>";
-              docstring = "window mode";
-            }
-            {
-              mode = "normal";
-              key = "<c-a>";
-              effect = ":lsp-code-actions<ret>";
-              docstring = "LSP code actions";
-            }
-            {
-              mode = "user";
-              key = "f";
-              effect = ":find<ret>";
-              docstring = "find file";
-            }
-          ];
-      };
-      defaultEditor = true;
-      # extraConfig = ''
-      #   # eval %sh{kak-lsp --kakoune -s $kak_session}
-
-      #   define-command find -docstring "find file" -params .. %{
-      #     kitty-overlay --copy-env sk --bind %exp{enter:execute(echo eval -verbatim -client %val{client} edit '"{}"' | kak -p %val{session})+abort}
-      #   }
-
-      #   define-command kitty-overlay -params 1.. -docstring '
-      #   kitty-overlay <program> [<arguments>]: create a new terminal as a kitty overlay
-      #   The program passed as argument will be executed in the new terminal' \
-      #   %{
-      #       nop %sh{
-      #           match=""
-      #           if [ -n "$kak_client_env_KITTY_WINDOW_ID" ]; then
-      #               match="--match=window_id:$kak_client_env_KITTY_WINDOW_ID"
-      #           fi
-
-      #           listen=""
-      #           if [ -n "$kak_client_env_KITTY_LISTEN_ON" ]; then
-      #               listen="--to=$kak_client_env_KITTY_LISTEN_ON"
-      #           fi
-
-      #           kitty @ $listen launch --no-response --type="overlay" --cwd="$PWD" $match "$@"
-      #       }
-      #   }
-      #   complete-command kitty-overlay shell
-      # '';
-      plugins = [
-        pkgs.kakounePlugins.kakoune-lsp
-      #   pkgs.kakounePlugins.kakboard
-      ];
     };
 
     readline = {
@@ -708,9 +274,6 @@ in {
             KexAlgorithms = "+diffie-hellman-group1-sha1";
           };
         };
-        "*.smlxl.dev" = {
-          user = "root";
-        };
         "github.com" = {
           hostname = "ssh.github.com";
           port = 443;
@@ -718,17 +281,36 @@ in {
       };
     };
 
-    zellij = {
+    zoxide = {
       enable = true;
     };
 
-    zoxide = {
+    zsh = {
       enable = true;
+      initExtra = ''
+        autoload -U promptinit; promptinit
+        zstyle :prompt:pure:git:stash show yes
+        prompt pure
+
+        autoload -U edit-command-line
+        zle -N edit-command-line
+        bindkey "^X^E" edit-command-line
+
+        if test -d /opt/homebrew; then
+          eval "$(/opt/homebrew/bin/brew shellenv)"
+        fi
+      '';
+      sessionVariables = {
+        EDITOR = "vim";
+      };
+      shellAliases = {
+        cat = "bat";
+        k = "kubectl";
+      };
     };
   };
 
   xdg = {
     enable = true;
   };
-
 }
