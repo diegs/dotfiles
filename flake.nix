@@ -11,7 +11,7 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    emacs = {
+    emacs-overlay = {
       url = "github:nix-community/emacs-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
@@ -22,22 +22,41 @@
 
   };
 
-  outputs = inputs@{ self, darwin, home-manager, nixpkgs, emacs, emacs-darwin }:
-  {
+  outputs = inputs@{ self, darwin, home-manager, nixpkgs, emacs-overlay, emacs-darwin }:
+  let
+    system = "x86_64-linux";
+    pkgs = import nixpkgs {
+      inherit system;
+      overlays = [ emacs-overlay.overlay ];
+      config = {
+        allowUnfree = true;
+      };
+    };
+  in {
     # Build darwin flake using:
     # $ darwin-rebuild build --flake .#dpontoriero-mlt
-    darwinConfigurations."dpontoriero-mlt" = darwin.lib.darwinSystem {
+     darwinConfigurations."dpontoriero-mlt" = darwin.lib.darwinSystem {
+       modules = [
+         ./darwin.nix
+         home-manager.darwinModules.home-manager
+           {
+             home-manager.useGlobalPkgs = true;
+             home-manager.useUserPackages = true;
+             home-manager.users.dpontoriero = import ./home.nix;
+             users.users.dpontoriero.home = "/Users/dpontoriero";
+           }
+       ];
+       specialArgs = { inherit inputs; };
+     };
+    homeConfigurations."dpontoriero" = home-manager.lib.homeManagerConfiguration {
+      inherit pkgs;
       modules = [
-        ./darwin.nix
-        home-manager.darwinModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.dpontoriero = import ./home.nix;
-            users.users.dpontoriero.home = "/Users/dpontoriero";
-          }
+        ./home.nix
+        ./linux.nix
       ];
-      specialArgs = { inherit inputs; };
+
+      # Optionally use extraSpecialArgs
+      # to pass through arguments to home.nix
     };
   };
 }

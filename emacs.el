@@ -8,7 +8,7 @@
   (setq default-frame-alist
     '((height . 60)
       (width . 140)
-      (font . "Monaspace Neon:weight=regular:size=14")
+      ;(font . "Monaspace Neon:weight=regular:size=14")
       (vertical-scroll-bars . nil)))
   (global-display-line-numbers-mode t)
   (global-hl-line-mode t)
@@ -29,6 +29,7 @@
   (initial-scratch-message nil)
   (display-line-numbers-type 'relative)
   (ring-bell-function 'ignore)
+  (browse-url-browser-function 'browse-url-chrome)
 
   ;; Corfu
 
@@ -86,8 +87,8 @@
 
 (use-package treesit-auto
   :config
-  (global-treesit-auto-mode)
-  (treesit-auto-add-to-auto-mode-alist))
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  (global-treesit-auto-mode))
 
 ;(use-package tree-sitter-ispell)
 
@@ -96,17 +97,13 @@
   (magit-auto-revert-mode t)
   (magit-define-global-key-bindings 'recommended))
 
-(use-package nix-ts-mode
-  :init
-  (add-to-list 'auto-mode-alist '("\\.nix\\'" . nix-ts-mode)))
+(use-package protobuf-ts-mode)
+(use-package nix-ts-mode)
+(use-package terraform-mode)
 
-(use-package protobuf-ts-mode
-  :init
-  (add-to-list 'auto-mode-alist '("\\.proto\\'" . protobuf-ts-mode)))
-
-(use-package undo-fu
-  :custom
-  (undo-fu-allow-undo-in-region t))
+;(use-package undo-fu
+;  :custom
+;  (undo-fu-allow-undo-in-region t))
 
 (use-package eglot
   :init
@@ -307,15 +304,14 @@
   (completion-category-defaults nil)
   (completion-category-overrides '((file (styles partial-completion)))))
 
-(use-package dired-sidebar)
+;(use-package dired-sidebar)
+
 
 (use-package ws-butler
   :init
   (ws-butler-global-mode))
 
 (use-package meow
-  :custom
-  (meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
   :config
   (meow-motion-overwrite-define-key
    '("j" . meow-next)
@@ -400,8 +396,14 @@
    '("z" . meow-pop-selection)
    '("'" . repeat)
    '("<escape>" . ignore))
-  (meow-global-mode 1))
+  (meow-global-mode 1)
+  :custom
+  (meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
+  (meow-use-clipboard t)
+  (meow-select-on-append t)
+  (meow-select-on-insert t))
 
 (use-package meow-tree-sitter
+  :after (meow)
   :config
   (meow-tree-sitter-register-defaults))

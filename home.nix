@@ -3,7 +3,7 @@
   home = {
     stateVersion = "23.11";
 
-    sessionPath = [ "$HOME/.go/bin" ]; # "/opt/homebrew/bin" ];
+    sessionPath = [ "$HOME/.go/bin" "$HOME/.local/bin"];
 
     packages = [
       # util
@@ -34,6 +34,7 @@
 
       # k8s
       pkgs.awscli2
+      pkgs.oci-cli
       (pkgs.google-cloud-sdk.withExtraComponents(with pkgs.google-cloud-sdk.components; [
         beta
         gke-gcloud-auth-plugin
@@ -48,6 +49,7 @@
       pkgs.go-task
       pkgs.yamllint
       pkgs.terraform
+      pkgs.terraform-ls
       pkgs.tflint
       pkgs.terraform-docs
       pkgs.glab
@@ -60,11 +62,15 @@
       # pkgs.gotools
 
       (pkgs.writeShellScriptBin "e" ''
+        emacsclient -nw "$@"
+      '')
+      (pkgs.writeShellScriptBin "ec" ''
         emacsclient -n -e "(> (length (frame-list)) 1)" | grep -q t
         if [ "$?" = "1" ]; then
-          emacsclient -c -n -a "" "$@"
+          emacsclient -c -n "$@"
         else
-          emacsclient -n -a "" "$@"
+          emacsclient -n "$@"
+          emacsclient -n -e  "(select-frame-set-input-focus (selected-frame))" > /dev/null
         fi
       '')
       # protobuf
@@ -130,7 +136,7 @@
       package = (pkgs.emacsWithPackagesFromUsePackage {
         config = ./emacs.el;
         defaultInitFile = true;
-        package = pkgs.emacs-30;
+        package = pkgs.emacs-unstable-pgtk;
         alwaysEnsure = true;
         extraEmacsPackages = epkgs: [
           epkgs.treesit-grammars.with-all-grammars
@@ -170,7 +176,8 @@
         gpg = {
           format = "ssh";
           ssh = {
-            program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign";
+            # program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign";
+            program = "/opt/1Password/op-ssh-sign";
           };
         };
         init = {
@@ -205,10 +212,6 @@
       enable = true;
       goPath = ".go";
       package = pkgs.go;
-    };
-
-    home-manager = {
-      enable = false;
     };
 
     jujutsu = {
@@ -247,9 +250,9 @@
       forwardAgent = true;
       extraOptionOverrides = {
         AddKeysToAgent = "yes";
-        IdentityAgent = "'~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock'";
+        IdentityAgent = "~/.1password/agent.sock";
         StrictHostKeyChecking = "no";
-        UseKeychain = "yes";
+        # UseKeychain = "yes";
       };
       matchBlocks = {
         "192.168.*" = {
@@ -287,6 +290,7 @@
 
     zsh = {
       enable = true;
+      defaultKeymap = "emacs";
       initExtra = ''
         autoload -U promptinit; promptinit
         zstyle :prompt:pure:git:stash show yes
@@ -301,7 +305,8 @@
         fi
       '';
       sessionVariables = {
-        EDITOR = "vim";
+        EDITOR = "e";
+        VISUAL = "e";
       };
       shellAliases = {
         cat = "bat";
