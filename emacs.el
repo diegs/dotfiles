@@ -30,6 +30,7 @@
   (display-line-numbers-type 'relative)
   (ring-bell-function 'ignore)
   (browse-url-browser-function 'browse-url-chrome)
+  (isearch-wrap-pause 'no-ding)
 
   ;; Corfu
 
