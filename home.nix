@@ -15,6 +15,7 @@
       pkgs.tree
       pkgs.watch
       pkgs.wget
+      pkgs.pre-commit
 
       # ui
       # pkgs.monaspace
@@ -52,6 +53,7 @@
       pkgs.terraform-ls
       pkgs.tflint
       pkgs.terraform-docs
+      pkgs.trivy
       pkgs.glab
       pkgs.kind
 
