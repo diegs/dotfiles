@@ -32,6 +32,7 @@
 
       # markdown
       pkgs.marksman
+      pkgs.pandoc
 
       # k8s
       pkgs.awscli2
@@ -47,7 +48,7 @@
       # pkgs.setup-envtest
       # pkgs.kubernetes-controller-tools
 
-      pkgs.go-task
+      # pkgs.go-task
       pkgs.yamllint
       pkgs.terraform
       pkgs.terraform-ls

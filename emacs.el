@@ -100,8 +100,11 @@
 
 (use-package protobuf-ts-mode)
 (use-package nix-ts-mode)
-(use-package terraform-mode)
+(use-package terraform-mode
+  :mode ("README\\.md\\'" . gfm-mode)
+  :init (setq markdown-command "pandoc"))
 
+(use-package markdown-mode)
 ;(use-package undo-fu
 ;  :custom
 ;  (undo-fu-allow-undo-in-region t))
