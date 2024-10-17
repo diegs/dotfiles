@@ -48,7 +48,7 @@
       # pkgs.setup-envtest
       # pkgs.kubernetes-controller-tools
 
-      # pkgs.go-task
+      pkgs.go-task
       pkgs.yamllint
       pkgs.terraform
       pkgs.terraform-ls
@@ -94,6 +94,7 @@
 
     sessionVariables = {
       # XDG_DATA_DIRS = "$HOME/.nix-profile/share:$XDG_DATA_DIRS";
+      # FLAKE_CONFIG_URI = "path:${config.home.homeDirectory}/src/dotfiles";
       # SSH_AUTH_SOCK = "$HOME/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock";
     };
   };

@@ -18,7 +18,6 @@
       enable = true;
       extensions = [
         { package = pkgs.gnomeExtensions.night-theme-switcher; }
-        { package = pkgs.gnomeExtensions.paperwm; }
         { package = pkgs.gnomeExtensions.steal-my-focus-window; }
       ];
     };

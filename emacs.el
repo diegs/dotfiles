@@ -83,8 +83,7 @@
 
 (use-package bind-key)
 
-(use-package project
-  :ensure nil)
+(use-package project)
 
 (use-package treesit-auto
   :config
@@ -94,17 +93,21 @@
 ;(use-package tree-sitter-ispell)
 
 (use-package magit
-  :custom
-  (magit-auto-revert-mode t)
-  (magit-define-global-key-bindings 'recommended))
+ :custom
+ (magit-define-global-key-bindings 'recommended)
+ (magit-auto-revert-mode t))
 
 (use-package protobuf-ts-mode)
 (use-package nix-ts-mode)
-(use-package terraform-mode
-  :mode ("README\\.md\\'" . gfm-mode)
-  :init (setq markdown-command "pandoc"))
+(use-package terraform-mode)
 
-(use-package markdown-mode)
+(use-package markdown-mode
+  :mode
+  ("README\\.md\\'" . gfm-mode)
+  :custom
+  (markdown-command "pandoc")
+  (markdown-asymmetric-header t))
+
 ;(use-package undo-fu
 ;  :custom
 ;  (undo-fu-allow-undo-in-region t))
@@ -310,7 +313,6 @@
 
 ;(use-package dired-sidebar)
 
-
 (use-package ws-butler
   :init
   (ws-butler-global-mode))
@@ -411,3 +413,35 @@
   :after (meow)
   :config
   (meow-tree-sitter-register-defaults))
+
+(defun my-meow-extend-to-end-of-thing (thing)
+    "Extend selection to the end of THING."
+    (interactive (list (meow-thing-prompt "Extend to end of: ")))
+    (if (not (use-region-p))
+        (meow-end-of-thing thing)
+      (save-window-excursion
+        (let ((back (equal 'backward (meow--thing-get-direction 'end)))
+              (bounds (meow--parse-inner-of-thing-char thing)))
+          (let ((beg (min (point) (mark))))
+            (when bounds
+              (thread-first
+                (meow--make-selection '(select . transient)
+                                      (if back (cdr bounds) beg)
+                                      (if back beg (cdr bounds)))
+                (meow--select))))))))
+
+(defun my-meow-extend-to-beginning-of-thing (thing)
+  "Extend selection to the beginning of THING."
+  (interactive (list (meow-thing-prompt "Extend to beginning of: ")))
+  (if (not (use-region-p))
+      (meow-beginning-of-thing thing)
+    (save-window-excursion
+      (let ((back (equal 'backward (meow--thing-get-direction 'beginning)))
+            (bounds (meow--parse-inner-of-thing-char thing)))
+        (let ((end (max (point) (mark))))
+          (when bounds
+            (thread-first
+              (meow--make-selection '(select . transient)
+                                    (if back end (car bounds))
+                                    (if back (car bounds) end))
+              (meow--select))))))))

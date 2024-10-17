@@ -48,7 +48,7 @@
        ];
        specialArgs = { inherit inputs; };
      };
-    homeConfigurations."dpontoriero" = home-manager.lib.homeManagerConfiguration {
+    homeConfigurations."dpontoriero@5b45ab8-lcedt" = home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
       modules = [
         ./home.nix
