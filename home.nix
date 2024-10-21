@@ -219,7 +219,7 @@
     };
 
     jujutsu = {
-      enable = false;
+      enable = true;
       settings = {
         ui = {
           default-command = "log";
@@ -315,6 +315,7 @@
       shellAliases = {
         cat = "bat";
         k = "kubectl";
+        tf = "terraform";
       };
     };
   };
