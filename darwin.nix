@@ -23,6 +23,9 @@ in {
       cleanup = "zap";
       upgrade = true;
     };
+    brews = [
+      "openconnect"
+    ];
     casks = [
       "1password"
       "1password-cli"
