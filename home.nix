@@ -22,6 +22,7 @@
 
       # dev tools
       pkgs.cachix
+      pkgs.git-branchless
       pkgs.nil
       pkgs.jq
       pkgs.yq
@@ -219,7 +220,7 @@
     };
 
     jujutsu = {
-      enable = true;
+      enable = false;
       settings = {
         ui = {
           default-command = "log";
