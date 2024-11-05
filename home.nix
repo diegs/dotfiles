@@ -38,6 +38,7 @@
       # k8s
       pkgs.argocd
       pkgs.awscli2
+      pkgs.cilium-cli
       pkgs.oci-cli
       (pkgs.google-cloud-sdk.withExtraComponents(with pkgs.google-cloud-sdk.components; [
         beta
