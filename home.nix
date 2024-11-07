@@ -25,8 +25,8 @@
       pkgs.git-branchless
       pkgs.nil
       pkgs.jq
-      pkgs.yq
-      # pkgs.yq-go
+      # pkgs.yq
+      pkgs.yq-go
       # pkgs.colima
       # pkgs.docker-client
       # pkgs.docker-buildx
@@ -76,7 +76,7 @@
           emacsclient -c -n "$@"
         else
           emacsclient -n "$@"
-          emacsclient -n -e  "(select-frame-set-input-focus (selected-frame))" > /dev/null
+          # emacsclient -n -e  "(select-frame-set-input-focus (selected-frame))" > /dev/null
         fi
       '')
       # protobuf
