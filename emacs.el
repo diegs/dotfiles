@@ -114,6 +114,7 @@
 
 (use-package eglot
   :init
+  (add-hook 'yaml-ts-mode-hook 'eglot-ensure)
   (add-hook 'prog-mode-hook 'eglot-ensure))
 
 (use-package corfu

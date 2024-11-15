@@ -15,7 +15,7 @@
     bash.enable = true;
     home-manager.enable = true;
     gnome-shell = {
-      enable = true;
+      enable = false;
       extensions = [
         { package = pkgs.gnomeExtensions.gtile; }
         { package = pkgs.gnomeExtensions.night-theme-switcher; }
@@ -52,11 +52,9 @@
   };
 
   systemd.user.timers = {
-    battery_status = {
-      Unit.Description = "Timer for fix_webcam service";
+    fix_webcam = {
       Timer = {
-        Unit = "fix_webcam";
-        OnBootSec = "1m";
+        OnStartupSec = "1m";
         OnUnitActiveSec = "1m";
       };
       Install.WantedBy = [ "timers.target" ];

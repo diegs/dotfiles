@@ -21,6 +21,11 @@
       # pkgs.monaspace
 
       # dev tools
+      pkgs.bash-language-server
+      pkgs.cmake-language-server
+      pkgs.dockerfile-language-server-nodejs
+      pkgs.nodePackages.vscode-json-languageserver
+      pkgs.yaml-language-server
       pkgs.cachix
       pkgs.git-branchless
       pkgs.nil
@@ -71,14 +76,17 @@
         emacsclient -nw "$@"
       '')
       (pkgs.writeShellScriptBin "ec" ''
-        emacsclient -n -e "(> (length (frame-list)) 1)" | grep -q t
-        if [ "$?" = "1" ]; then
-          emacsclient -c -n "$@"
-        else
-          emacsclient -n "$@"
-          # emacsclient -n -e  "(select-frame-set-input-focus (selected-frame))" > /dev/null
-        fi
+        emacsclient -n -r "$@"
       '')
+      # (pkgs.writeShellScriptBin "ec" ''
+      #   emacsclient -n -e "(> (length (frame-list)) 1)" | grep -q t
+      #   if [ "$?" = "1" ]; then
+      #     emacsclient -c -n "$@"
+      #   else
+      #     emacsclient -n "$@"
+      #     # emacsclient -n -e  "(select-frame-set-input-focus (selected-frame))" > /dev/null
+      #   fi
+      # '')
       # protobuf
       # pkgs.protobuf_26
 
@@ -257,7 +265,6 @@
       forwardAgent = true;
       extraOptionOverrides = {
         AddKeysToAgent = "yes";
-        IdentityAgent = "~/.1password/agent.sock";
         StrictHostKeyChecking = "no";
         # UseKeychain = "yes";
       };
@@ -265,6 +272,7 @@
         "192.168.*" = {
           extraOptions = {
             HostKeyAlgorithms = "+ssh-rsa";
+            IdentityAgent = "~/.1password/agent.sock";
             PubkeyAcceptedKeyTypes = "+ssh-rsa";
             KexAlgorithms = "+diffie-hellman-group1-sha1";
           };
@@ -272,6 +280,7 @@
         "172.17.*" = {
           extraOptions = {
             HostKeyAlgorithms = "+ssh-rsa";
+            IdentityAgent = "~/.1password/agent.sock";
             PubkeyAcceptedKeyTypes = "+ssh-rsa";
             KexAlgorithms = "+diffie-hellman-group1-sha1";
           };
@@ -280,6 +289,7 @@
           user = "admin";
           extraOptions = {
             HostKeyAlgorithms = "+ssh-rsa";
+            IdentityAgent = "~/.1password/agent.sock";
             PubkeyAcceptedKeyTypes = "+ssh-rsa";
             KexAlgorithms = "+diffie-hellman-group1-sha1";
           };
@@ -287,6 +297,19 @@
         "github.com" = {
           hostname = "ssh.github.com";
           port = 443;
+          extraOptions = {
+            IdentityAgent = "~/.1password/agent.sock";
+          };
+        };
+        "gitlab.com" = {
+          extraOptions = {
+            IdentityAgent = "~/.1password/agent.sock";
+          };
+        };
+        "gitlab-master.nvidia.com" = {
+          extraOptions = {
+            IdentityAgent = "~/.1password/agent.sock";
+          };
         };
       };
     };
