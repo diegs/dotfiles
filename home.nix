@@ -1,4 +1,16 @@
 { config, lib, pkgs, ... }:
+let
+  oci-cli = pkgs.oci-cli.overridePythonAttrs (old: rec {
+    inherit (old) pname;
+    version = "3.50.1";
+    src = pkgs.fetchFromGitHub {
+      owner = "oracle";
+      repo = pname;
+      rev = "v${version}";
+      hash = "sha256-qSXIHEdNIfEPDsXIeHqfl49yjnQ320EiVNRapBQX4vQ=";
+    };
+  });
+in
 {
   home = {
     stateVersion = "23.11";
@@ -35,6 +47,7 @@
       # pkgs.colima
       # pkgs.docker-client
       # pkgs.docker-buildx
+      pkgs.gomplate
 
       # markdown
       pkgs.marksman
@@ -44,7 +57,7 @@
       pkgs.argocd
       pkgs.awscli2
       pkgs.cilium-cli
-      pkgs.oci-cli
+      oci-cli
       (pkgs.google-cloud-sdk.withExtraComponents(with pkgs.google-cloud-sdk.components; [
         beta
         gke-gcloud-auth-plugin
@@ -151,7 +164,7 @@
       package = (pkgs.emacsWithPackagesFromUsePackage {
         config = ./emacs.el;
         defaultInitFile = true;
-        package = pkgs.emacs-unstable-pgtk;
+        package = pkgs.emacs30-pgtk;
         alwaysEnsure = true;
         extraEmacsPackages = epkgs: [
           epkgs.treesit-grammars.with-all-grammars

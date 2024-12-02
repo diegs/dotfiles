@@ -117,6 +117,10 @@
   (add-hook 'yaml-ts-mode-hook 'eglot-ensure)
   (add-hook 'prog-mode-hook 'eglot-ensure))
 
+;; (use-package eglot-booster
+;; 	:after eglot
+;; 	:config	(eglot-booster-mode))
+
 (use-package corfu
   ;; :after (corfu-terminal)
   ;; Optional customizations
