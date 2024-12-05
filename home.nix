@@ -279,8 +279,7 @@ in
         AddKeysToAgent = "yes";
         StrictHostKeyChecking = "no";
         IdentityAgent = if pkgs.stdenv.isDarwin then "~/Library/Group\\ Containers/2BUA8C4S2C.com.1password/t/agent.sock" else "~/.1password/agent.sock";
-        UseKeychain = if pkgs.stdenv.isDarwin then "yes" else "no";
-      };
+      } // (if pkgs.stdenv.isDarwin then { UseKeychain = "yes"; } else {});
       matchBlocks = {
         "192.168.*" = {
           extraOptions = {
