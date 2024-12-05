@@ -3,7 +3,7 @@ let
   emacs = (pkgs.emacsWithPackagesFromUsePackage {
     config = ./emacs.el;
     defaultInitFile = true;
-    package = pkgs.emacs-30;
+    package = pkgs.emacs30;
     alwaysEnsure = true;
     extraEmacsPackages = epkgs: [
       epkgs.treesit-grammars.with-all-grammars
@@ -38,7 +38,7 @@ in {
 
   services = {
     emacs = {
-      enable = false;
+      enable = true;
       package = emacs;
       additionalPath = [ "/etc/profiles/per-user/dpontoriero/bin" ];
     };
@@ -55,7 +55,7 @@ in {
       allowUnfree = true;
     };
     overlays = [
-      inputs.emacs.overlays.package
+      inputs.emacs-overlay.overlays.package
       inputs.emacs-darwin.overlays.emacs
     ];
   };

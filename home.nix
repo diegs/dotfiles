@@ -164,7 +164,7 @@ in
       package = (pkgs.emacsWithPackagesFromUsePackage {
         config = ./emacs.el;
         defaultInitFile = true;
-        package = pkgs.emacs30-pgtk;
+        package = if pkgs.stdenv.isDarwin then pkgs.emacs30 else pkgs.emacs30-pgtk;
         alwaysEnsure = true;
         extraEmacsPackages = epkgs: [
           epkgs.treesit-grammars.with-all-grammars
@@ -204,8 +204,7 @@ in
         gpg = {
           format = "ssh";
           ssh = {
-            # program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign";
-            program = "/opt/1Password/op-ssh-sign";
+            program = if pkgs.stdenv.isDarwin then "/Applications/1Password.app/Contents/MacOS/op-ssh-sign" else "/opt/1Password/op-ssh-sign";
           };
         };
         init = {
@@ -279,7 +278,8 @@ in
       extraOptionOverrides = {
         AddKeysToAgent = "yes";
         StrictHostKeyChecking = "no";
-        # UseKeychain = "yes";
+        IdentityAgent = if pkgs.stdenv.isDarwin then "~/Library/Group\\ Containers/2BUA8C4S2C.com.1password/t/agent.sock" else "~/.1password/agent.sock";
+        UseKeychain = if pkgs.stdenv.isDarwin then "yes" else "no";
       };
       matchBlocks = {
         "192.168.*" = {
