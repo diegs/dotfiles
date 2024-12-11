@@ -272,19 +272,20 @@ in
       historyWidgetOptions = [];
     };
 
-    ssh = {
+    ssh = let
+      identityAgent = if pkgs.stdenv.isDarwin then "~/Library/Group\\ Containers/2BUA8C4S2C.com.1password/t/agent.sock" else "~/.1password/agent.sock";
+    in {
       enable = true;
       forwardAgent = true;
       extraOptionOverrides = {
         AddKeysToAgent = "yes";
         StrictHostKeyChecking = "no";
-        IdentityAgent = if pkgs.stdenv.isDarwin then "~/Library/Group\\ Containers/2BUA8C4S2C.com.1password/t/agent.sock" else "~/.1password/agent.sock";
       } // (if pkgs.stdenv.isDarwin then { UseKeychain = "yes"; } else {});
       matchBlocks = {
         "192.168.*" = {
           extraOptions = {
             HostKeyAlgorithms = "+ssh-rsa";
-            IdentityAgent = "~/.1password/agent.sock";
+            IdentityAgent = identityAgent;
             PubkeyAcceptedKeyTypes = "+ssh-rsa";
             KexAlgorithms = "+diffie-hellman-group1-sha1";
           };
@@ -292,7 +293,7 @@ in
         "172.17.*" = {
           extraOptions = {
             HostKeyAlgorithms = "+ssh-rsa";
-            IdentityAgent = "~/.1password/agent.sock";
+            IdentityAgent = identityAgent;
             PubkeyAcceptedKeyTypes = "+ssh-rsa";
             KexAlgorithms = "+diffie-hellman-group1-sha1";
           };
@@ -301,7 +302,7 @@ in
           user = "admin";
           extraOptions = {
             HostKeyAlgorithms = "+ssh-rsa";
-            IdentityAgent = "~/.1password/agent.sock";
+            IdentityAgent = identityAgent;
             PubkeyAcceptedKeyTypes = "+ssh-rsa";
             KexAlgorithms = "+diffie-hellman-group1-sha1";
           };
@@ -310,17 +311,17 @@ in
           hostname = "ssh.github.com";
           port = 443;
           extraOptions = {
-            IdentityAgent = "~/.1password/agent.sock";
+            IdentityAgent = identityAgent;
           };
         };
         "gitlab.com" = {
           extraOptions = {
-            IdentityAgent = "~/.1password/agent.sock";
+            IdentityAgent = identityAgent;
           };
         };
         "gitlab-master.nvidia.com" = {
           extraOptions = {
-            IdentityAgent = "~/.1password/agent.sock";
+            IdentityAgent = identityAgent;
           };
         };
       };
