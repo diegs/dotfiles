@@ -92,6 +92,11 @@
 
 ;(use-package tree-sitter-ispell)
 
+(use-package jinx
+  :hook (emacs-startup . global-jinx-mode)
+  :bind (("M-$" . jinx-correct)
+         ("C-M-$" . jinx-languages)))
+
 (use-package magit
  :custom
  (magit-define-global-key-bindings 'recommended)

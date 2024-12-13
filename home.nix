@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ pkgs, ... }:
 let
   oci-cli = pkgs.oci-cli.overridePythonAttrs (old: rec {
     inherit (old) pname;
