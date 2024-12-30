@@ -33,18 +33,14 @@
   (isearch-wrap-pause 'no-ding)
 
   ;; Corfu
-
   ;; TAB cycle if there are only few candidates
   ;; (completion-cycle-threshold 3)
-
   ;; Enable indentation+completion using the TAB key.
   ;; `completion-at-point' is often bound to M-TAB.
   (tab-always-indent 'complete)
-
   ;; Emacs 30 and newer: Disable Ispell completion function. As an alternative,
   ;; try `cape-dict'.
   (text-mode-ispell-word-completion nil)
-
   ;; Emacs 28 and newer: Hide commands in M-x which do not apply to the current
   ;; mode.  Corfu commands are hidden, since they are not used via M-x. This
   ;; setting is useful beyond Corfu.
@@ -68,7 +64,6 @@
                   (car args))
           (cdr args)))
   (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
-
   ;; Do not allow the cursor in the minibuffer prompt
   (setq minibuffer-prompt-properties
         '(read-only t cursor-intangible t face minibuffer-prompt))
@@ -88,9 +83,11 @@
 (use-package treesit-auto
   :config
   (treesit-auto-add-to-auto-mode-alist 'all)
+  ;; Workaround for https://github.com/renzmann/treesit-auto/issues/76
+  ;; (setq major-mode-remap-alist (treesit-auto--build-major-mode-remap-alist))
   (global-treesit-auto-mode))
 
-;(use-package tree-sitter-ispell)
+;(Use-package tree-sitter-ispell)
 
 (use-package jinx
   :hook (emacs-startup . global-jinx-mode)
@@ -118,23 +115,81 @@
 ;  (undo-fu-allow-undo-in-region t))
 
 (use-package eglot
-  :init
-  (add-hook 'yaml-ts-mode-hook 'eglot-ensure)
-  (add-hook 'prog-mode-hook 'eglot-ensure))
+  :config
+  (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
+  :hook ((yaml-ts-mode . eglot-ensure)
+         (prog-mode . eglot-ensure)
+         ('eglot-managed-mode . (lambda ()
+                                  (setq-local completion-at-point-functions
+                                              (list (cape-capf-super
+                                                     #'eglot-completion-at-point
+                                                     #'tempel-complete
+                                                     #'cape-file))))))
+  :custom
+  (completion-category-defaults nil))
 
-;; (use-package eglot-booster
-;; 	:after eglot
-;; 	:config	(eglot-booster-mode))
+(use-package cape
+  ;; Bind prefix keymap providing all Cape commands under a mnemonic key.
+  ;; Press C-c p ? to for help.
+  :bind ("C-c p" . cape-prefix-map) ;; Alternative key: M-<tab>, M-p, M-+
+  ;; Alternatively bind Cape commands individually.
+  ;; :bind (("C-c p d" . cape-dabbrev)
+  ;;        ("C-c p h" . cape-history)
+  ;;        ("C-c p f" . cape-file)
+  ;;        ...)
+  :init
+  ;; Add to the global default value of `completion-at-point-functions' which is
+  ;; used by `completion-at-point'.  The order of the functions matters, the
+  ;; first function returning a result wins.  Note that the list of buffer-local
+  ;; completion functions takes precedence over the global list.
+  (add-hook 'completion-at-point-functions #'cape-dabbrev)
+  (add-hook 'completion-at-point-functions #'cape-file)
+  (add-hook 'completion-at-point-functions #'cape-elisp-block)
+  ;; (add-hook 'completion-at-point-functions #'cape-history)
+  ;; ...
+)
+
+(use-package tempel
+  ;; Require trigger prefix before template name when completing.
+  ;; :custom
+  ;; (tempel-trigger-prefix "<")
+  :bind (("M-+" . tempel-complete) ;; Alternative tempel-expand
+         ("M-*" . tempel-insert))
+  :init
+  ;; Setup completion at point
+  (defun tempel-setup-capf ()
+    ;; Add the Tempel Capf to `completion-at-point-functions'.
+    ;; `tempel-expand' only triggers on exact matches. Alternatively use
+    ;; `tempel-complete' if you want to see all matches, but then you
+    ;; should also configure `tempel-trigger-prefix', such that Tempel
+    ;; does not trigger too often when you don't expect it. NOTE: We add
+    ;; `tempel-expand' *before* the main programming mode Capf, such
+    ;; that it will be tried first.
+    (setq-local completion-at-point-functions (cons #'tempel-complete completion-at-point-functions)))
+  (add-hook 'conf-mode-hook 'tempel-setup-capf)
+  (add-hook 'prog-mode-hook 'tempel-setup-capf)
+  (add-hook 'text-mode-hook 'tempel-setup-capf)
+  ;; Optionally make the Tempel templates available to Abbrev,
+  ;; either locally or globally. `expand-abbrev' is bound to C-x '.
+  ;; (add-hook 'prog-mode-hook #'tempel-abbrev-mode)
+  ;; (global-tempel-abbrev-mode)
+)
+
+(use-package tempel-collection)
+
+(use-package eglot-tempel
+  ;; :preface (eglot-tempel-mode)
+  :init
+  (eglot-tempel-mode t))
 
 (use-package corfu
-  ;; :after (corfu-terminal)
   ;; Optional customizations
   ;; :custom
   ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
   ;; (corfu-auto t)                 ;; Enable auto completion
   ;; (corfu-separator ?\s)          ;; Orderless field separator
   ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
-  ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
+  ;; (corfu-quit-no-match 'separator)      ;; Never quit, even if there is no match
   ;; (corfu-preview-current nil)    ;; Disable current candidate preview
   ;; (corfu-preselect 'prompt)      ;; Preselect the prompt
   ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
@@ -144,30 +199,16 @@
   ;; :hook ((prog-mode . corfu-mode)
   ;;        (shell-mode . corfu-mode)
   ;;        (eshell-mode . corfu-mode))
+  ;; :hook ((corfu-mode . (lambda ()
+  ;;                        (setq-local completion-styles '(basic)
+  ;;                                    completion-category-overrides nil
+  ;;                                    completion-category-defaults nil))))
 
   ;; Recommended: Enable Corfu globally.  This is recommended since Dabbrev can
   ;; be used globally (M-/).  See also the customization variable
   ;; `global-corfu-modes' to exclude certain modes.
   :init
-  ;;(use-package corfu-terminal)
   (global-corfu-mode))
-  ;;(corfu-terminal-mode 1))
-
-;; (use-package corfu-candidate-overlay
-;;   :after corfu
-;;   :config
-;;   ;; enable corfu-candidate-overlay mode globally
-;;   ;; this relies on having corfu-auto set to nil
-;;   (corfu-candidate-overlay-mode +1)
-;;   ;; bind Ctrl + TAB to trigger the completion popup of corfu
-;;   ;;(global-set-key (kbd "C-<tab>") 'completion-at-point)
-;;   ;; bind Ctrl + Shift + Tab to trigger completion of the first candidate
-;;   ;; (keybing <iso-lefttab> may not work for your keyboard model)
-;;   (global-set-key (kbd "C-<tab>") 'corfu-candidate-overlay-complete-at-point))
-
-(use-package yasnippet
-  :init
-  (yas-global-mode t))
 
 (use-package consult
   :bind (;; C-c bindings in `mode-specific-map'
@@ -360,6 +401,51 @@
 (use-package ws-butler
   :init
   (ws-butler-global-mode))
+
+(use-package dape
+  :preface
+  ;; By default dape shares the same keybinding prefix as `gud'
+  ;; If you do not want to use any prefix, set it to nil.
+  ;; (setq dape-key-prefix "\C-x\C-a")
+
+  :hook
+  ;; Save breakpoints on quit
+  ;; (kill-emacs . dape-breakpoint-save)
+  ;; Load breakpoints on startup
+  ;; (after-init . dape-breakpoint-load)
+
+  :config
+  ;; Turn on global bindings for setting breakpoints with mouse
+  ;; (dape-breakpoint-global-mode)
+
+  ;; Info buffers to the right
+  ;; (setq dape-buffer-window-arrangement 'right)
+
+  ;; Info buffers like gud (gdb-mi)
+  ;; (setq dape-buffer-window-arrangement 'gud)
+  ;; (setq dape-info-hide-mode-line nil)
+
+  ;; Pulse source line (performance hit)
+  ;; (add-hook 'dape-display-source-hook 'pulse-momentary-highlight-one-line)
+
+  ;; Showing inlay hints
+  ;; (setq dape-inlay-hints t)
+
+  ;; Save buffers on startup, useful for interpreted languages
+  ;; (add-hook 'dape-start-hook (lambda () (save-some-buffers t t)))
+
+  ;; Kill compile buffer on build success
+  ;; (add-hook 'dape-compile-hook 'kill-buffer)
+
+  ;; Projectile users
+  ;; (setq dape-cwd-fn 'projectile-project-root)
+  )
+
+;; Enable repeat mode for more ergonomic `dape' use
+(use-package repeat
+  :ensure nil
+  :config
+  (repeat-mode))
 
 (use-package meow
   :config

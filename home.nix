@@ -176,6 +176,10 @@ in
       enable = true;
     };
 
+    ghostty = {
+      enable = true;
+    };
+
     git = {
       enable = true;
       userName = "Diego Pontoriero";
