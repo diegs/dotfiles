@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, ghostty, ... }:
 let
   oci-cli = pkgs.oci-cli.overridePythonAttrs (old: rec {
     inherit (old) pname;
@@ -64,6 +64,7 @@ in
       ]))
       pkgs.packer
       pkgs.kubectl
+      pkgs.kubelogin
       pkgs.kustomize
       pkgs.kubernetes-helm
       # pkgs.setup-envtest
@@ -178,6 +179,7 @@ in
 
     ghostty = {
       enable = true;
+      package = null; # ghostty.packages.x86_64-linux.default;
     };
 
     git = {

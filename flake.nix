@@ -19,10 +19,11 @@
       url = "github:c4710n/nix-darwin-emacs";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    ghostty.url = "github:clo4/ghostty-hm-module";
+    ghostty.url = "github:ghostty-org/ghostty";
+    ghostty-hm.url = "github:clo4/ghostty-hm-module";
   };
 
-  outputs = inputs@{ self, darwin, home-manager, nixpkgs, emacs-overlay, emacs-darwin, ghostty }:
+  outputs = inputs@{ self, darwin, home-manager, nixpkgs, emacs-overlay, emacs-darwin, ghostty, ghostty-hm }:
   let
     system = "x86_64-linux";
     pkgs = import nixpkgs {
@@ -44,10 +45,9 @@
              home-manager.useUserPackages = true;
              home-manager.users.dpontoriero = import ./home.nix;
              users.users.dpontoriero.home = "/Users/dpontoriero";
-             # Optionally, use home-manager.extraSpecialArgs to pass
-             # arguments to home.nix
+             home-manager.extraSpecialArgs = { inherit ghostty; };
            }
-         ghostty.homeModules.default
+         ghostty-hm.homeModules.default
        ];
        specialArgs = { inherit inputs; };
      };
@@ -56,11 +56,9 @@
       modules = [
         ./home.nix
         ./linux.nix
-        ghostty.homeModules.default
+        ghostty-hm.homeModules.default
       ];
-
-      # Optionally use extraSpecialArgs
-      # to pass through arguments to home.nix
+      extraSpecialArgs = { inherit ghostty; };
     };
   };
 }
