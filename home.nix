@@ -219,7 +219,7 @@ in
           };
         };
         init = {
-         defaultBranch = "main";
+          defaultBranch = "main";
         };
         pull = {
           rebase = true;
@@ -289,8 +289,8 @@ in
       enable = true;
       forwardAgent = true;
       extraOptionOverrides = {
-	Include = "config.d/*";
-	AddKeysToAgent = "yes";
+	      Include = "config.d/*";
+	      AddKeysToAgent = "yes";
         StrictHostKeyChecking = "no";
         IdentityAgent = identityAgent;
       } // (if pkgs.stdenv.isDarwin then { UseKeychain = "yes"; } else {});
@@ -338,6 +338,10 @@ in
           };
         };
       };
+    };
+
+    uv = {
+      enable = true;
     };
 
     zoxide = {
