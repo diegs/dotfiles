@@ -1,4 +1,4 @@
-{ pkgs, ghostty, ... }:
+{ pkgs, ... }:
 let
   oci-cli = pkgs.oci-cli.overridePythonAttrs (old: rec {
     inherit (old) pname;
@@ -32,58 +32,62 @@ in
       # ui
       # pkgs.monaspace
 
-      # dev tools
+      # lsp
       pkgs.bash-language-server
       pkgs.cmake-language-server
       pkgs.dockerfile-language-server-nodejs
       pkgs.nodePackages.vscode-json-languageserver
       pkgs.yaml-language-server
+      
+      # nix
       pkgs.cachix
-      pkgs.git-branchless
-      pkgs.nil
+      # pkgs.git-branchless
+      # pkgs.nil
       pkgs.jq
       # pkgs.yq
       pkgs.yq-go
       # pkgs.colima
       # pkgs.docker-client
       # pkgs.docker-buildx
-      pkgs.gomplate
+      # pkgs.gomplate
 
       # markdown
-      pkgs.marksman
-      pkgs.pandoc
+      # pkgs.marksman
+      # pkgs.pandoc
 
       # k8s
-      pkgs.argocd
-      pkgs.awscli2
-      pkgs.cilium-cli
-      oci-cli
-      (pkgs.google-cloud-sdk.withExtraComponents(with pkgs.google-cloud-sdk.components; [
-        beta
-        gke-gcloud-auth-plugin
-      ]))
-      pkgs.packer
-      pkgs.kubectl
-      pkgs.kubelogin
-      pkgs.kustomize
-      pkgs.kubernetes-helm
+      # pkgs.argocd
+      # pkgs.awscli2
+      # pkgs.ssm-session-manager-plugin
+      # pkgs.azure-cli
+      # pkgs.cilium-cli
+      # oci-cli
+      # (pkgs.google-cloud-sdk.withExtraComponents(with pkgs.google-cloud-sdk.components; [
+      #   beta
+      #   gke-gcloud-auth-plugin
+      # ]))
+      # pkgs.packer
+      # pkgs.kubectl
+      # pkgs.kubelogin
+      # pkgs.kustomize
+      # pkgs.kubernetes-helm
       # pkgs.setup-envtest
       # pkgs.kubernetes-controller-tools
 
-      pkgs.go-task
-      pkgs.yamllint
-      pkgs.terraform
-      pkgs.terraform-ls
-      pkgs.tflint
-      pkgs.terraform-docs
-      pkgs.trivy
-      pkgs.glab
-      pkgs.kind
+      # pkgs.go-task
+      # pkgs.yamllint
+      # pkgs.terraform
+      # pkgs.terraform-ls
+      # pkgs.tflint
+      # pkgs.terraform-docs
+      # pkgs.trivy
+      # pkgs.glab
+      # pkgs.kind
 
       # go
       pkgs.golangci-lint
       pkgs.gopls
-      pkgs.gocover-cobertura
+      # pkgs.gocover-cobertura
       # pkgs.gotools
 
       (pkgs.writeShellScriptBin "e" ''
@@ -161,11 +165,12 @@ in
     };
 
     emacs = {
-      enable = true;
+      enable = false;
       package = (pkgs.emacsWithPackagesFromUsePackage {
         config = ./emacs.el;
         defaultInitFile = true;
-        package = if pkgs.stdenv.isDarwin then pkgs.emacs30 else pkgs.emacs30-pgtk;
+        # package = if pkgs.stdenv.isDarwin then pkgs.emacs30 else pkgs.emacs30-pgtk;
+        package = (pkgs.emacs30-pgtk.override { withNativeCompilation = false; });
         alwaysEnsure = true;
         extraEmacsPackages = epkgs: [
           epkgs.treesit-grammars.with-all-grammars
@@ -179,7 +184,7 @@ in
 
     ghostty = {
       enable = true;
-      package = null; # ghostty.packages.x86_64-linux.default;
+      package = if pkgs.stdenv.isDarwin then null else pkgs.ghostty;
     };
 
     git = {
@@ -284,8 +289,10 @@ in
       enable = true;
       forwardAgent = true;
       extraOptionOverrides = {
-        AddKeysToAgent = "yes";
+	Include = "config.d/*";
+	AddKeysToAgent = "yes";
         StrictHostKeyChecking = "no";
+        IdentityAgent = identityAgent;
       } // (if pkgs.stdenv.isDarwin then { UseKeychain = "yes"; } else {});
       matchBlocks = {
         "192.168.*" = {
@@ -340,7 +347,7 @@ in
     zsh = {
       enable = true;
       defaultKeymap = "emacs";
-      initExtra = ''
+      initContent = ''
         autoload -U promptinit; promptinit
         zstyle :prompt:pure:git:stash show yes
         prompt pure
@@ -354,13 +361,11 @@ in
         fi
       '';
       sessionVariables = {
-        EDITOR = "e";
-        VISUAL = "e";
+        EDITOR = "emacs -nw";
+        VISUAL = "emacs -nw";
       };
       shellAliases = {
         cat = "bat";
-        k = "kubectl";
-        tf = "terraform";
       };
     };
   };

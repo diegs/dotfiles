@@ -1,82 +1,51 @@
 { inputs, config, pkgs, ... }:
-let
-  emacs = (pkgs.emacsWithPackagesFromUsePackage {
-    config = ./emacs.el;
-    defaultInitFile = true;
-    package = pkgs.emacs30;
-    alwaysEnsure = true;
-    extraEmacsPackages = epkgs: [
-      epkgs.treesit-grammars.with-all-grammars
-    ];
-  });
-in {
-  environment.systemPackages = [
-    # emacs
-  ];
+    {
+      # List packages installed in system profile. To search by name, run:
+      # $ nix-env -qaP | grep wget
+      environment.systemPackages =
+        [
+        ];
 
-  # fonts.packages = [ pkgs.monaspace ];
+      # Let Determinate do its thing
+      nix.enable = false;
+      # Necessary for using flakes on this system.
+      # nix.settings.experimental-features = "nix-command flakes";
 
-  homebrew = {
-    enable = true;
-    onActivation = {
-      autoUpdate = false;
-      cleanup = "zap";
-      upgrade = true;
-    };
-    brews = [
-      "openconnect"
-    ];
-    casks = [
-      "1password"
-      "1password-cli"
-      "scroll-reverser"
-    ];
-    global = {
-      autoUpdate = false;
-    };
-  };
 
-  services = {
-    emacs = {
-      enable = true;
-      package = emacs;
-      additionalPath = [ "/etc/profiles/per-user/dpontoriero/bin" ];
-    };
-    # Auto upgrade nix package and the daemon service.
-    nix-daemon.enable = true;
-  };
+      # Set Git commit hash for darwin-version.
+      system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
+      system.primaryUser = "dpontoriero";
 
-  # nix.package = pkgs.nix;
-  nix.optimise.automatic = true;
-  nix.settings.trusted-users = [ "root" "%admin" ];
+      # Used for backwards compatibility, please read the changelog before changing.
+      # $ darwin-rebuild changelog
+      system.stateVersion = 6;
 
-  nixpkgs = {
-    config = {
-      allowUnfree = true;
-    };
-    overlays = [
-      inputs.emacs-overlay.overlays.package
-      inputs.emacs-darwin.overlays.emacs
-    ];
-  };
+      # The platform the configuration will be used on.
+      nixpkgs.hostPlatform = "aarch64-darwin";
+      nixpkgs.config.allowUnfree = true;
 
-  # Necessary for using flakes on this system.
-  nix.settings.experimental-features = "nix-command flakes";
-
-  # Create /etc/zshrc that loads the nix-darwin environment.
-  programs.zsh.enable = true;  # default shell on catalina
-  # programs.fish.enable = true;
-
-  # Set Git commit hash for darwin-version.
-  system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
-
-  # Used for backwards compatibility, please read the changelog before changing.
-  # $ darwin-rebuild changelog
-  system.stateVersion = 4;
-
-  # The platform the configuration will be used on.
-  nixpkgs.hostPlatform = "aarch64-darwin";
-
+      programs = {
+	_1password.enable = true;
+        _1password-gui.enable = true;
+      };
+      homebrew = {
+        enable = true;
+        onActivation = {
+          autoUpdate = false;
+          cleanup = "zap";
+          upgrade = true;
+        };
+        brews = [ "python" "uv" ];
+        casks = [ "ghostty" "scroll-reverser" "jimeh/emacs-builds/emacs-app" ];
+        masApps = {
+          "1Password for Safari" = 1569813296;
+          "Raycast" = 6738274497;
+	  "wipr-2" = 1662217862;
+	  "remarkable-desktop" = 1276493162;
+	  "save-to-reader" = 1640236961;
+	};
+        global = { autoUpdate = false; };
+      };
   system.defaults = {
     dock = {
       autohide = true;
@@ -90,5 +59,5 @@ in {
     menuExtraClock.Show24Hour = true;
   };
 
-  security.pam.enableSudoTouchIdAuth = true;
+  security.pam.services.sudo_local.touchIdAuth = true;
 }
