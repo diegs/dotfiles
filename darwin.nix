@@ -36,6 +36,7 @@
           upgrade = true;
         };
         brews = [ "python" "uv" ];
+	taps = [ "jimeh/emacs-builds" ];
         casks = [ "ghostty" "scroll-reverser" "jimeh/emacs-builds/emacs-app" ];
         masApps = {
           "1Password for Safari" = 1569813296;
