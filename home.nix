@@ -185,6 +185,80 @@ in
     ghostty = {
       enable = true;
       package = if pkgs.stdenv.isDarwin then null else pkgs.ghostty;
+      settings = {
+        #theme = "dark:GitHub-Dark-Dimmed,light:GitHub-Light-Default";
+        theme = "light:modus-operandi,dark:modus-vivendi";
+        font-size = 12;
+        auto-update = "off";
+      };
+      themes = {
+        modus-operandi = {
+          background = "#ffffff";
+          foreground = "#000000";
+          selection-background = "#bdbdbd";
+          selection-foreground = "#000000";
+          cursor-color = "#000000";
+          palette = [
+            # black
+            "0=#000000"
+            "8=#595959"
+            # red
+            "1=#a60000"
+            "9=#a0132f"
+            # green
+            "2=#006800"
+            "10=#00663f"
+            # yellow
+            "3=#6f5500"
+            "11=#7a4f2f"
+            # blue
+            "4=#0031a9"
+            "12=#0000b0"
+            # magenta
+            "5=#721045"
+            "13=#531ab6"
+            # cyan
+            "6=#005e8b"
+            "14=#005f5f"
+            # white
+            "7=#f2f2f2"
+            "15=#c4c4c4"
+          ];
+        };
+        modus-vivendi = {
+          background = "#000000";
+          foreground = "#ffffff";
+          selection-background = "#5a5a5a";
+          selection-foreground = "#ffffff";
+          cursor-color = "#ffffff";
+          palette = [
+            # black
+            "0=#1e1e1e"
+            "8=#535353"
+            # red
+            "1=#ff5f59"
+            "9=#ff7f9f"
+            # green
+            "2=#44bc44"
+            "10=#00c06f"
+            # yellow
+            "3=#d0bc00"
+            "11=#dfaf7a"
+            # blue
+            "4=#2fafff"
+            "12=#00bcff"
+            # magenta
+            "5=#feacd0"
+            "13=#b6a0ff"
+            # cyan
+            "6=#00d3d0"
+            "14=#6ae4b9"
+            # white
+            "7=#ffffff"
+            "15=#989898"
+          ];
+        };
+      };
     };
 
     git = {
