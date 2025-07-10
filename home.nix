@@ -38,7 +38,8 @@ in
       pkgs.dockerfile-language-server-nodejs
       pkgs.nodePackages.vscode-json-languageserver
       pkgs.yaml-language-server
-      
+      pkgs.aspell
+
       # nix
       pkgs.cachix
       # pkgs.git-branchless
