@@ -1,16 +1,4 @@
 { pkgs, ... }:
-let
-  oci-cli = pkgs.oci-cli.overridePythonAttrs (old: rec {
-    inherit (old) pname;
-    version = "3.50.1";
-    src = pkgs.fetchFromGitHub {
-      owner = "oracle";
-      repo = pname;
-      rev = "v${version}";
-      hash = "sha256-qSXIHEdNIfEPDsXIeHqfl49yjnQ320EiVNRapBQX4vQ=";
-    };
-  });
-in
 {
   home = {
     stateVersion = "23.11";
@@ -20,6 +8,7 @@ in
     packages = [
       # util
       pkgs.fd
+      pkgs.jq
       pkgs.hexyl
       pkgs.pure-prompt
       pkgs.ripgrep
@@ -27,69 +16,23 @@ in
       pkgs.tree
       pkgs.watch
       pkgs.wget
-      pkgs.pre-commit
-
-      # ui
-      # pkgs.monaspace
+      pkgs.yq-go
 
       # lsp
+      (pkgs.aspellWithDicts (d: [d.en]))
       pkgs.bash-language-server
       pkgs.cmake-language-server
       pkgs.dockerfile-language-server-nodejs
+      pkgs.gopls
+      pkgs.nil
       pkgs.nodePackages.vscode-json-languageserver
       pkgs.yaml-language-server
-      (pkgs.aspellWithDicts (d: [d.en]))
+
+      # lint
+      pkgs.golangci-lint
 
       # nix
       pkgs.cachix
-      # pkgs.git-branchless
-      # pkgs.nil
-      pkgs.jq
-      # pkgs.yq
-      pkgs.yq-go
-      # pkgs.colima
-      # pkgs.docker-client
-      # pkgs.docker-buildx
-      # pkgs.gomplate
-
-      # markdown
-      # pkgs.marksman
-      # pkgs.pandoc
-
-      # k8s
-      # pkgs.argocd
-      # pkgs.awscli2
-      # pkgs.ssm-session-manager-plugin
-      # pkgs.azure-cli
-      # pkgs.cilium-cli
-      # oci-cli
-      # (pkgs.google-cloud-sdk.withExtraComponents(with pkgs.google-cloud-sdk.components; [
-      #   beta
-      #   gke-gcloud-auth-plugin
-      # ]))
-      # pkgs.packer
-      # pkgs.kubectl
-      # pkgs.kubelogin
-      # pkgs.kustomize
-      # pkgs.kubernetes-helm
-      # pkgs.setup-envtest
-      # pkgs.kubernetes-controller-tools
-
-      # pkgs.go-task
-      # pkgs.yamllint
-      # pkgs.terraform
-      # pkgs.terraform-ls
-      # pkgs.tflint
-      # pkgs.terraform-docs
-      # pkgs.trivy
-      # pkgs.glab
-      # pkgs.kind
-
-      # go
-      pkgs.golangci-lint
-      pkgs.gopls
-      # pkgs.gocover-cobertura
-      # pkgs.gotools
 
       (pkgs.writeShellScriptBin "e" ''
         emacsclient -nw "$@"
@@ -106,11 +49,6 @@ in
       #     # emacsclient -n -e  "(select-frame-set-input-focus (selected-frame))" > /dev/null
       #   fi
       # '')
-      # protobuf
-      # pkgs.protobuf_26
-
-      # python
-      # pkgs.pyright
     ];
 
     file = {

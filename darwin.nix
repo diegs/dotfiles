@@ -1,4 +1,4 @@
-{ inputs, config, pkgs, ... }:
+{ inputs, ... }:
 {
   environment.systemPackages = [ ];
 
@@ -31,7 +31,6 @@
 	  taps = [ "jimeh/emacs-builds" ];
     casks = [ "ghostty" "scroll-reverser" "jimeh/emacs-builds/emacs-app" ];
     masApps = {
-      "Raycast" = 6738274497;
       "remarkable-desktop" = 1276493162;
     };
     global = { autoUpdate = false; };
