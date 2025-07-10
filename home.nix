@@ -226,7 +226,7 @@ in
           ];
         };
         modus-vivendi = {
-          background = "#000000";
+          background = "#111111";
           foreground = "#ffffff";
           selection-background = "#5a5a5a";
           selection-foreground = "#ffffff";
