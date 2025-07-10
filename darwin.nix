@@ -13,7 +13,6 @@
 
   # Set Git commit hash for darwin-version.
   system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
-  system.primaryUser = "dpontoriero";
 
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
@@ -24,7 +23,7 @@
   nixpkgs.config.allowUnfree = true;
 
   programs = {
-	  _1password.enable = true;
+    _1password.enable = true;
     _1password-gui.enable = true;
   };
   homebrew = {
@@ -38,12 +37,9 @@
 	  taps = [ "jimeh/emacs-builds" ];
     casks = [ "ghostty" "scroll-reverser" "jimeh/emacs-builds/emacs-app" ];
     masApps = {
-      "1Password for Safari" = 1569813296;
       "Raycast" = 6738274497;
-	    "wipr-2" = 1662217862;
-	    "remarkable-desktop" = 1276493162;
-	    "save-to-reader" = 1640236961;
-	  };
+      "remarkable-desktop" = 1276493162;
+    };
     global = { autoUpdate = false; };
   };
   system.defaults = {
