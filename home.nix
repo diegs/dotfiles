@@ -364,6 +364,11 @@
     zsh = {
       enable = true;
       defaultKeymap = "emacs";
+      envExtra = ''
+        if test -d /opt/homebrew; then
+          eval "$(/opt/homebrew/bin/brew shellenv)"
+        fi
+      '';
       initContent = ''
         autoload -U promptinit; promptinit
         zstyle :prompt:pure:git:stash show yes
@@ -372,10 +377,6 @@
         autoload -U edit-command-line
         zle -N edit-command-line
         bindkey "^X^E" edit-command-line
-
-        if test -d /opt/homebrew; then
-          eval "$(/opt/homebrew/bin/brew shellenv)"
-        fi
       '';
       sessionVariables = {
         EDITOR = "emacs -nw";
