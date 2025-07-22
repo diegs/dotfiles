@@ -3,7 +3,10 @@
   home = {
     stateVersion = "23.11";
 
-    sessionPath = [ "$HOME/.go/bin" "$HOME/.local/bin"];
+    sessionPath = [
+      "$HOME/.go/bin"
+      "$HOME/.local/bin"
+    ];
 
     packages = [
       # util
@@ -19,7 +22,7 @@
       pkgs.yq-go
 
       # lsp
-      (pkgs.aspellWithDicts (d: [d.en]))
+      (pkgs.aspellWithDicts (d: [ d.en ]))
       pkgs.bash-language-server
       pkgs.cmake-language-server
       pkgs.dockerfile-language-server-nodejs
@@ -105,16 +108,18 @@
 
     emacs = {
       enable = false;
-      package = (pkgs.emacsWithPackagesFromUsePackage {
-        config = ./emacs.el;
-        defaultInitFile = true;
-        # package = if pkgs.stdenv.isDarwin then pkgs.emacs30 else pkgs.emacs30-pgtk;
-        package = (pkgs.emacs30-pgtk.override { withNativeCompilation = false; });
-        alwaysEnsure = true;
-        extraEmacsPackages = epkgs: [
-          epkgs.treesit-grammars.with-all-grammars
-        ];
-      });
+      package = (
+        pkgs.emacsWithPackagesFromUsePackage {
+          config = ./emacs.el;
+          defaultInitFile = true;
+          # package = if pkgs.stdenv.isDarwin then pkgs.emacs30 else pkgs.emacs30-pgtk;
+          package = (pkgs.emacs30-pgtk.override { withNativeCompilation = false; });
+          alwaysEnsure = true;
+          extraEmacsPackages = epkgs: [
+            epkgs.treesit-grammars.with-all-grammars
+          ];
+        }
+      );
     };
 
     eza = {
@@ -228,7 +233,11 @@
         gpg = {
           format = "ssh";
           ssh = {
-            program = if pkgs.stdenv.isDarwin then "/Applications/1Password.app/Contents/MacOS/op-ssh-sign" else "/opt/1Password/op-ssh-sign";
+            program =
+              if pkgs.stdenv.isDarwin then
+                "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+              else
+                "/opt/1Password/op-ssh-sign";
           };
         };
         init = {
@@ -288,70 +297,92 @@
     skim = {
       enable = true;
       changeDirWidgetCommand = "fd -H --type d --color=always";
-      changeDirWidgetOptions = ["--ansi" "--height 100%" "--preview 'tree -C {} | head -200'"];
+      changeDirWidgetOptions = [
+        "--ansi"
+        "--height 100%"
+        "--preview 'tree -C {} | head -200'"
+      ];
       defaultCommand = "fd -H --type f --color=always";
-      defaultOptions = ["--ansi" "--height 100%" "--preview 'bat --decorations=always --color=always --style=numbers {}'"];
+      defaultOptions = [
+        "--ansi"
+        "--height 100%"
+        "--preview 'bat --decorations=always --color=always --style=numbers {}'"
+      ];
       fileWidgetCommand = "fd -H --type f --color=always";
-      fileWidgetOptions = ["--ansi" "--height 100%" "--preview 'bat --decorations=always --color=always --style=numbers {}'"];
-      historyWidgetOptions = [];
+      fileWidgetOptions = [
+        "--ansi"
+        "--height 100%"
+        "--preview 'bat --decorations=always --color=always --style=numbers {}'"
+      ];
+      historyWidgetOptions = [ ];
     };
 
-    ssh = let
-      identityAgent = if pkgs.stdenv.isDarwin then "~/Library/Group\\ Containers/2BUA8C4S2C.com.1password/t/agent.sock" else "~/.1password/agent.sock";
-    in {
-      enable = true;
-      forwardAgent = true;
-      extraOptionOverrides = {
-	      Include = "config.d/*";
-	      AddKeysToAgent = "yes";
-        StrictHostKeyChecking = "no";
-        IdentityAgent = identityAgent;
-      } // (if pkgs.stdenv.isDarwin then { UseKeychain = "yes"; } else {});
-      matchBlocks = {
-        "192.168.*" = {
-          extraOptions = {
-            HostKeyAlgorithms = "+ssh-rsa";
-            IdentityAgent = identityAgent;
-            PubkeyAcceptedKeyTypes = "+ssh-rsa";
-            KexAlgorithms = "+diffie-hellman-group1-sha1";
+    ssh =
+      let
+        identityAgent =
+          if pkgs.stdenv.isDarwin then
+            "~/Library/Group\\ Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+          else
+            "~/.1password/agent.sock";
+      in
+      {
+        enable = true;
+        compression = true;
+        controlMaster = "auto";
+        controlPath = "~/.ssh/tmp/%r@%n:%p";
+        controlPersist = "4h";
+        forwardAgent = true;
+        extraOptionOverrides = {
+          Include = "config.d/*";
+          AddKeysToAgent = "yes";
+          StrictHostKeyChecking = "no";
+          IdentityAgent = identityAgent;
+        } // (if pkgs.stdenv.isDarwin then { UseKeychain = "yes"; } else { });
+        matchBlocks = {
+          "192.168.*" = {
+            extraOptions = {
+              HostKeyAlgorithms = "+ssh-rsa";
+              IdentityAgent = identityAgent;
+              PubkeyAcceptedKeyTypes = "+ssh-rsa";
+              KexAlgorithms = "+diffie-hellman-group1-sha1";
+            };
           };
-        };
-        "172.17.*" = {
-          extraOptions = {
-            HostKeyAlgorithms = "+ssh-rsa";
-            IdentityAgent = identityAgent;
-            PubkeyAcceptedKeyTypes = "+ssh-rsa";
-            KexAlgorithms = "+diffie-hellman-group1-sha1";
+          "172.17.*" = {
+            extraOptions = {
+              HostKeyAlgorithms = "+ssh-rsa";
+              IdentityAgent = identityAgent;
+              PubkeyAcceptedKeyTypes = "+ssh-rsa";
+              KexAlgorithms = "+diffie-hellman-group1-sha1";
+            };
           };
-        };
-        "*.home.arpa" = {
-          user = "admin";
-          extraOptions = {
-            HostKeyAlgorithms = "+ssh-rsa";
-            IdentityAgent = identityAgent;
-            PubkeyAcceptedKeyTypes = "+ssh-rsa";
-            KexAlgorithms = "+diffie-hellman-group1-sha1";
+          "*.home.arpa" = {
+            user = "admin";
+            extraOptions = {
+              HostKeyAlgorithms = "+ssh-rsa";
+              IdentityAgent = identityAgent;
+              PubkeyAcceptedKeyTypes = "+ssh-rsa";
+              KexAlgorithms = "+diffie-hellman-group1-sha1";
+            };
           };
-        };
-        "github.com" = {
-          hostname = "ssh.github.com";
-          port = 443;
-          extraOptions = {
-            IdentityAgent = identityAgent;
+          "github.com" = {
+            hostname = "ssh.github.com";
+            port = 443;
+            extraOptions = {
+              IdentityAgent = identityAgent;
+            };
           };
-        };
-        "gitlab.com" = {
-          extraOptions = {
-            IdentityAgent = identityAgent;
+          "gitlab.com" = {
+            extraOptions = {
+              IdentityAgent = identityAgent;
+            };
           };
-        };
-        "gitlab-master.nvidia.com" = {
-          extraOptions = {
-            IdentityAgent = identityAgent;
+          "gitlab-master.nvidia.com" = {
+            extraOptions = {
+              IdentityAgent = identityAgent;
+            };
           };
         };
       };
-    };
 
     uv = {
       enable = true;
