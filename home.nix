@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
   home = {
     stateVersion = "23.11";
@@ -12,6 +12,7 @@
       # util
       pkgs.fd
       pkgs.jq
+      pkgs.dasel
       pkgs.hexyl
       pkgs.pure-prompt
       pkgs.ripgrep
@@ -61,6 +62,9 @@
       '';
       ".hushlogin".text = "";
       ".ignore".text = ".git/";
+      ".config/emacs/early-init.el".source = config.lib.file.mkOutOfStoreSymlink ./config/emacs/early-init.el;
+      ".config/emacs/init.el".source = config.lib.file.mkOutOfStoreSymlink ./config/emacs/init.el;
+      ".config/emacs/lisp".source = config.lib.file.mkOutOfStoreSymlink ./config/emacs/lisp;
     };
 
     sessionVariables = {
@@ -329,11 +333,11 @@
         enable = true;
         compression = true;
         controlMaster = "auto";
-        controlPath = "~/.ssh/tmp/%r@%n:%p";
+        controlPath = "~/.ssh/ctl-%r@%n:%p";
         controlPersist = "4h";
         forwardAgent = true;
         extraOptionOverrides = {
-          Include = "config.d/*";
+          Include = "conf.d/*";
           AddKeysToAgent = "yes";
           StrictHostKeyChecking = "no";
           IdentityAgent = identityAgent;

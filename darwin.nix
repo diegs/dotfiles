@@ -16,10 +16,6 @@
   nixpkgs.hostPlatform = "aarch64-darwin";
   nixpkgs.config.allowUnfree = true;
 
-  programs = {
-    _1password.enable = true;
-    _1password-gui.enable = true;
-  };
   homebrew = {
     enable = true;
     onActivation = {
@@ -29,7 +25,7 @@
     };
     brews = [ "python" ];
 	  taps = [ "jimeh/emacs-builds" ];
-    casks = [ "ghostty" "scroll-reverser" "jimeh/emacs-builds/emacs-app" ];
+    casks = [ "1password" "1password-cli" "ghostty" "scroll-reverser" "jimeh/emacs-builds/emacs-app" ];
     masApps = {
       "remarkable-desktop" = 1276493162;
     };
