@@ -62,9 +62,9 @@
       '';
       ".hushlogin".text = "";
       ".ignore".text = ".git/";
-      ".config/emacs/early-init.el".source = config.lib.file.mkOutOfStoreSymlink ./config/emacs/early-init.el;
-      ".config/emacs/init.el".source = config.lib.file.mkOutOfStoreSymlink ./config/emacs/init.el;
-      ".config/emacs/lisp".source = config.lib.file.mkOutOfStoreSymlink ./config/emacs/lisp;
+      ".config/emacs/early-init.el".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dev/dotfiles/config/emacs/early-init.el";
+      ".config/emacs/init.el".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dev/dotfiles/config/emacs/init.el";
+      ".config/emacs/lisp".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dev/dotfiles/config/emacs/lisp";
     };
 
     sessionVariables = {

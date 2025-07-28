@@ -246,11 +246,8 @@
   :diminish
   :hook (prog-mode text-mode))
 
-(use-package flymake
-  :ensure t)
-
 (use-package eglot
-  :ensure t
+  :ensure nil
   :config
   ;; (add-to-list
   ;;  'eglot-server-programs
@@ -264,7 +261,7 @@
   (prog-mode . eglot-ensure))
 
 (use-package project
-  :ensure t
+  :ensure nil
   :custom
   (project-mode-line t))
 
