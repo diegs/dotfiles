@@ -24,12 +24,21 @@
       upgrade = true;
     };
     brews = [ "python" ];
-	  taps = [ "jimeh/emacs-builds" ];
-    casks = [ "1password" "1password-cli" "ghostty" "scroll-reverser" "jimeh/emacs-builds/emacs-app" ];
+    taps = [ "jimeh/emacs-builds" ];
+    casks = [
+      "1password"
+      "1password-cli"
+      "font-jetbrains-mono"
+      "ghostty"
+      "scroll-reverser"
+      "jimeh/emacs-builds/emacs-app"
+    ];
     masApps = {
       "remarkable-desktop" = 1276493162;
     };
-    global = { autoUpdate = false; };
+    global = {
+      autoUpdate = false;
+    };
   };
   system.defaults = {
     dock = {
