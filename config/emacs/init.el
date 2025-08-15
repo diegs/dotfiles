@@ -263,6 +263,7 @@
 (use-package project
   :ensure nil
   :custom
+  ;(projectile-git-submodule-command "true")
   (project-mode-line t))
 
 (use-package corfu
@@ -455,5 +456,14 @@
 ;; (setq prefix-help-command #'embark-prefix-help-command)
 (use-package nix-mode
   :ensure t)
+
+;(use-package tomlparse :ensure t)
+;(use-package yaml :ensure t)
+
+;(use-package pet
+;  :ensure t
+;  :after (tomlparse yaml)
+;  :config
+;  :hook python-base-mode)
 
 (provide 'init)
