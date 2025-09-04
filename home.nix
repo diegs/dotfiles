@@ -38,11 +38,15 @@
       # nix
       pkgs.cachix
 
+      # k8s
+      pkgs.kubectl
+
+      # emacs scripts
       (pkgs.writeShellScriptBin "e" ''
-        emacsclient -nw "$@"
+        emacsclient -a "" -nw "$@"
       '')
       (pkgs.writeShellScriptBin "ec" ''
-        emacsclient -n -r "$@"
+        emacsclient -a "" -n -r "$@"
       '')
       # (pkgs.writeShellScriptBin "ec" ''
       #   emacsclient -n -e "(> (length (frame-list)) 1)" | grep -q t
@@ -414,8 +418,8 @@
         bindkey "^X^E" edit-command-line
       '';
       sessionVariables = {
-        EDITOR = "emacs -nw";
-        VISUAL = "emacs -nw";
+        EDITOR = "emacsclient -a '' -nw";
+        VISUAL = "emacsclient -a '' -nw";
       };
       shellAliases = {
         cat = "bat";

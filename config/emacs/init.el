@@ -58,6 +58,11 @@
   (prog-mode . (lambda () (setq show-trailing-whitespace t truncate-lines t)))
   (text-mode . (lambda () (setq show-trailing-whitespace t) (visual-line-mode))))
 
+(use-package server
+  :ensure nil
+  :config
+  (unless (server-running-p) (server-start)))
+
 (use-package hl-line
   :ensure nil
   :custom
@@ -258,7 +263,7 @@
   (eglot-extend-to-xref t)
   (eglot-report-progress nil)
   :hook
-  (prog-mode . eglot-ensure))
+  (prog-mode . (lambda () (unless (and buffer-file-name (file-remote-p buffer-file-name)) (eglot-ensure)))))
 
 (use-package project
   :ensure nil
@@ -322,9 +327,13 @@
 (use-package recentf
   :ensure nil
   :custom
-  (recentf-max-saved-items 200)
+  (recentf-auto-cleanup 'never)
+  (recentf-max-saved-items 1000)
+  (recentf-keep '(file-remote-p file-readable-p))
   :init
-  (recentf-mode))
+  (recentf-mode)
+  :hook
+  (kill-emacs . recentf-cleanup))
 
 ;; Optionally use the `orderless' completion style.
 (use-package orderless
