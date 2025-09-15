@@ -46,7 +46,7 @@
         emacsclient -nw "$@"
       '')
       (pkgs.writeShellScriptBin "ec" ''
-        open -a Emacs && emacsclient -n -r "$@"
+        open -a Emacs && emacsclient -n "$@"
       '')
       # (pkgs.writeShellScriptBin "ec" ''
       #   emacsclient -n -e "(> (length (frame-list)) 1)" | grep -q t
