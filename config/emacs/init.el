@@ -58,11 +58,6 @@
   (prog-mode . (lambda () (setq show-trailing-whitespace t truncate-lines t)))
   (text-mode . (lambda () (setq show-trailing-whitespace t) (visual-line-mode))))
 
-(use-package server
-  :ensure nil
-  :config
-  (unless (server-running-p) (server-start)))
-
 (use-package hl-line
   :ensure nil
   :custom
