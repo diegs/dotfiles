@@ -245,6 +245,7 @@
 (use-package dired
   :ensure nil
   :custom
+  (dired-use-ls-dired nil)
   (dired-free-space nil))
 
 (use-package ws-butler
@@ -270,7 +271,7 @@
   :ensure nil
   :custom
   ;(projectile-git-submodule-command "true")
-  (project-mode-line t))
+  (project-mode-line nil))
 
 (use-package corfu
   :ensure t
