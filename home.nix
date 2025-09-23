@@ -26,7 +26,7 @@
       (pkgs.aspellWithDicts (d: [ d.en ]))
       pkgs.bash-language-server
       pkgs.cmake-language-server
-      pkgs.dockerfile-language-server-nodejs
+      pkgs.dockerfile-language-server
       pkgs.gopls
       pkgs.nil
       pkgs.nodePackages.vscode-json-languageserver
@@ -104,7 +104,7 @@
     };
 
     dircolors = {
-      enable = true;
+      enable = false;
     };
 
     direnv = {
@@ -128,10 +128,6 @@
           ];
         }
       );
-    };
-
-    eza = {
-      enable = true;
     };
 
     ghostty = {
@@ -189,7 +185,7 @@
             "8=#535353"
             # red
             "1=#ff5f59"
-            "9=#ff7f9f"
+            "9=#ff7f86"
             # green
             "2=#44bc44"
             "10=#00c06f"
@@ -278,8 +274,9 @@
 
     go = {
       enable = true;
-      goPath = ".go";
-      package = pkgs.go;
+      env = {
+        GOPATH = "${config.home.homeDirectory}/.go";
+      };
     };
 
     jujutsu = {
@@ -290,6 +287,45 @@
         };
         user = {
           name = "Diego Pontoriero";
+        };
+      };
+    };
+
+    lsd = {
+      enable = true;
+      colors = {
+        user = "cyan";
+        group = "dark_cyan";
+        permission = {
+          no-access = "dark_magenta";
+        };
+        date = {
+          hour-old = "dark_cyan";
+          day-old = "dark_blue";
+          older = "dark_green";
+        };
+        size = {
+          none = "grey";
+          small = "dark_yellow";
+          medium = "dark_magenta";
+          large = "dark_red";
+        };
+        inode = {
+          invalid = "grey";
+        };
+        links = {
+          invalid = "grey";
+        };
+        tree-edge = "grey";
+        git-status = {
+          default = "grey";
+          unmodified = "grey";
+          ignored = "grey";
+        };
+      };
+      settings = {
+        icons = {
+          when = "never";
         };
       };
     };
@@ -335,39 +371,13 @@
       in
       {
         enable = true;
-        compression = true;
-        controlMaster = "auto";
-        controlPath = "~/.ssh/ctl-%r@%n:%p";
-        controlPersist = "4h";
-        forwardAgent = true;
-        extraOptionOverrides = {
-          Include = "conf.d/*";
-          AddKeysToAgent = "yes";
-          StrictHostKeyChecking = "no";
-          IdentityAgent = identityAgent;
-        } // (if pkgs.stdenv.isDarwin then { UseKeychain = "yes"; } else { });
+        enableDefaultConfig = false;
+        includes = [ "conf.d/*" ];
         matchBlocks = {
-          "192.168.*" = {
-            extraOptions = {
-              HostKeyAlgorithms = "+ssh-rsa";
-              IdentityAgent = identityAgent;
-              PubkeyAcceptedKeyTypes = "+ssh-rsa";
-              KexAlgorithms = "+diffie-hellman-group1-sha1";
-            };
-          };
-          "172.17.*" = {
-            extraOptions = {
-              HostKeyAlgorithms = "+ssh-rsa";
-              IdentityAgent = identityAgent;
-              PubkeyAcceptedKeyTypes = "+ssh-rsa";
-              KexAlgorithms = "+diffie-hellman-group1-sha1";
-            };
-          };
-          "*.home.arpa" = {
+          "*.home.diegs.ca" = {
             user = "admin";
             extraOptions = {
               HostKeyAlgorithms = "+ssh-rsa";
-              IdentityAgent = identityAgent;
               PubkeyAcceptedKeyTypes = "+ssh-rsa";
               KexAlgorithms = "+diffie-hellman-group1-sha1";
             };
@@ -375,19 +385,18 @@
           "github.com" = {
             hostname = "ssh.github.com";
             port = 443;
-            extraOptions = {
-              IdentityAgent = identityAgent;
-            };
           };
-          "gitlab.com" = {
-            extraOptions = {
-              IdentityAgent = identityAgent;
-            };
-          };
-          "gitlab-master.nvidia.com" = {
-            extraOptions = {
-              IdentityAgent = identityAgent;
-            };
+          "*" = {
+            compression = true;
+            controlMaster = "auto";
+            controlPath = "~/.ssh/ctl-%r@%n:%p";
+            controlPersist = "4h";
+            hashKnownHosts = false;
+            userKnownHostsFile = "~/.ssh/known_hosts";
+            forwardAgent = true;
+            addKeysToAgent = "yes";
+            identityAgent = identityAgent;
+            extraOptions = { } // (if pkgs.stdenv.isDarwin then { UseKeychain = "yes"; } else { });
           };
         };
       };
@@ -401,10 +410,6 @@
     };
 
     uv = {
-      enable = true;
-    };
-
-    zoxide = {
       enable = true;
     };
 
