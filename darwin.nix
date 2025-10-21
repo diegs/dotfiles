@@ -23,11 +23,12 @@
       cleanup = "zap";
       upgrade = true;
     };
-    brews = [ "python" ];
+    brews = [ "colima" "python" ];
     taps = [ "jimeh/emacs-builds" ];
     casks = [
       "1password"
       "1password-cli"
+      "docker"
       "font-jetbrains-mono"
       "ghostty"
       "scroll-reverser"

@@ -22,7 +22,7 @@
   (initial-scratch-message nil)
   (inhibit-startup-echo-area-message (user-login-name))
   ;; backups
-  (make-backup-fil nil)
+  (make-backup-files nil)
   (auto-save-default nil)
   ;; editor behavior
   (isearch-wrap-pause 'no)
