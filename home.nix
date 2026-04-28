@@ -260,6 +260,15 @@
 
     kakoune = {
       enable = true;
+      defaultEditor = true;
+      config = {
+          indentWidth = 2;
+          tabStop = 2;
+          numberLines = {
+              enable = true;
+              relative = true;
+          };
+      };
     };
 
     lsd = {
@@ -402,10 +411,6 @@
         zle -N edit-command-line
         bindkey "^X^E" edit-command-line
       '';
-      sessionVariables = {
-        EDITOR = "vim";
-        VISUAL = "vim";
-      };
       shellAliases = {
         cat = "bat";
       };
