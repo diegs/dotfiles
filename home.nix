@@ -98,7 +98,7 @@
     };
 
     direnv = {
-      enable = true;
+      enable = false;
       nix-direnv = {
         enable = true;
       };
@@ -221,7 +221,7 @@
         };
         user = {
           name = "Diego Pontoriero";
-          email = "dpontor@gmail.com";
+          email = "74719+diegs@users.noreply.github.com";
         };
         url = {
           "ssh://git@github.com/" = {
