@@ -29,7 +29,7 @@
       pkgs.dockerfile-language-server
       pkgs.gopls
       pkgs.nil
-      pkgs.nodePackages.vscode-json-languageserver
+      pkgs.vscode-json-languageserver
       pkgs.yaml-language-server
 
       # lint
@@ -37,26 +37,6 @@
 
       # nix
       pkgs.cachix
-
-      # k8s
-      pkgs.kubectl
-
-      # emacs scripts
-      (pkgs.writeShellScriptBin "e" ''
-        emacsclient -nw "$@"
-      '')
-      (pkgs.writeShellScriptBin "ec" ''
-        open -a Emacs && emacsclient -n "$@"
-      '')
-      # (pkgs.writeShellScriptBin "ec" ''
-      #   emacsclient -n -e "(> (length (frame-list)) 1)" | grep -q t
-      #   if [ "$?" = "1" ]; then
-      #     emacsclient -c -n "$@"
-      #   else
-      #     emacsclient -n "$@"
-      #     # emacsclient -n -e  "(select-frame-set-input-focus (selected-frame))" > /dev/null
-      #   fi
-      # '')
     ];
 
     file = {
@@ -66,9 +46,6 @@
       '';
       ".hushlogin".text = "";
       ".ignore".text = ".git/";
-      ".config/emacs/early-init.el".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dev/dotfiles/config/emacs/early-init.el";
-      ".config/emacs/init.el".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dev/dotfiles/config/emacs/init.el";
-      ".config/emacs/lisp".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dev/dotfiles/config/emacs/lisp";
     };
 
     sessionVariables = {
@@ -103,6 +80,19 @@
       };
     };
 
+    delta = {
+      enable = true;
+      enableGitIntegration = true;
+      options = {
+        navigate = true;
+        syntax-theme = "ansi";
+        minus-style = "reverse red";
+        minus-emph-style = "reverse bold red";
+        plus-style = "reverse green";
+        plus-emph-style = "reverse bold green";
+      };
+    };
+
     dircolors = {
       enable = false;
     };
@@ -112,22 +102,6 @@
       nix-direnv = {
         enable = true;
       };
-    };
-
-    emacs = {
-      enable = false;
-      package = (
-        pkgs.emacsWithPackagesFromUsePackage {
-          config = ./emacs.el;
-          defaultInitFile = true;
-          # package = if pkgs.stdenv.isDarwin then pkgs.emacs30 else pkgs.emacs30-pgtk;
-          package = (pkgs.emacs30-pgtk.override { withNativeCompilation = false; });
-          alwaysEnsure = true;
-          extraEmacsPackages = epkgs: [
-            epkgs.treesit-grammars.with-all-grammars
-          ];
-        }
-      );
     };
 
     ghostty = {
@@ -211,21 +185,12 @@
 
     git = {
       enable = true;
-      userName = "Diego Pontoriero";
-      delta = {
-        enable = true;
-        options = {
-          navigate = true;
-          syntax-theme = "ansi";
-          minus-style = "reverse red";
-          minus-emph-style = "reverse bold red";
-          plus-style = "reverse green";
-          plus-emph-style = "reverse bold green";
-        };
-      };
-      extraConfig = {
+      settings = {
         advice = {
           addIgnoredFile = false;
+        };
+        alias = {
+          mr = "!sh -c 'git fetch $1 merge-requests/$2/head:mr-$1-$2 && git checkout mr-$1-$2' -";
         };
         commit = {
           gpgsign = true;
@@ -254,6 +219,10 @@
           autoSetupRemote = true;
           default = "current";
         };
+        user = {
+          name = "Diego Pontoriero";
+          email = "dpontor@gmail.com";
+        };
         url = {
           "ssh://git@github.com/" = {
             insteadOf = "https://github.com/";
@@ -263,13 +232,11 @@
           signingkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILJasnFrDOljlqzQUCWT34ci8fp5/QgYh2QWvJM2l942";
         };
       };
-      aliases = {
-        mr = "!sh -c 'git fetch $1 merge-requests/$2/head:mr-$1-$2 && git checkout mr-$1-$2' -";
-      };
       ignores = [
         ".direnv/"
         ".DS_Store"
       ];
+      signing.format = "openpgp";
     };
 
     go = {
@@ -280,7 +247,7 @@
     };
 
     jujutsu = {
-      enable = false;
+      enable = true;
       settings = {
         ui = {
           default-command = "log";
@@ -289,6 +256,10 @@
           name = "Diego Pontoriero";
         };
       };
+    };
+
+    kakoune = {
+      enable = true;
     };
 
     lsd = {
@@ -414,6 +385,7 @@
     };
 
     zsh = {
+      dotDir = "${config.xdg.configHome}/zsh";
       enable = true;
       defaultKeymap = "emacs";
       envExtra = ''
@@ -431,8 +403,8 @@
         bindkey "^X^E" edit-command-line
       '';
       sessionVariables = {
-        EDITOR = "emacsclient -a '' -nw";
-        VISUAL = "emacsclient -a '' -nw";
+        EDITOR = "vim";
+        VISUAL = "vim";
       };
       shellAliases = {
         cat = "bat";

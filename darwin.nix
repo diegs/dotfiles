@@ -23,20 +23,20 @@
       cleanup = "zap";
       upgrade = true;
     };
-    brews = [ "colima" "python" ];
-    taps = [ "jimeh/emacs-builds" ];
+    # brews = [ "colima" "python" ];
+    # taps = [ "jimeh/emacs-builds" ];
     casks = [
       "1password"
       "1password-cli"
-      "docker"
-      "font-jetbrains-mono"
+      # "docker"
+      # "font-jetbrains-mono"
       "ghostty"
       "scroll-reverser"
-      "jimeh/emacs-builds/emacs-app"
+      # "jimeh/emacs-builds/emacs-app"
     ];
-    masApps = {
-      "remarkable-desktop" = 1276493162;
-    };
+    # masApps = {
+      #"remarkable-desktop" = 1276493162;
+    # };
     global = {
       autoUpdate = false;
     };
