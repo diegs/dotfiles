@@ -31,7 +31,8 @@
       # "docker"
       # "font-jetbrains-mono"
       "ghostty"
-      "scroll-reverser"
+      "mos"
+      #"scroll-reverser"
       # "jimeh/emacs-builds/emacs-app"
     ];
     # masApps = {
