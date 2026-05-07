@@ -13,6 +13,7 @@
       pkgs.fd
       pkgs.jq
       pkgs.dasel
+      pkgs.gemini-cli
       pkgs.hexyl
       pkgs.pure-prompt
       pkgs.ripgrep
@@ -109,8 +110,8 @@
       package = if pkgs.stdenv.isDarwin then null else pkgs.ghostty;
       settings = {
         #theme = "dark:GitHub-Dark-Dimmed,light:GitHub-Light-Default";
-        theme = "light:modus-operandi,dark:modus-vivendi";
-        font-size = 12;
+        #theme = "light:modus-operandi,dark:modus-vivendi";
+        # font-size = 12;
         auto-update = "off";
       };
       themes = {
