@@ -42,6 +42,15 @@
       FXEnableExtensionChangeWarning = false;
     };
     menuExtraClock.Show24Hour = true;
+    NSGlobalDomain = {
+      KeyRepeat = 2;
+      InitialKeyRepeat = 15;
+      NSAutomaticCapitalizationEnabled = false;
+      NSAutomaticDashSubstitutionEnabled = false;
+      NSAutomaticPeriodSubstitutionEnabled = false;
+      NSAutomaticQuoteSubstitutionEnabled = false;
+      NSAutomaticSpellingCorrectionEnabled = false;
+    };
   };
 
   security.pam.services.sudo_local.touchIdAuth = true;

@@ -13,6 +13,7 @@
       pkgs.fd
       pkgs.jq
       pkgs.dasel
+      pkgs.dust
       pkgs.hexyl
       pkgs.pure-prompt
       pkgs.ripgrep
@@ -29,6 +30,8 @@
 
       # nix
       pkgs.cachix
+      pkgs.comma
+      pkgs.nixfmt
     ];
 
     file = {
@@ -65,6 +68,10 @@
         pager = "";
         theme = "ansi";
       };
+    };
+
+    btop = {
+      enable = true;
     };
 
     delta = {
@@ -225,8 +232,9 @@
       };
     };
 
-    skim = {
+    fzf = {
       enable = true;
+      enableZshIntegration = true;
       changeDirWidgetCommand = "fd -H --type d --color=always";
       changeDirWidgetOptions = [
         "--ansi"
@@ -246,6 +254,16 @@
         "--preview 'bat --decorations=always --color=always --style=numbers {}'"
       ];
       historyWidgetOptions = [ ];
+    };
+
+    nh = {
+      enable = true;
+      flake = "${config.home.homeDirectory}/dev/dotfiles";
+    };
+
+    nix-index = {
+      enable = true;
+      enableZshIntegration = true;
     };
 
     ssh =
@@ -305,9 +323,21 @@
       '';
       shellAliases = {
         cat = "bat";
-        rebuild = "sudo darwin-rebuild switch --flake ~/dev/dotfiles";
-        check = "darwin-rebuild build --flake ~/dev/dotfiles";
+        rebuild = "nh darwin switch";
+        check = "nh darwin build";
       };
+      plugins = [
+        {
+          name = "fzf-tab";
+          src = pkgs.zsh-fzf-tab;
+          file = "share/fzf-tab/fzf-tab.plugin.zsh";
+        }
+      ];
+    };
+
+    zoxide = {
+      enable = true;
+      enableZshIntegration = true;
     };
   };
 
