@@ -13,7 +13,6 @@
       pkgs.fd
       pkgs.jq
       pkgs.dasel
-      pkgs.gemini-cli
       pkgs.hexyl
       pkgs.pure-prompt
       pkgs.ripgrep
@@ -32,9 +31,6 @@
       pkgs.nil
       pkgs.vscode-json-languageserver
       pkgs.yaml-language-server
-
-      # lint
-      pkgs.golangci-lint
 
       # nix
       pkgs.cachix

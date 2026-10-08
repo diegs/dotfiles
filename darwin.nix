@@ -20,7 +20,7 @@
     enable = true;
     onActivation = {
       autoUpdate = false;
-      cleanup = "zap";
+      #cleanup = "zap";
       upgrade = true;
     };
     # brews = [ "colima" "python" ];
@@ -28,10 +28,12 @@
     casks = [
       "1password"
       "1password-cli"
+      "antigravity-cli"
       # "docker"
       # "font-jetbrains-mono"
       "ghostty"
       "mos"
+      "music-decoy"
       #"scroll-reverser"
       # "jimeh/emacs-builds/emacs-app"
     ];
