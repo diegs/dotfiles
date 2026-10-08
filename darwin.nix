@@ -42,9 +42,17 @@
       FXEnableExtensionChangeWarning = false;
     };
     menuExtraClock.Show24Hour = true;
+    # macOS Global System Defaults
+    # To reset to factory defaults via terminal:
+    #   defaults delete -g KeyRepeat
+    #   defaults delete -g InitialKeyRepeat
+    # Or adjust via System Settings -> Keyboard sliders.
+    # Factory defaults: KeyRepeat = 6 (~90ms), InitialKeyRepeat = 25 (~375ms).
     NSGlobalDomain = {
-      KeyRepeat = 3;
-      InitialKeyRepeat = 20;
+      KeyRepeat = 3; # Faster repeat rate (~45ms per character)
+      InitialKeyRepeat = 20; # Moderate delay before repeat starts (~300ms)
+
+      # Disable auto-substitution of quotes, dashes, and autocorrect in Cocoa apps
       NSAutomaticCapitalizationEnabled = false;
       NSAutomaticDashSubstitutionEnabled = false;
       NSAutomaticPeriodSubstitutionEnabled = false;

@@ -334,8 +334,6 @@
       '';
       shellAliases = {
         cat = "bat";
-        rebuild = "nh darwin switch";
-        check = "nh darwin build";
       };
       plugins = [
         {
