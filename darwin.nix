@@ -19,30 +19,17 @@
   homebrew = {
     enable = true;
     onActivation = {
-      autoUpdate = false;
-      #cleanup = "zap";
+      autoUpdate = true;
       upgrade = true;
     };
-    # brews = [ "colima" "python" ];
-    # taps = [ "jimeh/emacs-builds" ];
     casks = [
       "1password"
       "1password-cli"
       "antigravity-cli"
-      # "docker"
-      # "font-jetbrains-mono"
       "ghostty"
       "mos"
       "music-decoy"
-      #"scroll-reverser"
-      # "jimeh/emacs-builds/emacs-app"
     ];
-    # masApps = {
-      #"remarkable-desktop" = 1276493162;
-    # };
-    global = {
-      autoUpdate = false;
-    };
   };
   system.defaults = {
     dock = {
