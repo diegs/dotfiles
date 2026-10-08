@@ -168,6 +168,17 @@
         };
         user = {
           name = "Diego Pontoriero";
+          email = "74719+diegs@users.noreply.github.com";
+        };
+        signing = {
+          behavior = "own";
+          backend = "ssh";
+          key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILJasnFrDOljlqzQUCWT34ci8fp5/QgYh2QWvJM2l942";
+          backends.ssh.program =
+            if pkgs.stdenv.hostPlatform.isDarwin then
+              "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+            else
+              "/opt/1Password/op-ssh-sign";
         };
       };
     };

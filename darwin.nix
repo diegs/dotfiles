@@ -43,8 +43,8 @@
     };
     menuExtraClock.Show24Hour = true;
     NSGlobalDomain = {
-      KeyRepeat = 2;
-      InitialKeyRepeat = 15;
+      KeyRepeat = 3;
+      InitialKeyRepeat = 20;
       NSAutomaticCapitalizationEnabled = false;
       NSAutomaticDashSubstitutionEnabled = false;
       NSAutomaticPeriodSubstitutionEnabled = false;
