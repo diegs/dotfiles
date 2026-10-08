@@ -53,6 +53,7 @@
   };
 
   fonts.fontconfig.enable = false;
+  manual.manpages.enable = false;
 
   programs = {
     atuin = {
@@ -103,7 +104,7 @@
 
     ghostty = {
       enable = true;
-      package = if pkgs.stdenv.isDarwin then null else pkgs.ghostty;
+      package = if pkgs.stdenv.hostPlatform.isDarwin then null else pkgs.ghostty;
       settings = {
         #theme = "dark:GitHub-Dark-Dimmed,light:GitHub-Light-Default";
         theme = "light:modus-operandi,dark:modus-vivendi";
@@ -200,7 +201,7 @@
           format = "ssh";
           ssh = {
             program =
-              if pkgs.stdenv.isDarwin then
+              if pkgs.stdenv.hostPlatform.isDarwin then
                 "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
               else
                 "/opt/1Password/op-ssh-sign";
@@ -219,21 +220,18 @@
         user = {
           name = "Diego Pontoriero";
           email = "74719+diegs@users.noreply.github.com";
+          signingkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILJasnFrDOljlqzQUCWT34ci8fp5/QgYh2QWvJM2l942";
         };
         url = {
           "ssh://git@github.com/" = {
             insteadOf = "https://github.com/";
           };
         };
-        user = {
-          signingkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILJasnFrDOljlqzQUCWT34ci8fp5/QgYh2QWvJM2l942";
-        };
       };
       ignores = [
         ".direnv/"
         ".DS_Store"
       ];
-      signing.format = "openpgp";
     };
 
     go = {
@@ -341,7 +339,7 @@
     ssh =
       let
         identityAgent =
-          if pkgs.stdenv.isDarwin then
+          if pkgs.stdenv.hostPlatform.isDarwin then
             "~/Library/Group\\ Containers/2BUA8C4S2C.com.1password/t/agent.sock"
           else
             "~/.1password/agent.sock";
@@ -350,31 +348,28 @@
         enable = true;
         enableDefaultConfig = false;
         includes = [ "conf.d/*" ];
-        matchBlocks = {
+        settings = {
           "*.home.diegs.ca" = {
-            user = "admin";
-            extraOptions = {
-              HostKeyAlgorithms = "+ssh-rsa";
-              PubkeyAcceptedKeyTypes = "+ssh-rsa";
-              KexAlgorithms = "+diffie-hellman-group1-sha1";
-            };
+            User = "admin";
+            HostKeyAlgorithms = "+ssh-rsa";
+            PubkeyAcceptedKeyTypes = "+ssh-rsa";
+            KexAlgorithms = "+diffie-hellman-group1-sha1";
           };
           "github.com" = {
-            hostname = "ssh.github.com";
-            port = 443;
+            HostName = "ssh.github.com";
+            Port = 443;
           };
           "*" = {
-            compression = true;
-            controlMaster = "auto";
-            controlPath = "~/.ssh/ctl-%r@%n:%p";
-            controlPersist = "4h";
-            hashKnownHosts = false;
-            userKnownHostsFile = "~/.ssh/known_hosts";
-            forwardAgent = true;
-            addKeysToAgent = "yes";
-            identityAgent = identityAgent;
-            extraOptions = { } // (if pkgs.stdenv.isDarwin then { UseKeychain = "yes"; } else { });
-          };
+            Compression = true;
+            ControlMaster = "auto";
+            ControlPath = "~/.ssh/ctl-%r@%n:%p";
+            ControlPersist = "4h";
+            HashKnownHosts = false;
+            UserKnownHostsFile = "~/.ssh/known_hosts";
+            ForwardAgent = true;
+            AddKeysToAgent = "yes";
+            IdentityAgent = identityAgent;
+          } // (if pkgs.stdenv.hostPlatform.isDarwin then { UseKeychain = "yes"; } else { });
         };
       };
 
