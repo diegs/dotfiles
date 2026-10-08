@@ -305,6 +305,8 @@
       '';
       shellAliases = {
         cat = "bat";
+        rebuild = "sudo darwin-rebuild switch --flake ~/dev/dotfiles";
+        check = "darwin-rebuild build --flake ~/dev/dotfiles";
       };
     };
   };

@@ -16,22 +16,7 @@
   outputs = inputs@{ self, nix-darwin, nixpkgs, home-manager }:
   {
     # Build darwin flake using:
-    # $ darwin-rebuild build --flake .#dpontoriero-mlt
-    darwinConfigurations."dpontoriero-mlt" = nix-darwin.lib.darwinSystem {
-      modules = [
-        { system.primaryUser = "dpontoriero"; }
-        ./darwin.nix
-        home-manager.darwinModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.dpontoriero = import ./home.nix;
-            users.users.dpontoriero.home = "/Users/dpontoriero";
-            home-manager.extraSpecialArgs = { };
-          }
-      ];
-      specialArgs = { inherit inputs; };
-    };
+    # $ darwin-rebuild build --flake .#marmish
     darwinConfigurations."marmish" = nix-darwin.lib.darwinSystem {
       modules = [
         { system.primaryUser = "diegs"; }
