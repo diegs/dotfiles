@@ -270,6 +270,11 @@
     nh = {
       enable = true;
       flake = "${config.home.homeDirectory}/dev/dotfiles";
+      clean = {
+        enable = true;
+        dates = "weekly";
+        extraArgs = "--keep-one";
+      };
     };
 
     nix-index = {
