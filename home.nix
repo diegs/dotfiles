@@ -336,6 +336,9 @@
         autoload -U edit-command-line
         zle -N edit-command-line
         bindkey "^X^E" edit-command-line
+
+        # Treat '/' as a word delimiter so Alt-Backspace and word motions stop at path segments
+        WORDCHARS=''${WORDCHARS//\//}
       '';
       shellAliases = {
         cat = "bat";
