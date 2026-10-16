@@ -27,8 +27,10 @@
       "1password-cli"
       "antigravity-cli"
       "ghostty"
+      "knockknock"
       "mos"
       "music-decoy"
+      "pearcleaner"
     ];
   };
   system.defaults = {
